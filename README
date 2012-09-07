@@ -1,0 +1,25 @@
+__     ___    ____  _____ ____  ____     _____ _   _  ____ 
+\ \   / / \  |___ \| ____|  _ \|  _ \   |_   _| \ | |/ ___|
+ \ \ / / _ \   __) |  _| | |_) | |_) |____| | |  \| | |    
+  \ V / ___ \ / __/| |___|  __/|  _ <_____| | | |\  | |___ 
+   \_/_/   \_\_____|_____|_|   |_| \_\    |_| |_| \_|\____|
+                                                           
+  by Thomas Cort <linuxgeek@gmail.com> ( VA2EPR / KB1EPR )
+
+This is a student's final year Electronics Engineering Technology project
+which implements a Terminal Node Controller and an APRS tracker.
+
+Project Layout
+--------------
+
+	documents/
+		contains documentation and info about the project.
+
+	hardware/
+		schematic/pcb/etc in LabCenter Proteus ISIS/ARES format.
+
+	firmware/
+		C code that runs on the ATMega1284p microcontroller.
+
+	software/
+		graphical user interface that runs on the PC.
