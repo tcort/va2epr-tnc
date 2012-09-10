@@ -11,7 +11,7 @@ DEVICE=/dev/ttyUSB0
 
 # Compiler and Uploader options
 CC=avr-gcc
-CFLAGS=-Os -Wall -Werror -mcall-prologues -mmcu=$(MCU) -DF_CPU=$(F_CPU) 
+CFLAGS=-Os -pedantic -Wall -Werror -mcall-prologues -mmcu=$(MCU) -DF_CPU=$(F_CPU) 
 OBJ2HEX=avr-objcopy
 AVRDUDE=avrdude
 
