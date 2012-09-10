@@ -23,7 +23,7 @@
  * Timer 1 (Input Capture)
  * Timer 2 (Waveform Generation)
  *
- * PORTB (AFSK Output)
+ * PORTA (AFSK Output)
  * PD6 (Input Capture Input)
  * PD7 (Push to Talk Output)
  */
@@ -66,9 +66,9 @@ unsigned int period = 0;
 /* setup ports and timers */
 void afsk_init(void) {
 
-	/* AFSK DAC is on PORTB */
-	DDRB |= 0xFF; /* AFSK output */
-	PORTB = 0x00; /* initialize */
+	/* AFSK DAC is on PORTA */
+	DDRA |= 0xFF; /* AFSK output */
+	PORTA = 0x00; /* initialize */
 
 	/* Timer 2 CTC, pre-scalar 8 */
 	TCCR2A |= (1<<WGM21); /* CTC */
@@ -85,10 +85,6 @@ void afsk_init(void) {
 	TCCR2A = 0x00; /* Normal Mode */
 	TCCR1B |= ((1<<ICNC1)|(1<<ICES1)|(1<<CS11)); /* noise canceler, rising edge, pre-scalar = 8 */
 	TIMSK1 |= ((1<<ICIE1)|(1<<TOIE1)); /* enable overflow and input capture interrupts */
-
-	/* TEST CODE */
-	DDRA |= 0xff; /* output */
-	PORTA = 0x00; /* 0 */
 
 	/* Push to Talk line on PD7 */
 	DDRD |= (1<<PD7); /* Push To Talk line */
@@ -120,9 +116,6 @@ ISR(TIMER1_CAPT_vect) {
 
 
 	/* TEST CODE
-	PA0 HIGH when 1200 Hz +/- 500 Hz
-	PA1 HIGH when 2200 Hz +/- 500 Hz
-	ELSE LOW.
 
 	14745600/8 = 1843200 Hz = 0.000000542534722 seconds per tick
 	1/1200 = 0.000833333333 seconds per tick
@@ -132,14 +125,13 @@ ISR(TIMER1_CAPT_vect) {
 
 	*/
 	if (period >= 1187 && period < 1885) {
-		PORTA |= (1<<PA0); /* 1200 Hz +/- 500 Hz */
-		PORTA &= ~(1<<PA1);
+		/* 1200 Hz +/- 500 Hz */
+		/* empty */;
 	} else if (period > 489 && period < 1187) {
-		PORTA |= (1<<PA1); /* 2200 Hz +/- 500 Hz */
-		PORTA &= ~(1<<PA0);
+		/* 2200 Hz +/- 500 Hz */
+		/* empty */;
 	} else {
-		PORTA &= ~(1<<PA0);
-		PORTA &= ~(1<<PA1);
+		/* empty */;
 	}
 }
 
@@ -155,12 +147,12 @@ ISR(TIMER2_COMPA_vect) {
 	volatile static unsigned char sinewave_index = 0;
 
 	/*
-	 * output sinewave to PORTB.
+	 * output sinewave to PORTA.
 	 * PORTB is to be connected to an external R-2R ladder.
 	 * The ladder output should be attenuated to 1Vpp and
 	 * AC coupled to create line level audio.
 	 */
-	PORTB = sinewave[sinewave_index++];
+	PORTA = sinewave[sinewave_index++];
 
 	/* keep sinewave_index in the range 0-15 */
 	sinewave_index &= 0x0f;
