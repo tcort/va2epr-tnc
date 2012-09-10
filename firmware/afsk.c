@@ -49,6 +49,14 @@ unsigned char sinewave[16] = {
 	127,  78,  37,   9,   0,   9,  37,  78
 };
 
+/*
+ * Set this flag when a carrier (1200 Hz or 2200 Hz tone) is detected.
+ * Remove it when there is no carrier. This is used for P-persistent
+ * Carrier Sense Multiple Access (CSMA).
+ */
+/* TODO set/unset this flag in the tx/rx code */
+unsigned int carrier_sense = 0;
+
 /* timer1 input capture housekeeping */
 /* TODO choose better names */
 unsigned int last = 0;
@@ -77,8 +85,6 @@ void afsk_init(void) {
 	TCCR2A = 0x00; /* Normal Mode */
 	TCCR1B |= ((1<<ICNC1)|(1<<ICES1)|(1<<CS11)); /* noise canceler, rising edge, pre-scalar = 8 */
 	TIMSK1 |= ((1<<ICIE1)|(1<<TOIE1)); /* enable overflow and input capture interrupts */
-
-	// ACSR &= ~(1<<ACIC); ??
 
 	/* TEST CODE */
 	DDRA |= 0xff; /* output */
@@ -126,10 +132,10 @@ ISR(TIMER1_CAPT_vect) {
 
 	*/
 	if (period >= 1187 && period < 1885) {
-		PORTA |= (1<<PA0); // 1200 Hz +/- 500 Hz
+		PORTA |= (1<<PA0); /* 1200 Hz +/- 500 Hz */
 		PORTA &= ~(1<<PA1);
 	} else if (period > 489 && period < 1187) {
-		PORTA |= (1<<PA1); // 2200 Hz +/- 500 Hz
+		PORTA |= (1<<PA1); /* 2200 Hz +/- 500 Hz */
 		PORTA &= ~(1<<PA0);
 	} else {
 		PORTA &= ~(1<<PA0);
