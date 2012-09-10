@@ -1,4 +1,4 @@
-# Writing all output to: H:\VA2EPR-TNC\VA2EPR-TNC.log
+# Writing all output to: E:\va2epr-tnc\hardware\VA2EPR-TNC.log
 set pad_wire_necking on
 bus diagonal
 fanout 5
