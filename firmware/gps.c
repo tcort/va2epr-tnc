@@ -13,6 +13,14 @@
  * GGA, GSV, GSA, and RMC sentences in NMEA mode.
  *
  * Coordinates use the WGS 84 DATUM
+ *
+ * Ports and Peripherals Used
+ * --------------------------
+ *
+ * USART1 (Connected to the GPS)
+ *
+ * PD2 (RXD)
+ * PD3 (TXD)
  */
 
 #include "gps.h"
@@ -24,7 +32,7 @@ void gps_init(void) {
 }
 
 /*
- * Things to be determine...
+ * Things to be determined...
  *
  * Do we have enough processing power to continuously parse
  * the gps module's output? If so, we can keep track of

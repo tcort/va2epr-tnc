@@ -10,12 +10,12 @@
  * a given tolerance. Can output waveforms at 1200 Hz and 2200 Hz. This is
  * enough to show that the circuits used in the schematic are viable.
  *
- * The code needs to be enhanced to capture incoming data and put it in a buffer.
+ * The code needs to be enhanced to capture incoming data.
  * The code needs to be enhanced to output data from a buffer. This can probably be
  * done by using Timer 0 or Timer 3 to periodically sample data or periodically
  * change OCR2A to TONE_1200HZ or TONE_2200HZ. Also, the code needs to disable
- * timer 1 when in TX mode and disable timer 2 when in RX mode.
- *
+ * timer 1 when in TX mode and disable timer 2 when in RX mode. When in TX mode,
+ * consider using a watchdog timer to help prevent getting stuck in TX mode.
  *
  * Ports and Peripherals Used
  * --------------------------
