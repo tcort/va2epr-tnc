@@ -18,8 +18,8 @@ AVRDUDE=avrdude
 $(TARGET).hex: $(TARGET).obj
 	$(OBJ2HEX) -R .eeprom -O ihex $(TARGET).obj $(TARGET).hex
 
-$(TARGET).obj: afsk.o gps.o kiss.o main.o
-	$(CC) $(CFLAGS) afsk.o gps.o kiss.o main.o -o $(TARGET).obj
+$(TARGET).obj: afsk.o gps.o kiss.o main.o sram.o
+	$(CC) $(CFLAGS) afsk.o gps.o kiss.o main.o sram.o -o $(TARGET).obj
 
 afsk.o: afsk.c afsk.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
@@ -32,6 +32,9 @@ kiss.o: kiss.c kiss.h
 
 main.o: main.c
 	$(CC) $(CFLAGS) main.c -c -o main.o
+
+sram.o: sram.c sram.h
+	$(CC) $(CFLAGS) sram.c -c -o sram.o
 
 upload: $(TARGET).hex
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U flash:w:$(TARGET).hex 
