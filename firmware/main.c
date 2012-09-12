@@ -9,19 +9,20 @@
 #include "afsk.h"
 #include "gps.h"
 #include "kiss.h"
-#include "sram.h"
 
-/* TEST CODE */
 int main(void) {
 
 	volatile int i = 0;
 
 	afsk_init();
-	gps_init();
-	kiss_init();
-	sram_init();
+
+	/* Untested code, uncomment as you test */
+	/* gps_init(); */
+	/* kiss_init(); */
+
 	sei();
 
+	/* TODO test code remove me */
 	OCR2A = 95; /* 1200 Hz */
 
 	/* TODO put in receive mode -- rx(); */

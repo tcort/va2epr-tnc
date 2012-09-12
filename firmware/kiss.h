@@ -1,8 +1,12 @@
 #ifndef __KISS_H
 #define __KISS_H
 
-#define TX_BUFFER_SIZE (16384)
-#define RX_BUFFER_SIZE (16384)
+/*
+ * Baud Rate
+ */
+
+#define KISS_BAUDRATE 9600
+#define KISS_UBRR_VAL (((F_CPU / (KISS_BAUDRATE * 16UL))) - 1)
 
 /*
  * Special KISS Bytes
@@ -20,6 +24,12 @@
 /* Transposed Frame Escape */
 #define KISS_TFESC (0xdd)
 
+/*
+ * Prototypes
+ */
+
 void kiss_init(void);
+inline unsigned char kiss_rx_buffer_empty(void);
+unsigned char kiss_rx_buffer_dequeue(void);
 
 #endif

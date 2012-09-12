@@ -23,12 +23,21 @@
  * PD3 (TXD)
  */
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include "gps.h"
 
+/*
+ * Initialize the GPS interface
+ */
 void gps_init(void) {
 
-	/* TODO setup USART1 */
-	/* detect if GPS module is installed */
+	UBRR1H = (GPS_UBRR_VAL >> 8);
+	UBRR1L = (GPS_UBRR_VAL & 0xFF);
+
+	UCSR1B |= (1 << RXEN1) | (1 << TXEN1);
+	UCSR1C |= (1 << UCSZ10) | (1 << UCSZ11);
 }
 
 /*

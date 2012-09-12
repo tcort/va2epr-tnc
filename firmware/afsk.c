@@ -1,6 +1,3 @@
-#include <avr/interrupt.h>
-#include <avr/io.h>
-
 /*
  * This file implements 1200 baud AFSK NRZI with 1200 Hz and 2200 Hz tones.
  *
@@ -28,6 +25,8 @@
  * PD7 (Push to Talk Output)
  */
 
+#include <avr/interrupt.h>
+#include <avr/io.h>
 
 /*
  * For a 16 sample 2200 Hz tone, we need to change the output 35200
