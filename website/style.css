@@ -48,6 +48,10 @@ p {
         text-align: center;
 }
 
+.indent {
+	padding-left: 4em;
+}
+
 a:link {
         text-decoration: none;
 }
