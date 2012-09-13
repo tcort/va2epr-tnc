@@ -29,10 +29,10 @@
 #include <avr/io.h>
 
 /*
- * For a 16 sample 2200 Hz tone, we need to change the output 35200
+ * For a 16 sample 2200 Hz tone, I need to change the output 35200
  * (i.e. 2200 * 16) times per second. For a 16 sample 1200 Hz tone,
- * we need to change the output 19200 (i.e. 1200 * 16) times per second.
- * Using a prescalar of 4, we should set TCNT2 to the following values
+ * I need to change the output 19200 (i.e. 1200 * 16) times per second.
+ * Using a pre-scalar of 4, I should set TCNT2 to the following values
  * via the 'tone' variable:
  *
  *   For 1200 Hz, 14745600/8/19200 - 1 = 95				Exactly 1200 Hz
@@ -57,13 +57,14 @@ unsigned char sinewave[16] = {
 unsigned int carrier_sense = 0;
 
 /* timer1 input capture housekeeping */
-/* TODO choose better names */
-unsigned int last = 0;
-unsigned int overflows = 0;
-unsigned int period = 0;
+unsigned int capture_last_time = 0;
+unsigned int capture_overflows = 0;
 
 /* setup ports and timers */
 void afsk_init(void) {
+
+	/* -- Output DAC (TX) -- */
+	/* do all setup except enabling the compare match interrupt (done in tx()) */
 
 	/* AFSK DAC is on PORTA */
 	DDRA |= 0xFF; /* AFSK output */
@@ -74,16 +75,20 @@ void afsk_init(void) {
 	TCCR2B |= (1<<CS21); /* pre-scalar = 8 */
 	TCNT2 = 0x00; /* initialize counter to 0 */
 	OCR2A = 0xff; /* set with some default value */
-	TIMSK2 |= (1<<OCIE2A); /* enable compare match interrupt */
 
+	/* -- Input Capture (RX) -- */
+	/* do all setup except enabling of overflow and input capture interrupts (done in rx()) */
+	
 	/* Input Capture on PD6 */
 	DDRD &= ~(1<<PD6); /* ICP as Input */
 	PORTD |= (1<<PD6); /* enable pull-up on ICP1 */
 
 	/* Timer 1 ICP */
-	TCCR2A = 0x00; /* Normal Mode */
+	TCCR1A = 0x00; /* Normal Mode */
 	TCCR1B |= ((1<<ICNC1)|(1<<ICES1)|(1<<CS11)); /* noise canceler, rising edge, pre-scalar = 8 */
-	TIMSK1 |= ((1<<ICIE1)|(1<<TOIE1)); /* enable overflow and input capture interrupts */
+	
+	/* -- Push to Talk -- */
+	/* setup DDR and turn PTT OFF */
 
 	/* Push to Talk line on PD7 */
 	DDRD |= (1<<PD7); /* Push To Talk line */
@@ -91,27 +96,39 @@ void afsk_init(void) {
 
 }
 
+/*
+ * Disable input capture, enable output DAC and Push-to-Talk line
+ */
 void tx(void) {
+	
+	TIMSK1 &= ~((1<<ICIE1)|(1<<TOIE1)); /* disable overflow and input capture interrupts */
 
 	PORTD |= (1<<PD7); /* PTT ON */
-	/* TODO: disable timer1 */
-	/* TODO: enable timer2 */
+	/* TODO do I want a delay here? */
+	TIMSK2 |= (1<<OCIE2A); /* enable compare match interrupt */
 }
 
+/*
+ * Disable 
+ */
 void rx(void) {
 
-	/* TODO: enable timer1 */
-	/* TODO: disable timer2 */
+	TIMSK2 &= ~(1<<OCIE2A); /* disable compare match interrupt */
+	/* TODO do I want a delay here? */
 	PORTD &= ~(1<<PD7); /* PTT OFF */
+	
+	TIMSK1 |= ((1<<ICIE1)|(1<<TOIE1)); /* enable overflow and input capture interrupts */
 }
 
 /* capture the period of an input waveform */
 ISR(TIMER1_CAPT_vect) {
 
-	/* computer period taking into account overflows */
-	period = ICR1 + (0xffff * overflows) - last;
-	last = ICR1; /* keep track of when the last period ended */
-	overflows = 0; /* reset overflow counter */
+	unsigned int capture_period = 0;
+
+	/* compute period taking into account overflows */
+	capture_period = ICR1 + (0xffff * capture_overflows) - capture_last_time;
+	capture_last_time = ICR1; /* keep track of when the last period ended */
+	capture_overflows = 0; /* reset the overflow counter */
 
 
 	/* TEST CODE
@@ -123,10 +140,10 @@ ISR(TIMER1_CAPT_vect) {
 	(1536-838)/2 = 349
 
 	*/
-	if (period >= 1187 && period < 1885) {
+	if (capture_period >= 1187 && capture_period < 1885) {
 		/* 1200 Hz +/- 500 Hz */
 		/* empty */;
-	} else if (period > 489 && period < 1187) {
+	} else if (capture_period > 489 && capture_period < 1187) {
 		/* 2200 Hz +/- 500 Hz */
 		/* empty */;
 	} else {
@@ -137,13 +154,13 @@ ISR(TIMER1_CAPT_vect) {
 /* keep track of timer 1 overflows */
 ISR(TIMER1_OVF_vect) {
 
-	overflows++;
+	capture_overflows++;
 }
 
 /* generate the output waveform */
 ISR(TIMER2_COMPA_vect) {
 
-	volatile static unsigned char sinewave_index = 0;
+	static unsigned char sinewave_index = 0;
 
 	/*
 	 * output sinewave to PORTA.

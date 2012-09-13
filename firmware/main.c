@@ -19,14 +19,10 @@ int main(void) {
 	/* Untested code, uncomment as you test */
 	/* gps_init(); */
 	/* kiss_init(); */
-
 	sei();
 
-	/* TODO test code remove me */
-	OCR2A = 95; /* 1200 Hz */
-
-	/* TODO put in receive mode -- rx(); */
-
+	rx();
+	
 	while (1) {
 
 		/*
@@ -36,8 +32,16 @@ int main(void) {
 		i++;
 
 		/* TODO -- something like this but full CSMA
-		 * if (!carrier_sense && tx_ready) { tx(); rx(); }
+		if (!carrier_sense && !kiss_rx_buffer_empty()) {
+			tx();
+			while (!kiss_rx_buffer_empty()) {
+				  ;
+			}
+			rx();
+		}
 		 */
+		
+		/* TODO when needed, refresh GPS data. */
 	}
 
 	return 0;

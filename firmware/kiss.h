@@ -25,11 +25,28 @@
 #define KISS_TFESC (0xdd)
 
 /*
+ * KISS Commands
+ */
+
+#define KISS_CMD_DATA_FRAME 0x00
+#define KISS_CMD_TX_DELAY 0x01
+#define KISS_CMD_P 0x02
+#define KISS_CMD_SLOT_TIME 0x03
+#define KISS_CMD_TX_TAIL 0x04
+#define KISS_CMD_FULL_DUPLEX 0x05
+#define KISS_CMD_SET_HARDWARE 0x06
+#define KISS_CMD_RETURN 0xff
+
+/*
  * Prototypes
  */
 
 void kiss_init(void);
-inline unsigned char kiss_rx_buffer_empty(void);
+
+unsigned char kiss_rx_buffer_empty(void);
 unsigned char kiss_rx_buffer_dequeue(void);
+
+void kiss_tx(unsigned char c);
+void kiss_tx_raw(unsigned char c);
 
 #endif

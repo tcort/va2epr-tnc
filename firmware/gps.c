@@ -33,6 +33,7 @@
  */
 void gps_init(void) {
 
+	/* 4800 baud */
 	UBRR1H = (GPS_UBRR_VAL >> 8);
 	UBRR1L = (GPS_UBRR_VAL & 0xFF);
 
@@ -43,12 +44,7 @@ void gps_init(void) {
 /*
  * Things to be determined...
  *
- * Do we have enough processing power to continuously parse
- * the gps module's output? If so, we can keep track of
- * position information in real time and have the data
- * available immediately when it is needed for APRS beacons.
- * Additionally, continuous parsing could be used to create
- * an alarm system (at a specific time, do something).
+ * In main
  *
  * What data is needed for APRS? i.e. can some sentences be
  * completely ignored.
