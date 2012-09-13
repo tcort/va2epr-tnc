@@ -6,16 +6,16 @@
  (resolution mm 100000)
  (unit mm)
  (structure
-  (boundary (rect pcb -0.10160 -0.10160 193.67000 100.22160))
+  (boundary (rect pcb -0.10160 -15.24000 107.95000 100.19160))
   (boundary (path signal 0.20320 0.00000 0.00000 99.96000 0.00000 99.96000 100.09000
    0.00000 100.09000 0.00000 0.00000))
   (keepout
-   (path signal 0.20320 72.72020 94.05620 78.56220 94.05620 78.56220 99.94900 72.72020 99.94900
-    72.72020 94.05620)
+   (path signal 0.20320 82.55920 93.81900 88.40120 93.81900 88.40120 99.71180 82.55920 99.71180
+    82.55920 93.81900)
   )
   (keepout
-   (path signal 0.20320 73.78700 92.37980 77.54620 92.37980 77.54620 94.05620 73.78700 94.05620
-    73.78700 92.37980)
+   (path signal 0.20320 83.62600 92.14260 87.38520 92.14260 87.38520 93.81900 83.62600 93.81900
+    83.62600 92.14260)
   )
   (flip_style mirror_first)
   (layer TOP (type signal) (direction horizontal))
@@ -74,22 +74,22 @@
   (component 1206_R19 (place R19 5.08000 27.94000 front 0))
   (component 1206_R20 (place R20 5.08000 20.32000 front 0))
   (component 1206_R21 (place R21 5.08000 12.70000 front 0))
-  (component 1206_R22 (place R22 5.08000 5.08000 front 0))
+  (component 1206_R22 (place R22 10.16000 7.62000 front 0))
   (component "TQFP44-12X12MM_U2" (place U2 25.40000 50.80000 front 0))
-  (component "CP-037A-ND_J1" (place J1 33.08000 86.00000 front 0))
-  (component SMB_D1 (place D1 26.06040 76.20000 front 0))
-  (component DPAK_U1 (place U1 29.76880 68.58000 front -270))
-  (component 1206_C1 (place C1 10.16000 66.04000 front 0))
+  (component "CP-037A-ND_J1" (place J1 43.18000 85.44000 front 0))
+  (component SMB_D1 (place D1 12.70000 68.58000 front -90))
+  (component DPAK_U1 (place U1 29.76880 66.04000 front -270))
+  (component 1206_C1 (place C1 35.56000 64.10960 front -90))
   (component 1206_C2 (place C2 35.56000 71.12000 front -90))
-  (component DIN5_J2 (place J2 55.62000 92.50000 front 0))
+  (component DIN5_J2 (place J2 63.62000 91.28000 front 0))
   (component 1206_R3 (place R3 30.48000 35.56000 front 270))
   (component "SOT23-3_Q1" (place Q1 33.02000 25.40000 front 270))
   (component SSOP28_U3 (place U3 53.34000 63.50000 front 0))
   (component 0805_C7 (place C7 68.58000 58.42000 front 90))
-  (component 1206_C8 (place C8 45.72000 61.56960 front -90))
-  (component 1206_R23 (place R23 12.70000 5.08000 front 0))
-  (component 1206_R24 (place R24 20.32000 5.08000 front 0))
-  (component 1206_R25 (place R25 27.94000 5.08000 front 0))
+  (component 1206_C8 (place C8 45.72000 64.10960 front -90))
+  (component 1206_R23 (place R23 17.78000 7.62000 front 0))
+  (component 1206_R24 (place R24 25.40000 7.62000 front 0))
+  (component 1206_R25 (place R25 33.02000 7.62000 front 0))
   (component SO16_U4 (place U4 22.92350 20.95500 front 0))
   (component 0805_C11 (place C11 20.32000 12.70000 front 0))
   (component 0805_C14 (place C14 20.32000 27.94000 front 0))
@@ -104,22 +104,20 @@
   (component 0805_C12 (place C12 60.96000 48.26000 front 0))
   (component 0805_C13 (place C13 53.34000 66.04000 front 0))
   (component 0805_C15 (place C15 25.40000 55.88000 front 0))
-  (component 1206_R1 (place R1 17.78000 45.72000 front -270))
+  (component 1206_R1 (place R1 20.32000 45.72000 front -270))
   (component 0805_C4 (place C4 20.32000 33.02000 front 0))
   (component 0805_C5 (place C5 20.32000 38.10000 front 0))
   (component 0805_C6 (place C6 68.58000 53.34000 front -270))
-  (component XTAL18_XTAL1 (place XTAL1 12.70000 38.10000 front -90))
-  (component "EG4313-ND_SW1" (place SW1 17.27900 82.30000 front 0))
-  (component "CONN-DIL10_JTAG" (place JTAG 50.80000 12.70000 front 0))
+  (component HC49/US_XTAL1 (place XTAL1 15.24000 38.10000 front -90))
+  (component "EG4313-ND_SW1" (place SW1 22.09800 81.28000 front 0))
+  (component "CONN-DIL10_JTAG" (place JTAG 45.72000 7.62000 front 0))
   (component "CONN-SIL4_GPS" (place GPS 84.55660 76.32700 front 0))
-  (component TP_TP1 (place TP1 5.08000 71.12000 front 0))
-  (component TP_TP2 (place TP2 10.16000 71.12000 front 0))
-  (component TP_TP3 (place TP3 17.78000 60.96000 front 0))
-  (component TP_TP4 (place TP4 25.40000 60.96000 front 0))
-  (component TP_TP5 (place TP5 33.02000 60.96000 front 0))
-  (component "SOIC127P600X175-8_U6" (place U6 33.02000 13.97000 front 0))
-  (component 0805_C16 (place C16 33.02000 17.78000 front 0))
-  (component "UX60-MB-5ST_J3" (place J3 77.24100 91.42720 front -180))
+  (component TP_TP1 (place TP1 35.56000 17.78000 front 0))
+  (component TP_TP2 (place TP2 43.18000 17.78000 front 0))
+  (component TP_TP3 (place TP3 50.80000 17.78000 front 0))
+  (component TP_TP4 (place TP4 58.42000 17.78000 front 0))
+  (component TP_TP5 (place TP5 66.04000 17.78000 front 0))
+  (component "UX60-MB-5ST_J3" (place J3 87.08000 91.19000 front -180))
  )
  (library
   (image 1206_R7 (side front)
@@ -472,10 +470,10 @@
    (pin PS10 (rotate 0) 0 0.00000 0.00000)
    (pin PS10 (rotate 0) 1 2.13360 0.00000)
   )
-  (image XTAL18_XTAL1 (side front)
-   (outline (rect TOP -2.64160 -2.64160 7.72160 2.64160))
-   (pin PS12 (rotate 0) 0 0.00000 0.00000)
-   (pin PS12 (rotate 0) 1 5.08000 0.00000)
+  (image HC49/US_XTAL1 (side front)
+   (outline (rect TOP -18.25160 -2.44160 3.35160 2.44160))
+   (pin PS12 (rotate 0) 0 -14.88000 0.00000)
+   (pin PS12 (rotate 0) 1 0.00000 0.00000)
   )
   (image "EG4313-ND_SW1" (side front)
    (outline (rect TOP -14.96060 -5.18160 5.56260 17.88160))
@@ -525,35 +523,19 @@
    (outline (rect TOP -1.58750 -1.58750 1.58750 1.58750))
    (pin PS13 (rotate 0) 0 0.00000 0.00000)
   )
-  (image "SOIC127P600X175-8_U6" (side front)
-   (outline (rect TOP -1.07500 -3.41000 6.47500 2.36500))
-   (pin PS15 (rotate 90) 0 0.00000 1.27000)
-   (pin PS15 (rotate 90) 1 0.00000 0.00000)
-   (pin PS15 (rotate 90) 2 0.00000 -1.27000)
-   (pin PS15 (rotate 90) 3 0.00000 -2.54000)
-   (pin PS15 (rotate 90) 4 5.40000 -2.54000)
-   (pin PS15 (rotate 90) 5 5.40000 -1.27000)
-   (pin PS15 (rotate 90) 6 5.40000 0.00000)
-   (pin PS15 (rotate 90) 7 5.40000 1.27000)
-  )
-  (image 0805_C16 (side front)
-   (outline (rect TOP -0.50800 -0.73660 2.64160 0.68580))
-   (pin PS10 (rotate 0) 0 0.00000 0.00000)
-   (pin PS10 (rotate 0) 1 2.13360 0.00000)
-  )
   (image "UX60-MB-5ST_J3" (side front)
    (outline (rect TOP -4.10160 -8.75160 7.30160 1.45160))
-   (pin PS16 (rotate 0) 0 0.00000 0.00000)
-   (pin PS16 (rotate 0) 1 0.80000 0.00000)
-   (pin PS16 (rotate 0) 2 1.60000 0.00000)
-   (pin PS16 (rotate 0) 3 2.40000 0.00000)
-   (pin PS16 (rotate 0) 4 3.20000 0.00000)
-   (pin PS17 (rotate 0) 5 -0.25000 -2.65000)
-   (pin PS17 (rotate 0) 6 3.45000 -2.65000)
-   (pin PS18 (rotate 0) 7 -2.60000 -0.25000)
-   (pin PS18 (rotate 0) 8 -2.60000 -5.55000)
-   (pin PS18 (rotate 0) 9 5.80000 -5.55000)
-   (pin PS18 (rotate 0) 10 5.80000 -0.25000)
+   (pin PS15 (rotate 0) 0 0.00000 0.00000)
+   (pin PS15 (rotate 0) 1 0.80000 0.00000)
+   (pin PS15 (rotate 0) 2 1.60000 0.00000)
+   (pin PS15 (rotate 0) 3 2.40000 0.00000)
+   (pin PS15 (rotate 0) 4 3.20000 0.00000)
+   (pin PS16 (rotate 0) 5 -0.25000 -2.65000)
+   (pin PS16 (rotate 0) 6 3.45000 -2.65000)
+   (pin PS17 (rotate 0) 7 -2.60000 -0.25000)
+   (pin PS17 (rotate 0) 8 -2.60000 -5.55000)
+   (pin PS17 (rotate 0) 9 5.80000 -5.55000)
+   (pin PS17 (rotate 0) 10 5.80000 -0.25000)
   )
   (padstack PS0 (absolute on) (shape (rect TOP -0.50800 -0.76200 0.50800 0.76200)))
   (padstack PS1 (absolute on) (shape (rect TOP -0.25400 -0.88900 0.25400 0.88900)))
@@ -619,22 +601,22 @@
   (padstack PS10 (absolute on) (shape (rect TOP -0.50800 -0.63500 0.50800 0.63500)))
   (padstack PS11 (absolute on) (shape (rect TOP -0.31750 -1.01600 0.31750 1.01600)))
   (padstack PS12 (absolute on)
-   (shape (circle TOP 2.03200 0 0))
-   (shape (circle I1 2.03200 0 0))
-   (shape (circle I2 2.03200 0 0))
-   (shape (circle I3 2.03200 0 0))
-   (shape (circle I4 2.03200 0 0))
-   (shape (circle I5 2.03200 0 0))
-   (shape (circle I6 2.03200 0 0))
-   (shape (circle I7 2.03200 0 0))
-   (shape (circle I8 2.03200 0 0))
-   (shape (circle I9 2.03200 0 0))
-   (shape (circle I10 2.03200 0 0))
-   (shape (circle I11 2.03200 0 0))
-   (shape (circle I12 2.03200 0 0))
-   (shape (circle I13 2.03200 0 0))
-   (shape (circle I14 2.03200 0 0))
-   (shape (circle BOT 2.03200 0 0))
+   (shape (circle TOP 1.00000 0 0))
+   (shape (circle I1 1.00000 0 0))
+   (shape (circle I2 1.00000 0 0))
+   (shape (circle I3 1.00000 0 0))
+   (shape (circle I4 1.00000 0 0))
+   (shape (circle I5 1.00000 0 0))
+   (shape (circle I6 1.00000 0 0))
+   (shape (circle I7 1.00000 0 0))
+   (shape (circle I8 1.00000 0 0))
+   (shape (circle I9 1.00000 0 0))
+   (shape (circle I10 1.00000 0 0))
+   (shape (circle I11 1.00000 0 0))
+   (shape (circle I12 1.00000 0 0))
+   (shape (circle I13 1.00000 0 0))
+   (shape (circle I14 1.00000 0 0))
+   (shape (circle BOT 1.00000 0 0))
   )
   (padstack PS13 (absolute on)
    (shape (circle TOP 3.17500 0 0))
@@ -672,9 +654,8 @@
    (shape (rect I14 -1.01600 -1.01600 1.01600 1.01600))
    (shape (rect BOT -1.01600 -1.01600 1.01600 1.01600))
   )
-  (padstack PS15 (absolute on) (shape (rect TOP -0.30480 -0.77470 0.30480 0.77470)))
-  (padstack PS16 (absolute on) (shape (rect TOP -0.25000 -1.00000 0.25000 1.00000)))
-  (padstack PS17 (absolute on)
+  (padstack PS15 (absolute on) (shape (rect TOP -0.25000 -1.00000 0.25000 1.00000)))
+  (padstack PS16 (absolute on)
    (shape (circle TOP 1.00000 0 0))
    (shape (circle I1 1.00000 0 0))
    (shape (circle I2 1.00000 0 0))
@@ -692,7 +673,7 @@
    (shape (circle I14 1.00000 0 0))
    (shape (circle BOT 1.00000 0 0))
   )
-  (padstack PS18 (absolute on) (shape (rect TOP -1.25000 -1.10000 1.25000 1.10000)))
+  (padstack PS17 (absolute on) (shape (rect TOP -1.25000 -1.10000 1.25000 1.10000)))
   (padstack $VIA_POWER (absolute on)
    (shape (circle TOP 0.76200 0 0))
    (shape (circle I1 0.76200 0 0))
@@ -906,34 +887,6 @@
    )
    (pins U2-20 JTAG-0)
   )
-  (net "#00080"
-   (circuit
-    (use_layer TOP BOT)
-    (use_via $VIA_SIGNAL)
-   )
-   (pins U2-1 U6-1)
-  )
-  (net "#00081"
-   (circuit
-    (use_layer TOP BOT)
-    (use_via $VIA_SIGNAL)
-   )
-   (pins U2-0 U6-4)
-  )
-  (net "#00082"
-   (circuit
-    (use_layer TOP BOT)
-    (use_via $VIA_SIGNAL)
-   )
-   (pins U2-43 U6-0)
-  )
-  (net "#00087"
-   (circuit
-    (use_layer TOP BOT)
-    (use_via $VIA_SIGNAL)
-   )
-   (pins U2-2 U6-5)
-  )
   (net "#00096"
    (circuit
     (use_layer TOP BOT)
@@ -955,28 +908,28 @@
    )
    (pins U2-6 C4-0 XTAL1-1)
   )
-  (net "#00121"
+  (net "#00118"
    (circuit
     (use_layer TOP BOT)
     (use_via $VIA_SIGNAL)
    )
    (pins U3-3 U3-19 C7-0 C8-0 J3-0)
   )
-  (net "#00122"
+  (net "#00119"
    (circuit
     (use_layer TOP BOT)
     (use_via $VIA_SIGNAL)
    )
    (pins U3-14 J3-2)
   )
-  (net "#00123"
+  (net "#00120"
    (circuit
     (use_layer TOP BOT)
     (use_via $VIA_SIGNAL)
    )
    (pins U3-15 J3-1)
   )
-  (net "#00130"
+  (net "#00127"
    (circuit
     (use_layer TOP BOT)
     (use_via $VIA_SIGNAL)
@@ -1046,7 +999,7 @@
    )
     (pins R7-1 U2-5 U2-17 U2-27 U2-38 J1-1 U1-1 C1-1 C2-1 J2-1 Q1-2 U3-6 U3-17 U3-20 U3-24
      U3-25 C7-1 C8-1 R25-1 U4-3 C11-1 R4-1 C9-1 U5-3 C12-1 C13-1 C15-1 C4-1 C5-1 C6-1
-    JTAG-5 JTAG-9 GPS-3 TP1-0 U6-3 C16-1 J3-4)
+    JTAG-5 JTAG-9 GPS-3 TP1-0 J3-4)
   )
   (net "GPS_RXD"
    (circuit
@@ -1096,7 +1049,7 @@
     (use_via $VIA_POWER)
    )
     (pins U2-4 U2-16 U2-26 U2-28 U2-37 U1-2 C2-0 U4-6 C11-0 R2-0 U5-6 C12-0 C13-0 C15-0
-    R1-0 JTAG-8 GPS-0 TP2-0 U6-6 U6-7 C16-0)
+    R1-0 JTAG-8 GPS-0 TP2-0)
   )
   (class POWER
    "GND"
@@ -1139,17 +1092,13 @@
    "#00065"
    "#00066"
    "#00067"
-   "#00080"
-   "#00081"
-   "#00082"
-   "#00087"
    "#00096"
    "#00097"
    "#00098"
-   "#00121"
-   "#00122"
-   "#00123"
-   "#00130"
+   "#00118"
+   "#00119"
+   "#00120"
+   "#00127"
    "DAC0"
    "DAC1"
    "DAC2"
