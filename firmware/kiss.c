@@ -15,6 +15,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include "afsk.h"
+#include "ax25.h"
+#include "conf.h"
 #include "kiss.h"
 
 /*
@@ -89,7 +92,7 @@ unsigned char kiss_rx_buffer_dequeue(void) {
 		 * can be sent between frames. If I'm out of data in the buffer,
 		 * I am likely between AX.25 frames as well.
 		 */
-		return 0x7e;
+		return AX25_FLAG;
 	}
 
 	/* Dequeue a byte from the circular buffer */
@@ -219,7 +222,50 @@ ISR(USART0_RX_vect) {
 		
 	} else if (val_follows) {
 		
-		/* TODO check the value of val_follows to see which setting needs to change */
+		/*
+		 * Set the value in global config. All values are unsigned integers, so I
+		 * store them directly. Pretty much every value could be valid, so I don't
+		 * do any input validation.
+		 */
+		switch (val_follows) {
+			
+			case KISS_CMD_TX_DELAY:
+				config.tx_delay = c;
+				
+			case KISS_CMD_P:
+				config.p = c;
+			
+			case KISS_CMD_SLOT_TIME:
+				config.slot_time = c;
+				
+			case KISS_CMD_TX_TAIL:
+				/*
+				 * This is an obsolete option. The value isn't used in this TNC.
+				 */
+				config.tx_tail = c;
+				
+			case KISS_CMD_FULL_DUPLEX:
+				/*
+				 * I implement this configuration option but ignore the value.
+				 * The TNC only supports half duplex.
+				 */
+				config.full_duplex = c;
+				
+			case KISS_CMD_SET_HARDWARE:
+				/* this command has no meaning for this TNC */
+				break;
+				
+			case KISS_CMD_RETURN:
+				/* only KISS mode is supported right now. ignore this command. */
+				break;
+			
+			default:
+				/* ignore invalid commands */
+				break;
+		}
+		
+		config_write();
+
 		/* get the parameter from 'c' and put it in the right configuration variable */
 		
 		val_follows = 0;

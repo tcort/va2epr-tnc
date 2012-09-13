@@ -19,21 +19,24 @@ $(TARGET).hex: $(TARGET).obj
 	$(OBJ2HEX) -R .eeprom -O ihex $(TARGET).obj $(TARGET).hex
 
 $(TARGET).obj: afsk.o conf.o gps.o kiss.o main.o
-	$(CC) $(CFLAGS) afsk.o conf.o gps.o kiss.o main.o -o $(TARGET).obj
+	$(CC) $(CFLAGS) afsk.o conf.o csma.o gps.o kiss.o main.o -o $(TARGET).obj
 
-afsk.o: afsk.c afsk.h
+afsk.o: afsk.c afsk.h csma.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
 
 conf.o: conf.c conf.h
 	$(CC) $(CFLAGS) conf.c -c -o conf.o
 
+csma.o: csma.c csma.h conf.h
+	$(CC) $(CFLAGS) csma.c -c -o csma.o
+
 gps.o: gps.c gps.h
 	$(CC) $(CFLAGS) gps.c -c -o gps.o
 
-kiss.o: kiss.c kiss.h
+kiss.o: kiss.c kiss.h afsk.h ax25.h conf.h
 	$(CC) $(CFLAGS) kiss.c -c -o kiss.o
 
-main.o: main.c
+main.o: main.c afsk.h conf.h csma.h gps.h kiss.h
 	$(CC) $(CFLAGS) main.c -c -o main.o
 
 upload: $(TARGET).hex

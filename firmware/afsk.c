@@ -28,6 +28,9 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
+#include "afsk.h"
+#include "csma.h"
+
 /*
  * For a 16 sample 2200 Hz tone, I need to change the output 35200
  * (i.e. 2200 * 16) times per second. For a 16 sample 1200 Hz tone,
@@ -47,14 +50,6 @@ unsigned char sinewave[16] = {
 	127, 176, 217, 245, 255, 245, 217, 176,
 	127,  78,  37,   9,   0,   9,  37,  78
 };
-
-/*
- * Set this flag when a carrier (1200 Hz or 2200 Hz tone) is detected.
- * Remove it when there is no carrier. This is used for P-persistent
- * Carrier Sense Multiple Access (CSMA).
- */
-/* TODO set/unset this flag in the tx/rx code */
-unsigned int carrier_sense = 0;
 
 /* timer1 input capture housekeeping */
 unsigned int capture_last_time = 0;
@@ -141,13 +136,17 @@ ISR(TIMER1_CAPT_vect) {
 
 	*/
 	if (capture_period >= 1187 && capture_period < 1885) {
-		/* 1200 Hz +/- 500 Hz */
-		/* empty */;
+
+		/* 1200 Hz +/- 500 Hz Carrier Present */
+		carrier_sense = TONE_1200HZ;
 	} else if (capture_period > 489 && capture_period < 1187) {
-		/* 2200 Hz +/- 500 Hz */
-		/* empty */;
+		
+		/* 2200 Hz +/- 500 Hz Carrier Present */
+		carrier_sense = TONE_2200HZ;
 	} else {
-		/* empty */;
+		
+		/* No Carrier Present */
+		carrier_sense = 0;
 	}
 }
 
@@ -155,6 +154,15 @@ ISR(TIMER1_CAPT_vect) {
 ISR(TIMER1_OVF_vect) {
 
 	capture_overflows++;
+	
+	/*
+	 * if the timer has overflow twice, the count since the
+	 * last zero crossing is at least 64k which is more than 32
+	 * times the upper threshold.
+	 */
+	if (capture_overflows > 1) {
+		carrier_sense = 0;
+	}
 }
 
 /* generate the output waveform */
