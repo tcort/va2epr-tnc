@@ -11,14 +11,14 @@ DEVICE=/dev/ttyUSB0
 
 # Compiler and Uploader options
 CC=avr-gcc
-CFLAGS=-Os -ansi -pedantic -Wall -Werror -mcall-prologues -mmcu=$(MCU) -DF_CPU=$(F_CPU) 
+CFLAGS=-Os -pedantic -Wall -Werror -mcall-prologues -mmcu=$(MCU) -DF_CPU=$(F_CPU) 
 OBJ2HEX=avr-objcopy
 AVRDUDE=avrdude
 
 $(TARGET).hex: $(TARGET).obj
 	$(OBJ2HEX) -R .eeprom -O ihex $(TARGET).obj $(TARGET).hex
 
-$(TARGET).obj: afsk.o conf.o gps.o kiss.o main.o
+$(TARGET).obj: afsk.o conf.o csma.o gps.o kiss.o main.o
 	$(CC) $(CFLAGS) afsk.o conf.o csma.o gps.o kiss.o main.o -o $(TARGET).obj
 
 afsk.o: afsk.c afsk.h csma.h
