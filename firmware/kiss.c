@@ -56,8 +56,8 @@ void kiss_init(void) {
 	UBRR0L = (KISS_UBRR_VAL & 0xFF);
 
 	/* enable TX & RX as well as RX Interrupt */
-	UCSR0B |= ((1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0)); 
-	
+	UCSR0B |= ((1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0));
+
 	/* 8 data bits, no parity, 1 stop bit, no flow control */
 	UCSR0C |= ((1<<UCSZ00)|(1<<UCSZ01));
 }
@@ -109,11 +109,11 @@ unsigned char kiss_rx_buffer_dequeue(void) {
  * Use this function to send KISS_FEND. Use kiss_tx() for everything else.
  */
 void kiss_tx_raw(unsigned char c) {
-	
+
 	while ((UCSR0A & (1 << UDRE0)) == 0) {
 		/* wait for send buffer to be clear */;
 	}
-		
+
 	UDR0 = c;
 }
 
@@ -123,17 +123,17 @@ void kiss_tx_raw(unsigned char c) {
  * KISS_FEND.
  */
 void kiss_tx(unsigned char c) {
-	
+
 	/* check for special characters */
 	switch (c) {
-			
+
 		/* frame end */
 		case KISS_FEND:
 			/* send the escape character followed by a transposed frame end character */
 			kiss_tx_raw(KISS_FESC);
 			c = KISS_TFEND;
 			break;
-			
+
 		/* frame escape */
 		case KISS_FESC:
 			/* send the escape character followed by a transposed frame end character */
@@ -152,24 +152,24 @@ void kiss_tx(unsigned char c) {
 ISR(USART0_RX_vect) {
 
 	static unsigned char c = 0x00;
-	
+
 	/* persistent flags */
 	static unsigned char cmd_follows = 0;
 	static unsigned char val_follows = 0;
 	static unsigned char esc_follows = 0;
-	
+
 	/* Read from UART */
 	c = UDR0;
 
 	/* check for special characters */
 	switch (c) {
-		
+
 		/* frame end */
 		case KISS_FEND:
 			/* Frame Delimiter Found, next byte is either a frame delimiter or command */
 			cmd_follows = 1;
 			return;
-		
+
 		/* frame escape */
 		case KISS_FESC:
 			/* next byte will be and escaped character (either KISS_TFEND or KISS_TFESC) */
@@ -178,10 +178,10 @@ ISR(USART0_RX_vect) {
 	}
 
 	if (esc_follows) {
-		
+
 		/* 'c' was preceded by an escape character (KISS_FESC) */
 		switch (c) {
-			
+
 			/* transposed frame end */
 			case KISS_TFEND:
 				c = KISS_FEND;
@@ -192,16 +192,16 @@ ISR(USART0_RX_vect) {
 				c = KISS_FESC;
 				break;
 		}
-		
-		esc_follows = 0;		
+
+		esc_follows = 0;
 	}
-				
+
 	/*
 	 * if the last byte was a frame delimiter and this byte is not a frame delimiter,
 	 * then it is a command code
 	 */
 	if (cmd_follows) {
-		
+
 		/*
 		 * The first nibble is for the port number. I only have one port (port 0),
 		 * so I assume all frames are meant for port 0. That's why I am and-ing with 0x0f.
@@ -210,72 +210,72 @@ ISR(USART0_RX_vect) {
 		 * the next byte is a parameter.
 		 */
 		val_follows = (c & 0x0f);
-		
+
 		/* clear this flag */
 		cmd_follows = 0;
-		
+
 		/*
 		 * micro-optimization - this saves 1 jmp instruction
 		 * (jumping to the end of the if/else block).
 		 */
 		return;
-		
+
 	} else if (val_follows) {
-		
+
 		/*
 		 * Set the value in global config. All values are unsigned integers, so I
 		 * store them directly. Pretty much every value could be valid, so I don't
 		 * do any input validation.
 		 */
 		switch (val_follows) {
-			
+
 			case KISS_CMD_TX_DELAY:
 				config.tx_delay = c;
-				
+
 			case KISS_CMD_P:
 				config.p = c;
-			
+
 			case KISS_CMD_SLOT_TIME:
 				config.slot_time = c;
-				
+
 			case KISS_CMD_TX_TAIL:
 				/*
 				 * This is an obsolete option. The value isn't used in this TNC.
 				 */
 				config.tx_tail = c;
-				
+
 			case KISS_CMD_FULL_DUPLEX:
 				/*
 				 * I implement this configuration option but ignore the value.
 				 * The TNC only supports half duplex.
 				 */
 				config.full_duplex = c;
-				
+
 			case KISS_CMD_SET_HARDWARE:
 				/* this command has no meaning for this TNC */
 				break;
-				
+
 			case KISS_CMD_RETURN:
 				/* only KISS mode is supported right now. ignore this command. */
 				break;
-			
+
 			default:
 				/* ignore invalid commands */
 				break;
 		}
-		
+
 		config_write();
 
 		/* get the parameter from 'c' and put it in the right configuration variable */
-		
+
 		val_follows = 0;
-		
+
 		/*
 		 * micro-optimization - this saves 1 jmp instruction
 		 * (jumping to the end of the if/else block).
 		 */
 		return;
-		
+
 	} else {	/* If a character isn't a command nor parameter, add it to the buffer */
 
 		/* Insert byte into circular buffer */
@@ -285,11 +285,24 @@ ISR(USART0_RX_vect) {
 		kiss_rx_buffer_tail &= 0x1fff;
 
 		/*
-		 * Don't check if buffer overflows. There isn't really
-		 * anything I can do. In only the most extreme use cases will
-		 * the buffer become full. The default behavior when the
-		 * buffer becomes full will essentially clear
-		 * the buffer as tail becomes equal to head.
+		 * The tough part happens when the buffer gets full. Currently, I
+		 * don't check for buffer overflows. Only in the most extreme use
+		 * cases will the buffer become full. The default behavior when the
+		 * buffer becomes full will essentially clear the buffer as tail
+		 * becomes equal to head. This will either stop transmitting which
+		 * is polling the buffer size, or if data is coming in from the PC,
+		 * it will keep sending but it will have dropped 8k in the middle.
+		 *
+		 * The prescibed implementation is mentioned in the KISS specification.
+		 * Accordingly, I should drop the last frame (i.e. the one busting the buffer).
+		 * However, this will require a re-factoring of the planned transmit design which
+		 * currently starts sending as soon as the first byte is added to kiss_rx_buffer[].
+		 *
+		 * TODO: implement kiss_rx_buffer[] bounds checking with proper frame drop.
+		 * I'll need to do additional house keeping -- keeping track of how many frames
+		 * are in the buffer (possibly where they start/end) as well as if I should discard
+		 * the current frame coming in over the USART interface. The code polling
+		 * the the buffer size should instead poll the number of complete frames in the buffer.
 		 */
 
 		/*
