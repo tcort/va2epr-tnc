@@ -1,0 +1,8 @@
+afsk.o
+conf.o
+csma.o
+gps.o
+kiss.o
+main.o
+va2epr-tnc.hex
+va2epr-tnc.obj
