@@ -1,4 +1,4 @@
-*
+/*
  * This file implements 1200 baud AFSK NRZI with 1200 Hz and 2200 Hz tones.
  *
  * Current Status
@@ -10,8 +10,7 @@
  * The code needs to be enhanced to capture incoming data.
  * The code needs to be enhanced to output data from a buffer. This can probably be
  * done by using Timer 0 or Timer 3 to periodically sample data or periodically
- * change OCR2A to TONE_1200HZ or TONE_2200HZ. Also, the code needs to disable
- * timer 1 when in TX mode and disable timer 2 when in RX mode. When in TX mode,
+ * change afsk_output_frequency to TONE_1200HZ or TONE_2200HZ. When in TX mode,
  * consider using a watchdog timer to help prevent getting stuck in TX mode.
  *
  * Ports and Peripherals Used
@@ -32,32 +31,31 @@
 #include "csma.h"
 
 /*
- * For a 16 sample 2200 Hz tone, I need to change the output 35200
- * (i.e. 2200 * 16) times per second. For a 16 sample 1200 Hz tone,
- * I need to change the output 19200 (i.e. 1200 * 16) times per second.
+ * For a 32 sample 2200 Hz tone, I need to change the output 70400
+ * (i.e. 2200 * 32) times per second. For a 32 sample 1200 Hz tone,
+ * I need to change the output 38400 (i.e. 1200 * 32) times per second.
  * Using a pre-scalar of 4, I should set TCNT2 to the following values
  * via the 'tone' variable:
  *
- *   For 1200 Hz, 14745600/8/19200 - 1 = 95				Exactly 1200 Hz
- *   For 2200 Hz, 14745600/8/35200 - 1 = 51.36 (51)		Approx  2215 Hz (0.6% error)
+ *   For 1200 Hz, 14745600/8/38400 - 1 = 47				Exactly 1200 Hz
+ *   For 2200 Hz, 14745600/8/70400 - 1 = 25.18 (25)			Approx  2215 Hz (0.6% error)
  */
-#define TONE_1200HZ 95
-#define TONE_2200HZ 51
+#define TONE_1200HZ 47
+#define TONE_2200HZ 25
 
 /*
  * These are the period thresholds that are used to decide if a
  * captured input is 1200 Hz or 2200 Hz. You can compute these
- * by dividing the period of the desired frequency by the
- * period of the counter.
+ * the same as above...
  *
- * For 700 Hz, I computed a period of 2633 this way:
- *
- * 	(1/700) / (1/(F_CPU/8)) = 2633
+ *  For 700 Hz, 14745600/8/700 - 1 = 2632
+ *  For 1700 Hz, 14745600/8/1700 - 1 = 2632
+ *  For 2700 Hz, 14745600/8/2700 - 1 = 2632
  */
-#define PERIOD_2200_MIN  682 /* 2.7 kHz */
-#define PERIOD_2200_MAX 1084 /* 1.7 kHz */
-#define PERIOD_1200_MIN 1084 /* 1.7 kHz */
-#define PERIOD_1200_MAX 2633 /* 0.7 kHz */
+#define PERIOD_2200_MIN  681 /* 2.7 kHz */
+#define PERIOD_2200_MAX 1083 /* 1.7 kHz */
+#define PERIOD_1200_MIN 1083 /* 1.7 kHz */
+#define PERIOD_1200_MAX 2632 /* 0.7 kHz */
 
 /*
  * This is the value that is used to set OCR2A. It controls the
@@ -77,11 +75,17 @@ unsigned char afsk_output_frequency = TONE_1200HZ; /* initial frequency */
 unsigned char shift_detect = 0;
 
 /* precomputed sinewave from tools/sine.c */
-/* TODO double or quadruple the size of the table */
-unsigned char sinewave[16] = {
-	127, 176, 217, 245, 255, 245, 217, 176,
-	127,  78,  37,   9,   0,   9,  37,  78
+unsigned char sinewave[32] = {
+	127, 152, 176, 198, 217, 233, 245, 252,
+	255, 252, 245, 233, 217, 198, 176, 152,
+	127, 102,  78,  56,  37,  21,   9,   2,
+	  0,   2,   9,  21,  37,  56,  78, 102
 };
+/*
+ * TODO I updated the table from 16 samples to 32.
+ * I need to see how this looks on a scope.
+ */
+
 
 /* timer1 input capture housekeeping */
 unsigned int capture_last_time = 0;
@@ -239,6 +243,6 @@ ISR(TIMER2_COMPA_vect) {
 	 */
 	OCR2A = afsk_output_frequency;
 
-	/* keep sinewave_index in the range 0-15 */
-	sinewave_index &= 0x0f;
+	/* keep sinewave_index in the range 0-31 */
+	sinewave_index &= 0x1f;
 }
