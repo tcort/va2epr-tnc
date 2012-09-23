@@ -120,9 +120,13 @@ void kiss_tx_raw(unsigned char c) {
 /*
  * Transmit Data to the PC. Escape special KISS characters.
  * Use this function in afsk.c for everything except sending
- * KISS_FEND.
+ * KISS_FEND. Return the number of bytes sent so that the
+ * calling code can estimate how long it took the function to
+ * execute.
  */
-void kiss_tx(unsigned char c) {
+unsigned char kiss_tx(unsigned char c) {
+
+	unsigned char bytes_sent = 1;
 
 	/* check for special characters */
 	switch (c) {
@@ -132,6 +136,7 @@ void kiss_tx(unsigned char c) {
 			/* send the escape character followed by a transposed frame end character */
 			kiss_tx_raw(KISS_FESC);
 			c = KISS_TFEND;
+			bytes_sent++;
 			break;
 
 		/* frame escape */
@@ -139,10 +144,13 @@ void kiss_tx(unsigned char c) {
 			/* send the escape character followed by a transposed frame end character */
 			kiss_tx_raw(KISS_FESC);
 			c = KISS_TFESC;
+			bytes_sent++;
 			break;
 	}
 
 	kiss_tx_raw(c);
+
+	return bytes_sent;
 }
 
 /*
