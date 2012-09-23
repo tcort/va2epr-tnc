@@ -21,7 +21,7 @@ $(TARGET).hex: $(TARGET).obj
 $(TARGET).obj: afsk.o conf.o csma.o gps.o kiss.o main.o
 	$(CC) $(CFLAGS) afsk.o conf.o csma.o gps.o kiss.o main.o -o $(TARGET).obj
 
-afsk.o: afsk.c afsk.h csma.h
+afsk.o: afsk.c afsk.h ax25.h csma.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
 
 conf.o: conf.c conf.h
