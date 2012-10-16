@@ -12,6 +12,16 @@
  * From what I've read, the GPS module continuously outputs
  * GGA, GSV, GSA, and RMC sentences in NMEA mode.
  *
+ *
+ * When I plugged it in for the first time I got this about every second...
+ *
+ *   $GPGGA,000425.035,0000.0000,N,00000.0000,E,0,00,,0.0,M,0.0,M,,0000*46
+ *   $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+ *   $GPGSV,1,1,00*79
+ *   $GPRMC,000425.035,V,0000.0000,N,00000.0000,E,,,150209,,,N*7C
+ *
+ * When no satellites were in view, there were no $GPGSV sentences.
+ *
  * Coordinates use the WGS 84 DATUM
  *
  * Ports and Peripherals Used
@@ -26,6 +36,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include "kiss.h"
 #include "gps.h"
 
 /*
@@ -37,15 +48,20 @@ void gps_init(void) {
 	UBRR1H = (GPS_UBRR_VAL >> 8);
 	UBRR1L = (GPS_UBRR_VAL & 0xFF);
 
-	UCSR1B |= (1 << RXEN1) | (1 << TXEN1);
+	UCSR1B |= (1 << RXEN1) | (1 << TXEN1) | (1<<RXCIE0);
 	UCSR1C |= (1 << UCSZ10) | (1 << UCSZ11);
 }
 
 /*
- * Things to be determined...
- *
- * In main
- *
- * What data is needed for APRS? i.e. can some sentences be
- * completely ignored.
+ * Receive Data from the GPS
+ * For testing/debugging, just output it to the PC
  */
+ISR(USART1_RX_vect) {
+
+	static unsigned char c = 0x00;
+
+	/* Read from UART */
+	c = UDR1;
+		
+	kiss_tx_raw(c);
+}	
