@@ -3,4 +3,8 @@
 
 #define AX25_FLAG (0x7e)
 
+#define CRC16CCITT_POLYNOMIAL (0x8408)
+
+unsigned int crc16(unsigned int crc, unsigned char byte);
+
 #endif

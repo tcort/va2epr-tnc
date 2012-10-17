@@ -1,3 +1,4 @@
+ax25.o
 afsk.o
 conf.o
 csma.o
