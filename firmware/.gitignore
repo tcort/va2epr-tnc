@@ -4,5 +4,6 @@ csma.o
 gps.o
 kiss.o
 main.o
+nmea.o
 va2epr-tnc.hex
 va2epr-tnc.obj

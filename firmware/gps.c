@@ -40,6 +40,7 @@
 
 #include "kiss.h"
 #include "gps.h"
+#include "nmea.h"
 
 /*
  * Initialize the GPS interface
@@ -59,13 +60,11 @@ void gps_init(void) {
  * For testing/debugging, just output it to the PC
  */
 ISR(USART1_RX_vect) {
-	
-	unsigned char i = 0x00;
+
 	static unsigned char c = 0x00;
 
 	/* Read from UART */
 	c = UDR1;
 
-	
 	kiss_tx_raw(c);
-}	
+}
