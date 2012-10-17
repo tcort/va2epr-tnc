@@ -10,7 +10,9 @@
  *   GLL ~ Geographic Position – Latitude/Longitude (optional)
  *
  * From what I've read, the GPS module continuously outputs
- * GGA, GSV, GSA, and RMC sentences in NMEA mode.
+ * GPGGA, GPGSA, GPGSV, and GPRMC sentences in NMEA mode. From what I observed,
+ * not all sentences appear all of the time. For example, GPGSV isn't sent
+ * when no satellites are in view.
  *
  *
  * When I plugged it in for the first time I got this about every second...
@@ -57,11 +59,13 @@ void gps_init(void) {
  * For testing/debugging, just output it to the PC
  */
 ISR(USART1_RX_vect) {
-
+	
+	unsigned char i = 0x00;
 	static unsigned char c = 0x00;
 
 	/* Read from UART */
 	c = UDR1;
-		
+
+	
 	kiss_tx_raw(c);
 }	
