@@ -1,3 +1,9 @@
+/*
+ * This file provides some simple NMEA 0183 parsing and checksumming functions.
+ * It does just enough to validate NMEA sentences and extract GPS coordinates.
+ * No point in filling up program memory with more features than are needed.
+ */
+
 #include "nmea.h"
 
 /*
@@ -26,7 +32,7 @@ unsigned char nmea_checksum(unsigned char *s) {
 /*
  * Utility function to convert between ascii hex and decimal
  */
-static inline unsigned char hex2deci(unsigned char c) {
+static unsigned char hex2deci(unsigned char c) {
 
 	if (c >= '0' && c <= '9') {
 
@@ -92,3 +98,133 @@ unsigned char nmea_validate(unsigned char *s) {
 	return (checksum_expected == checksum_actual);
 }
 
+/*
+ * Advance the pointer to the character after the next comma
+ * or NULL.
+ */
+static unsigned char *nmea_next_field(unsigned char *s) {
+
+	while (*s && *s != ',') {
+		s++;
+	}
+
+	if (*s == ',') {
+		s++;
+	}
+
+	return s;
+}
+
+/*
+ * Extacts the coordinates from a GGA or RMC NMEA sentence.
+ * Returns 0 for OK, -1 for parse error (or invalid sentence)
+ */
+char nmea_extract_coordinates(unsigned char *s, struct nmea_coordinates *coordinates) {
+
+	/* Does the checksum check out? */
+	if (!nmea_validate(s)) {
+
+		return -1;
+	}
+
+	/* Skip the '$', we don't care about it */
+	if (*s == '$') {
+		s++;
+	}
+
+	/* Parse Message Type */
+	if (s[2] == '\0' || s[3] == '\0' || s[4] == '\0') {
+		return -1;
+	} else if (s[2] == 'G' && s[3] == 'G' && s[4] == 'A') {
+		sentence_type = GGA;
+	} else if (s[2] == 'R' && s[3] == 'M' && s[4] == 'C') {
+		sentence_type = RMC;
+	} else {
+		/* no coordinates here, so just return */
+		return -1;
+	}
+
+	s = nmea_next_field(s); /* Move past GPGGA/GPRMC field */
+	if (sentence_type == RMC) {
+		s = nmea_next_field(s); /* Move on to status */
+		if (s[0] == ',' || s[0] == 'V') { /* is field empty or void ('V')? */
+			return -1;
+		}
+	}
+
+	s = nmea_next_field(s); /* Move on to longitude */
+	if (s[0] == ',') {
+		return -1;
+	}
+	coordinates->latitude.hours[0] = s[0];
+	coordinates->latitude.hours[1] = s[1];
+	coordinates->latitude.hours[2] = '\0';
+
+	coordinates->latitude.minutes[0] = s[2];
+	coordinates->latitude.minutes[1] = s[3];
+	coordinates->latitude.minutes[2] = '\0';
+
+	if (s[4] == '.' && s[5] != ',') {
+		coordinates->latitude.decimal[0] = s[5];
+		if (s[6] != ',') {
+			coordinates->latitude.decimal[1] = s[6];
+		} else {
+			coordinates->latitude.decimal[1] = '0';
+		}
+	
+	} else {
+		coordinates->latitude.decimal[0] = '0';
+		coordinates->latitude.decimal[1] = '0';
+	}
+	coordinates->latitude.decimal[2] = '\0';
+
+	s = nmea_next_field(s); /* Move on to cardinal direction */
+		if (s[0] == ',') {
+		return -1;
+	}
+
+	coordinates->latitude.cardinal_direction = s[0];
+
+	s = nmea_next_field(s); /* Move on to longitude */
+	if (s[0] == ',') {
+		return -1;
+	}
+	coordinates->longitude.hours[0] = s[0];
+	coordinates->longitude.hours[1] = s[1];
+	coordinates->longitude.hours[2] = s[2];
+	coordinates->longitude.hours[3] = '\0';
+
+	coordinates->longitude.minutes[0] = s[3];
+	coordinates->longitude.minutes[1] = s[4];
+	coordinates->longitude.minutes[2] = '\0';
+
+	if (s[5] == '.' && s[6] != ',') {
+		coordinates->longitude.decimal[0] = s[6];
+		if (s[7] != ',') {
+			coordinates->longitude.decimal[1] = s[7];
+		} else {
+			coordinates->longitude.decimal[1] = '0';
+		}
+	} else {
+		coordinates->longitude.decimal[0] = '0';
+		coordinates->longitude.decimal[1] = '0';
+	}
+
+	coordinates->longitude.decimal[2] = '\0';
+
+	s = nmea_next_field(s);  /* Move on to cardinal direction */
+	if (s[0] == ',') {
+		return -1;
+	}
+	coordinates->longitude.cardinal_direction = s[0];
+
+	if (sentence_type == GGA) {
+		s = nmea_next_field(s); /* Move on to Fix Quality */
+		if (s[0] == ',' || s[0] == '0') { /* is empty field or invalid (0)? */
+			return -1;
+		}
+	}
+
+	/* if we get to the end without returning due to error, then the coordinates are valid */
+	return 0;
+}
