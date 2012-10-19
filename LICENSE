@@ -1,15 +1,27 @@
-All files in this repository are licensed under the Creative Commons
+License Information
+-------------------
+
+All source code (i.e. software and firmware) is licensed under the 
+terms of the GNU General Public License as published by the Free 
+Software Foundation, either version 3 of the License, or (at your 
+option) any later version. For specifics see the COPYING file in the
+firmware and software directories.
+
+
+All documentation and design files are licensed under the Creative Commons
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.
 
 	Summary: http://creativecommons.org/licenses/by-sa/3.0/
 	Full Text: http://creativecommons.org/licenses/by-sa/3.0/legalcode
 
+
 All files in this repository are subject to the following copyright notice:
 
-	Copyright 2012  Thomas Cort <linuxgeek@gmail.com>
+	Copyright 2012 Thomas Cort <va2epr@rac.ca>
+
 
 For attribution, please include the following:
 
-	* the title of the work "VA2EPR-TNC"
+	* the title of the work "va2epr-tnc"
 	* the author's name "Thomas Cort"
 	* if possible, the URI for the project page "http://www.tomcort.com/"

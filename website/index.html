@@ -18,10 +18,10 @@
               <ul>
                 <li><a href="#introduction">Introduction</a>
                 <li><a href="#status">Current Status</a>
+		<li><a href="#documentation">Documentation</a>
 		<li><a href="#hardware">Hardware</a>
 		<li><a href="#firmware">Firmware</a>
 		<li><a href="#software">Software</a>
-		<li><a href="#documentation">Documentation</a>
                 <li><a href="#license">License</a>
                 <li><a href="#disclaimer">Disclaimer</a>
                 <li><a href="#download">Download</a>
@@ -32,49 +32,67 @@
               <span class="h1">Introduction</span>
               <p>
                 Greetings and Salutations!
-                My name is <a href="http://en.wikipedia.org/wiki/Thomas_(name)">Thomas</a>,
-                and I'd like to welcome you to my little pit stop on the information superhighway.
+                My name is Thomas Cort.
                 I live in <a href="http://www.ville.gatineau.qc.ca/">Gatineau</a>,
                 <a href="http://www.gouv.qc.ca/">Quebec</a>,
-                <a href="http://canada.gc.ca/">Canada</a> with my wife Bridget.
-                I am currently a student in the 
+                <a href="http://canada.gc.ca/">Canada</a> with my wife 
+                Bridget. I am currently a student in the 
                 <a href="http://www.cegep-heritage.qc.ca/Programs/Electronics/intro.htm">Electronics Technology</a>
                 program at <a href="http://www.cegep-heritage.qc.ca/">Heritage College</a>.
-                I'm in the final year of my studies, and I created this website to showcase my final year project.
+                I'm in the final year of my studies, and I created this
+                website to share my final year project with the world.
                 The project incorporates one of my favourite hobbies,
                 <a href="http://en.wikipedia.org/wiki/Amateur_radio">Amateur Radio</a>.
 		The goal is to design and build a
-                <a href="http://en.wikipedia.org/wiki/Terminal_node_controller">Terminal Node Controller</a>
-                (i.e. a <a href="http://en.wikipedia.org/wiki/Radio">radio</a> <a href="http://en.wikipedia.org/wiki/Modem">modem</a>).
+                <a href="http://en.wikipedia.org/wiki/Terminal_node_controller">Terminal Node Controller</a>.
                 Additionally, I'm going to be making a portable version with an integrated
                 <a href="http://en.wikipedia.org/wiki/Global_Positioning_System">GPS</a> receiver.
                 The target application of the portable version is 
                 <a href="http://en.wikipedia.org/wiki/Automatic_Packet_Reporting_System">APRS</a> tracking.
                 If you would like to contact me, my e-mail address is 
-                <a href="mailto:linuxgeek@gmail.com">linuxgeek@gmail.com</a>.
+                <a href="mailto:va2epr@rac.ca">va2epr@rac.ca</a>.
               </p>
 
               <a id="status"></a>
               <span class="h1">Current Status</span>
               <p>
-                I've created an initial schematic, a bill of materials, a printed circuit board layout, and
-                I ordered parts and PCBs. I've also tested portions of the circuits and written some proof of concept
-                code for the firmware. The first revision of the PCB had an error in it, the voltage regulator footprint
-                was wrong. I'm working on putting out a Rev B at the moment.
-                I'm just beginning to work on this website and push things to
-                <a href="https://github.com/tcort/va2epr-tnc">github</a>. A formal project plan is being drafted.
-                I have a lot to add to the site, so check back often for updates.
+                I've developed the schematic, a bill of materials, and a 
+                printed circuit board layout. I've also tested portions 
+                of the circuit and written some proof of concept
+                code for the firmware. I've got the parts and enclosures
+                ready to go; I'm just waiting on the printed circuit 
+                boards to be manufactured. I'm just beginning to work on 
+                this website and push things to
+                <a href="https://github.com/tcort/va2epr-tnc">github</a>.
+                I have a lot to add to the site, so check back often for
+                updates.
+              </p>
+
+              <a id="documentation"></a>
+              <span class="h1">Documentation</span>
+              <p>
+                I'm working on documentation at the moment, including a 
+                30 page formal project proposal with details on how the 
+                hardware will work. Within a few days, I'll have 
+                documents to post in this section.
               </p>
 
               <a id="hardware"></a>
               <span class="h1">Hardware</span>
               <p>
-                At the heart of the project is an Atmel ATMega1284p microcontroller running at 14.7456MHz. Connected to it are
-                sub-circuits that interface with a radio, a computer, and optionally a GPS. The computer interface is USB (Mini B connector)
-                using an FTDI FT232RL chip to provide a virtual COM port in Windows which should enable compatibility with existing KISS mode packet
-                software while providing the convenience of USB. The radio is interfaced with a DIN5 connector, somewhat common among TNCs, to 
-                send/receive audio signals and key the radio. Power is provided via a 2.1mm barrel connector. Below is the preliminary schematic,
-                bill of materials, and printed circuit board artwork.
+                At the heart of the project is an Atmel ATMega1284p 
+                microcontroller running at 14.7456MHz. Connected to it 
+                are sub-circuits that interface with a radio, a 
+                computer, and optionally a GPS. The computer interface 
+                is USB (Mini B connector) using an FTDI FT232RL chip to 
+                provide a virtual COM port in Windows which should 
+                enable compatibility with existing KISS mode packet
+                software while providing the convenience of USB. The 
+                radio is interfaced with a DIN5 connector, somewhat 
+                common among TNCs, to send/receive audio signals and key 
+                the radio. Power is provided via a 2.1mm barrel 
+                connector. Below is the schematic, bill of materials, 
+                and printed circuit board artwork.
               </p>
               <p class="indent">
                 <b><a href="va2epr-tnc/schematic.pdf">Schematic</a> (PDF) (Rev B)</b>
@@ -88,17 +106,24 @@
               <p class="indent">
                 <b><a href="va2epr-tnc/VA2EPR-TNC.LYT">PCB Layout CAD File</a> (Proteus ARES) (Rev B)</b>
               </p>
-              <p class="indent">
-                <b><a href="va2epr-tnc/gerber.zip">Gerber Files</a> (ZIP) (Rev A)</b>
-              </p>
+<!--
+TODO Add Rev B gerber files to website
 
+              <p class="indent">
+                <b><a href="va2epr-tnc/gerber.zip">Gerber Files</a> (ZIP) (Rev B)</b>
+              </p>
+-->
               <a id="firmware"></a>
               <span class="h1">Firmware</span>
               <p>
-                The firmware is a work in progress and so far it has only been lightly tested. The purpose of the firmware for right now is
-                to test the major functionality of the hardware on a breadboard to see if I can generate sine waves, capture incoming signals,
-                handle communications with the PC and GPS, etc. It will likely be towards the end of the semester, early December 2012, before
-                it's ready to go.
+                The firmware is a work in progress and so far it has 
+                only been lightly tested. The purpose of the firmware 
+                for right now is to test the major functionality of the 
+                hardware on a breadboard to see if I can generate sine 
+                waves, capture incoming signals, handle communications 
+                with the PC and GPS, etc. It will likely be towards the 
+                end of the semester, early December 2012, before
+                it's ready for prime time.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/firmware">Firmware Source Code</a></b>
@@ -107,47 +132,61 @@
               <a id="software"></a>
               <span class="h1">Software</span>
               <p>
-                There isn't much here at the moment since the software is scheduled to be done during the second semester (January 2013 to May 2013).
-                I just have the CRC function for AX.25 written. The software will likely be written in C# and will be very involved. I'll
-                be implementing KISS, AX.25, APRS, and possibly other protocols along with a terminal emulator and a graphical user interface.
+                There isn't anything here at the moment since the 
+                software is scheduled to be done during the second 
+                semester (January 2013 to May 2013). The software will 
+                likely be written in C# as that is the language the 
+                school teaches, and I'm interested to learn it.
+                The software will be very involved. I'll be 
+                implementing KISS, AX.25, APRS, and other 
+                protocols. The text of the specifications add up to 
+                over 200 pages. In addition, I'll be writing code 
+                for the user interface, both a terminal emulator and
+                a graphical user interface.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/software">Software Source Code</a></b>
               </p>
 
-              <a id="documentation"></a>
-              <span class="h1">Documentation</span>
-              <p>
-               I'm working on documentation at the moment, including a 30 page formal project proposal with details on how the hardware will work. Within a
-               few days, I'll have documents to post in this section.
-              </p>
-
               <a id="license"></a>
               <span class="h1">License</span>
               <p>
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">
-<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />
-<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">va2epr-tnc</span>
-by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.tomcort.com/" property="cc:attributionName" rel="cc:attributionURL">Thomas Cort</a>
-is licensed under a
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+                All source code (i.e. software and firmware) is licensed 
+                under the terms of the GNU General Public License as 
+                published by the Free Software Foundation, either 
+                version 3 of the License, or (at your option) any later 
+                version. For specifics see the COPYING file in the
+                firmware and software directories.
+              </p>
+              <p>
+                All documentation and design files are licensed under 
+                the Creative Commons Attribution-ShareAlike 3.0 Unported 
+                (CC BY-SA 3.0) license.
               </p>
 
               <a id="disclaimer"></a>
               <span class="h1">Disclaimer</span>
               <p>
-                This is an <i>Electronics Technology</i> <b>student project</b>. I am <b>not</b> an engineer nor will I be when I'm done school.
-                The hardware/software has <b>not</b> been verified/certified by anyone to do anything or comply with any standards.
-                It is a prototype. It is provided "AS IS" and comes with no warranty. I'm offering it here mainly for educational purposes to people who
-                are interested in the technical side of Terminal Node Controller design. What you see is what you get. I don't sell kits nor any
-                sort of products. This isn't a business; it is a personal website about a student project.
+                This is an <i>Electronics Technology</i> <b>student 
+                project</b>. I am <b>not</b> an engineer nor will I be 
+                when I'm done school. The hardware/software has 
+                <b>not</b> been verified/certified by anyone to do 
+                anything or comply with any standards. It is a 
+                prototype. It is provided "AS IS" and comes with no 
+                warranty. I'm offering it here mainly for people who
+                are interested in the technical side of Terminal Node 
+                Controller design. What you see is what you get. I don't 
+                sell kits nor any sort of products. This isn't a 
+                business; it is a personal website about a student 
+                project.
               </p>
 
               <a id="download"></a>
               <span class="h1">Download</span>
               <p>
                 All source code, design files, and documentation is kept in a
-                <a href="http://git-scm.com/">git</a> repository on <a href="https://github.com/">github</a>.
+                <a href="http://git-scm.com/">git</a> repository on
+                <a href="https://github.com/">github</a>.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc">https://github.com/tcort/va2epr-tnc</a></b>
