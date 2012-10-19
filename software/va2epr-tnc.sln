@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "va2epr-tnc", "va2epr-tnc.csproj", "{9F933752-E32F-4A5E-9E7F-3C5398442CCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F933752-E32F-4A5E-9E7F-3C5398442CCA}.Debug|x86.ActiveCfg = Debug|x86
+		{9F933752-E32F-4A5E-9E7F-3C5398442CCA}.Debug|x86.Build.0 = Debug|x86
+		{9F933752-E32F-4A5E-9E7F-3C5398442CCA}.Release|x86.ActiveCfg = Release|x86
+		{9F933752-E32F-4A5E-9E7F-3C5398442CCA}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = va2epr-tnc.csproj
+	EndGlobalSection
+EndGlobal

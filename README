@@ -24,7 +24,7 @@ Project Layout
 		C code that runs on the ATMega1284p microcontroller.
 
 	software/
-		graphical user interface that runs on the PC.
+		GUI in C# with Monodevelop project files.
 
 	website/
 		project website ( http://www.tomcort.com/ ).
