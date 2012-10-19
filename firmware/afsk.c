@@ -112,10 +112,6 @@ unsigned char sinewave[32] = {
 	127, 102,  78,  56,  37,  21,   9,   2,
 	  0,   2,   9,  21,  37,  56,  78, 102
 };
-/*
- * TODO I updated the table from 16 samples to 32.
- * I need to see how this looks on a scope.
- */
 
 /*
  * House keeping for the RX code. This flag used to
@@ -124,7 +120,6 @@ unsigned char sinewave[32] = {
  * a KISS_FEND will be needed to complete the frame.
  */
 unsigned char in_kiss_frame = 0;
-
 
 /* timer1 input capture housekeeping */
 unsigned int capture_last_time = 0;
