@@ -32,7 +32,7 @@ public partial class MainWindow: Gtk.Window {
 		a.RetVal = true;
 	}
 
-	protected void activateQuit(object sender, System.EventArgs e) {
+	protected void OnQuit(object sender, System.EventArgs e) {
 
 		Application.Quit();
 	}

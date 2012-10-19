@@ -20,7 +20,7 @@
         <property name="Label" translatable="yes">_Quit</property>
         <property name="ShortLabel" translatable="yes">_Quit</property>
         <property name="StockId">gtk-quit</property>
-        <signal name="Activated" handler="activateQuit" />
+        <signal name="Activated" handler="OnQuit" />
       </action>
       <action id="HelpAction">
         <property name="Type">Action</property>
