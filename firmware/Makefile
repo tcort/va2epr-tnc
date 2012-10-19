@@ -1,11 +1,11 @@
 # Name of program
 TARGET=va2epr-tnc
 
-# Settings for programming an Arduino Duemilanove (ATMega328p) on Linux
+# Settings for programming an ATMega1284p on Linux with an AVR Dragon
 MCU=atmega1284p
 PART=m1284p
 F_CPU=14745600
-PROGRAMMER=dragon_isp
+PROGRAMMER=dragon_jtag
 BAUD=57600
 DEVICE=/dev/ttyUSB0
 
@@ -15,8 +15,15 @@ CFLAGS=-Os -pedantic -Wall -Werror -mcall-prologues -mmcu=$(MCU) -DF_CPU=$(F_CPU
 OBJ2HEX=avr-objcopy
 AVRDUDE=avrdude
 
+all: $(TARGET).hex $(TARGET).eep
+	avr-size $(TARGET).hex
+	avr-size $(TARGET).eep
+
 $(TARGET).hex: $(TARGET).obj
 	$(OBJ2HEX) -R .eeprom -O ihex $(TARGET).obj $(TARGET).hex
+
+$(TARGET).eep: $(TARGET).obj
+	$(OBJ2HEX) -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $(TARGET).obj $(TARGET).eep
 
 $(TARGET).obj: ax25.o afsk.o conf.o csma.o gps.o kiss.o main.o nmea.o
 	$(CC) $(CFLAGS) ax25.o afsk.o conf.o csma.o gps.o kiss.o main.o nmea.o -o $(TARGET).obj
@@ -45,8 +52,14 @@ main.o: main.c afsk.h conf.h csma.h gps.h kiss.h
 nmea.o: nmea.c nmea.h
 	 $(CC) $(CFLAGS) nmea.c -c -o nmea.o
 
-upload: $(TARGET).hex
-	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U flash:w:$(TARGET).hex 
+program-flash: $(TARGET).hex
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U flash:w:$(TARGET).hex
+
+program-eeprom: $(TARGET).eep
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U eeprom:w:$(TARGET).eep
+
+# TODO
+# Add a program-fuses target
 
 clean:
-	rm -f $(TARGET).hex $(TARGET).obj *.o
+	rm -f $(TARGET).eep $(TARGET).hex $(TARGET).obj *.o

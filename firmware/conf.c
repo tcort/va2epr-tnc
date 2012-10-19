@@ -29,7 +29,8 @@ struct conf EEMEM config_in_eeprom = {
 	63, /* p */
 	10, /* slot time */
 	50, /* tx_tail */
-	0 /* full duplex */
+	0, /* full duplex */
+	"VA2EPR"
 };
 
 /*

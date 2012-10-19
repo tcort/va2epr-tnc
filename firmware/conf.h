@@ -2,8 +2,12 @@
 #define __CONF_H
 
 /*
- * The version of the struct conf. This might be used in the future if I make changes to
- * struct conf and wish to support old EEPROMs.
+ * The version of the struct conf. This might be used in the future if
+ * I make changes to struct conf and wish to support old EEPROMs.
+ *
+ * List version history here:
+ *
+ *  - 0x54  initial version
  */
 #define CONF_VERSION (0x54)
 
@@ -14,6 +18,7 @@ struct conf {
 	unsigned char slot_time; /* the slot interval in 10 ms units. */
 	unsigned char tx_tail; /* OBSOLETE - the time to hold up the TX after the FCS has been sent, in 10 ms units. */
 	unsigned char full_duplex; /* 0 for half duplex mode, non-zero for full duplex mode. */
+	unsigned char callsign[7]; /* '\0' terminated call sign (for APRS Tracker) */
 };
 
 extern struct conf config;
