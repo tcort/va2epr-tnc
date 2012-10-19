@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 using System;
 using Gtk;
 
@@ -31,5 +30,10 @@ public partial class MainWindow: Gtk.Window {
 		
 		Application.Quit();
 		a.RetVal = true;
+	}
+
+	protected void activateQuit(object sender, System.EventArgs e) {
+
+		Application.Quit();
 	}
 }
