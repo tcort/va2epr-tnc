@@ -15,13 +15,16 @@ Project Layout
 --------------
 
 	documents/
-		contains documentation and info about the project.
+		reports, presentations, and notes about the project.
 
 	hardware/
 		schematic/pcb/etc in LabCenter Proteus ISIS/ARES format.
 
 	firmware/
 		C code that runs on the ATMega1284p microcontroller.
+
+	manual/
+		manual in texinfo format.
 
 	software/
 		GUI in C# with Monodevelop project files.
