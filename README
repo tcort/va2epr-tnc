@@ -27,7 +27,7 @@ Project Layout
 		manual in texinfo format.
 
 	software/
-		GUI in C# with Monodevelop project files.
+		C++ code the runs on the PC to provide a GUI.
 
 	website/
 		project website ( http://www.tomcort.com/ ).
