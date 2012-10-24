@@ -23,7 +23,7 @@ PART=m1284p
 F_CPU=14745600
 PROGRAMMER=dragon_jtag
 BAUD=57600
-DEVICE=/dev/ttyUSB0
+DEVICE=usb
 
 # Compiler and Uploader options
 CC=avr-gcc
@@ -68,14 +68,17 @@ main.o: main.c afsk.h conf.h csma.h gps.h kiss.h
 nmea.o: nmea.c nmea.h
 	 $(CC) $(CFLAGS) nmea.c -c -o nmea.o
 
-program-flash: $(TARGET).hex
+write-flash: $(TARGET).hex
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U flash:w:$(TARGET).hex
 
-program-eeprom: $(TARGET).eep
+write-eeprom: $(TARGET).eep
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U eeprom:w:$(TARGET).eep
 
-# TODO
-# Add a program-fuses target
+write-fuses:
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U lfuse:w:$(TARGET).lfuse:r -U hfuse:w:$(TARGET).hfuse:r -U efuse:w:$(TARGET).efuse:r
+
+read-fuses:
+	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U lfuse:r:$(TARGET).lfuse:r -U hfuse:r:$(TARGET).hfuse:r -U efuse:r:$(TARGET).efuse:r
 
 clean:
 	rm -f $(TARGET).eep $(TARGET).hex $(TARGET).obj *.o
