@@ -1,0 +1,7 @@
+LinuxSerialPort.o
+SerialPort.o
+SerialPort.win32.o
+main.o
+main.win32.o
+va2epr-tnc
+va2epr-tnc.exe
