@@ -23,6 +23,7 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "afsk.h"
 #include "conf.h"
@@ -32,18 +33,35 @@
 
 int main(void) {
 
-	volatile int i = 0;
+	volatile char i = 0;
 
 	config_read();
-	
+
+/*
 	afsk_init();
+*/
 	kiss_init();
-	/* gps_init(); */
-	
+/*
+	gps_init();
+*/	
 	sei();
 	
 	rx();
-	
+
+	while (1) {
+
+		if (!i) {
+			kiss_tx('T');
+			kiss_tx('E');
+			kiss_tx('S');
+			kiss_tx('T');
+			kiss_tx('\n');
+		}
+		_delay_ms(5);
+		i++;
+	}
+
+#ifdef __TEST__CODE__	
 	while (1) {
 
 		/* do we have any data to transmit? */
@@ -64,6 +82,6 @@ int main(void) {
 		
 		/* TODO occasionally get some data from the GPS */
 	}
-
+#endif
 	return 0;
 }
