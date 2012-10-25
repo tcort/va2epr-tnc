@@ -261,6 +261,19 @@ ISR(TIMER0_COMPA_vect) {
 	/* pseudo-timer used to decide when to sample */
 	static unsigned char sample_timer = 1;
 
+	/* Check if the timeout timer is active */
+	if (carrier_sense_timeout) {
+
+		carrier_sense_timeout--; /* decrement */
+
+		/* check if we've reached the timeout */
+		if (carrier_sense_timeout == 0) {
+
+			/* No Carrier Present */
+			carrier_sense = 0;
+		}
+	}
+
 	/* is a signal being received? */
 	if (carrier_sense) {
 
@@ -412,10 +425,6 @@ ISR(TIMER1_CAPT_vect) {
 	capture_last_time = ICR1; /* keep track of when the last period ended */
 	capture_overflows = 0; /* reset the overflow counter */
 
-	if (carrier_sense_timeout) {
-		carrier_sense_timeout--;
-	}
-
 	/*
 	 * capture_period is used to determine the input signal's frequnecy.
 	 *
@@ -449,11 +458,6 @@ ISR(TIMER1_CAPT_vect) {
 
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
-
-	} else if (carrier_sense_timeout == 0) {
-
-		/* No Carrier Present */
-		carrier_sense = 0;
 	}
 }
 
