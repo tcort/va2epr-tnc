@@ -71,14 +71,14 @@
  * captured input is 1200 Hz or 2200 Hz. You can compute these
  * the same as above...
  *
- *  For 700 Hz, 14745600/8/700 - 1 = 2632
- *  For 1700 Hz, 14745600/8/1700 - 1 = 2632
- *  For 2700 Hz, 14745600/8/2700 - 1 = 2632
+ *  For  200 Hz, 14745600/8/ 200 - 1 = 9216
+ *  For 1700 Hz, 14745600/8/1700 - 1 = 1083
+ *  For 4700 Hz, 14745600/8/4700 - 1 = 391
  */
-#define PERIOD_2200_MIN  681 /* 2.7 kHz */
+#define PERIOD_2200_MIN  391 /* 2.7 kHz */
 #define PERIOD_2200_MAX 1083 /* 1.7 kHz */
 #define PERIOD_1200_MIN 1083 /* 1.7 kHz */
-#define PERIOD_1200_MAX 2632 /* 0.7 kHz */
+#define PERIOD_1200_MAX 9216 /* 0.2 kHz */
 
 /*
  * This is the counter value for the AFSK decoding interrupt
@@ -104,6 +104,13 @@ unsigned char afsk_output_frequency = TONE_1200HZ; /* initial frequency */
  * flavour of AFSK. It also helps with synchronization.
  */
 unsigned char shift_detect = 0;
+
+/*
+ * carrier sesne timeout -- used by RX to identify when a carrier is
+ * no longer present. It counts down from a predefined value to 0. When
+ * it becomes 0, the carrier is no longer present.
+ */
+unsigned char carrier_sense_timeout = 0;
 
 /* precomputed sinewave from tools/sine.c */
 unsigned char sinewave[32] = {
@@ -262,6 +269,8 @@ ISR(TIMER0_COMPA_vect) {
 		 */
 		if (shift_detect) {
 
+			carrier_sense_timeout = 96; /* reset timeout */
+
 			/*
 			 * Check for AX.25 bit stuffing. If stuffing, don't sample the '0'.
 			 *
@@ -403,6 +412,10 @@ ISR(TIMER1_CAPT_vect) {
 	capture_last_time = ICR1; /* keep track of when the last period ended */
 	capture_overflows = 0; /* reset the overflow counter */
 
+	if (carrier_sense_timeout) {
+		carrier_sense_timeout--;
+	}
+
 	/*
 	 * capture_period is used to determine the input signal's frequnecy.
 	 *
@@ -426,7 +439,7 @@ ISR(TIMER1_CAPT_vect) {
 		/* If the last frequency was 1200 Hz, then there wasn't a shift. */
 		shift_detect = (carrier_sense == TONE_1200HZ) ? 0 : 1;
 
-		/* 1200 Hz +/- 500 Hz Carrier Present */
+		/* 1200 Hz Carrier Present */
 		carrier_sense = TONE_1200HZ;
 
 	} else if (capture_period >= PERIOD_2200_MIN && capture_period < PERIOD_2200_MAX) {
@@ -434,10 +447,10 @@ ISR(TIMER1_CAPT_vect) {
 		/* If the last frequency was 2200 Hz, then there wasn't a shift. */
 		shift_detect = (carrier_sense == TONE_2200HZ) ? 0 : 1;
 
-		/* 2200 Hz +/- 500 Hz Carrier Present */
+		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
 
-	} else {
+	} else if (carrier_sense_timeout == 0) {
 
 		/* No Carrier Present */
 		carrier_sense = 0;
@@ -451,7 +464,7 @@ ISR(TIMER1_OVF_vect) {
 
 	/*
 	 * if the timer has overflow twice, the count since the
-	 * last zero crossing is at least 64k which is more than 32
+	 * last zero crossing is at least 64k which is many more
 	 * times the upper threshold. That means it definitely isn't
          * detecting an AFSK signal.
 	 */
