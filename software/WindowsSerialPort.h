@@ -16,37 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+#ifndef __WINDOWSSERIALPORT_H
+#define __WINDOWSSERIALPORT_H
+
+#include <list>
+#include <string>
+#include <windows.h>
 
 #include "SerialPort.h"
 
-#ifdef __linux__
-#include "LinuxSerialPort.h"
-#elif _WIN32
-#include "WindowsSerialPort.h"
-#else
-#error "Unsupported Platform"
+class WindowsSerialPort : public SerialPort {
+
+	public:
+		WindowsSerialPort(void);
+		~WindowsSerialPort(void);
+
+		void open(void);
+		void close(void);
+
+	protected:
+		HANDLE getHandle() { return _hSerial; }
+		void setHandle(HANDLE hSerial) { _hSerial = hSerial; }
+
+	private:
+		HANDLE _hSerial;
+};
+
 #endif
-
-int main(int argc, char *argv[]) {
-
-	SerialPort *port;
-
-#ifdef __linux__
-	port = new LinuxSerialPort();
-#elif _WIN32
-	port = new WindowsSerialPort();
-#else
-#error "Unsupported Platform"
-#endif
-
-	port->open();
-
-	printf("%d\n", port->isOpen());
-
-	port->close();
-
-	delete port;
-
-	return 0;
-}

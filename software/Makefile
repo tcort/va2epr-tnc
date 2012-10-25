@@ -24,8 +24,8 @@ CFLAGS=-Os -pedantic -Wall -Werror
 
 all: $(TARGET) $(TARGET).exe
 
-$(TARGET).exe: SerialPort.win32.o main.win32.o
-	$(CXX_WIN32) $(CFLAGS) SerialPort.win32.o main.win32.o -o $(TARGET).exe
+$(TARGET).exe: WindowsSerialPort.win32.o SerialPort.win32.o main.win32.o
+	$(CXX_WIN32) $(CFLAGS) WindowsSerialPort.win32.o SerialPort.win32.o main.win32.o -o $(TARGET).exe
 
 $(TARGET): LinuxSerialPort.o SerialPort.o main.o
 	$(CXX) $(CFLAGS) SerialPort.o LinuxSerialPort.o main.o -o $(TARGET)
@@ -38,6 +38,9 @@ main.o: main.cpp
 
 LinuxSerialPort.o: LinuxSerialPort.cpp LinuxSerialPort.h
 	$(CXX) $(CFLAGS) LinuxSerialPort.cpp -c -o LinuxSerialPort.o
+
+WindowsSerialPort.win32.o: WindowsSerialPort.cpp WindowsSerialPort.h
+	$(CXX_WIN32) $(CFLAGS) WindowsSerialPort.cpp -c -o WindowsSerialPort.win32.o
 
 SerialPort.o: SerialPort.cpp SerialPort.h
 	$(CXX) $(CFLAGS) SerialPort.cpp -c -o SerialPort.o
