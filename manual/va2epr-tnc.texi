@@ -30,10 +30,73 @@ Free Documentation License".
 
 @contents
 
-@chapter Test
+@chapter Introduction
 
-@cindex test
-This is a test
+This manual describes the steps taken to create the VA2EPR Terminal
+Node Controller. It covers everything from ordering components to
+setting up and running the PC software. The goal is to provide a
+set of instructions that could be used to rebuild and use the device.
+
+@chapter Obtaining Materials
+
+One of the design goals of the project was to choose generic parts
+and materials such that it would be easy to find parts and part suppliers. This
+chapter will describe where parts were obtained and provide general
+information about the supplier.
+
+@section Printed Circuit Boards (iTead Studio)
+
+The printed circuit boards were fabricated by iTead Studio in
+Shenzhen, China. The GERBER files provided on the website were
+sent to iTead Studio.
+
+@section Electronic Components (Digi-key)
+
+foo
+
+@section Enclosure (TenTec)
+
+foo
+
+@chapter Assembly and Test
+
+foo
+
+@section Populating the Printed Circuit Board
+
+foo
+
+@section Assembling the Cables
+
+foo
+
+@section Programming the Microcontroller
+
+foo
+
+@section Testing the Device
+
+foo
+
+@chapter PC Software
+
+foo
+
+@section Compilation
+
+foo
+
+@section Installation
+
+foo
+
+@section Configuration
+
+foo
+
+@section Use
+
+foo
 
 @appendix GNU Free Documentation License
 @include fdl-1.3.texi
