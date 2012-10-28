@@ -16,34 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __ABOUT_DIALOG_H
+#define __ABOUT_DIALOG_H
+
 #include <QtGui>
-#include <QDesktopServices>
-#include <QCoreApplication>
+#include <QObject>
 
-#include "main.h"
-#include "va2epr_tnc.h"
+/**
+ * Standard About Dialog Box (Viewable under the Help->About menu in the GUI).
+ */
+class AboutDialog : public QDialog {
+	Q_OBJECT
 
-int main(int argc, char *argv[]) {
+	public:
+		/**
+		 * The about dialog for this program. It displays some copyright info, version info, and a link to the project website.
+		 */
+		AboutDialog(QWidget * parent = 0);
+};
 
-	QTranslator qtTranslator;
-	QTranslator myappTranslator;
-	QApplication app(argc, argv);
-
-	app.setApplicationName(PROGRAM_NAME);
-	app.setOrganizationName(ORG_NAME);
-	app.setOrganizationDomain(ORG_DOMAIN);
-
-        qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	app.installTranslator(&qtTranslator);
-
-#ifdef _WIN32
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name());
-#else
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name(), QString(INSTALL_PREFIX));
 #endif
-	app.installTranslator(&myappTranslator);
-
-	va2epr_tnc tnc;
-	tnc.show();
-	return app.exec();
-}

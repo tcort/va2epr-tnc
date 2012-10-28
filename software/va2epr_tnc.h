@@ -16,34 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __VA2EPR_TNC_H
+#define __VA2EPR_TNC_H
+
 #include <QtGui>
-#include <QDesktopServices>
-#include <QCoreApplication>
+#include <QObject>
 
-#include "main.h"
-#include "va2epr_tnc.h"
 
-int main(int argc, char *argv[]) {
+class va2epr_tnc : public QMainWindow {
 
-	QTranslator qtTranslator;
-	QTranslator myappTranslator;
-	QApplication app(argc, argv);
+	Q_OBJECT
 
-	app.setApplicationName(PROGRAM_NAME);
-	app.setOrganizationName(ORG_NAME);
-	app.setOrganizationDomain(ORG_DOMAIN);
+	public:
+		va2epr_tnc(void);
+		~va2epr_tnc(void);
 
-        qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	app.installTranslator(&qtTranslator);
+	private slots:
+		void doAbout(void);
 
-#ifdef _WIN32
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name());
-#else
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name(), QString(INSTALL_PREFIX));
+	private:
+		QWidget *_widget;
+		QVBoxLayout *_layout;
+
+		QMenu *_file;
+		QAction *_quitAction;
+		QMenu *_help;
+		QAction *_helpAction;
+};
+
 #endif
-	app.installTranslator(&myappTranslator);
-
-	va2epr_tnc tnc;
-	tnc.show();
-	return app.exec();
-}

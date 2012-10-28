@@ -16,34 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui>
-#include <QDesktopServices>
-#include <QCoreApplication>
+#ifndef __MAIN_H
+#define __MAIN_H
 
-#include "main.h"
-#include "va2epr_tnc.h"
+#define INSTALL_PREFIX "/usr"
 
-int main(int argc, char *argv[]) {
+#define PROGRAM_VERSION   "1.0.0"
+#define PROGRAM_NAME      "VA2EPR Terminal Node Controller"
+#define PROGRAM_COPYRIGHT "Copyright 2012 Thomas Cort <va2epr@rac.ca>"
+#define PROGRAM_HOMEPAGE  "http://www.tomcort.com/"
 
-	QTranslator qtTranslator;
-	QTranslator myappTranslator;
-	QApplication app(argc, argv);
+#define ORG_NAME "Thomas Cort"
+#define ORG_DOMAIN "tomcort.com"
 
-	app.setApplicationName(PROGRAM_NAME);
-	app.setOrganizationName(ORG_NAME);
-	app.setOrganizationDomain(ORG_DOMAIN);
-
-        qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	app.installTranslator(&qtTranslator);
-
-#ifdef _WIN32
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name());
-#else
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name(), QString(INSTALL_PREFIX));
 #endif
-	app.installTranslator(&myappTranslator);
-
-	va2epr_tnc tnc;
-	tnc.show();
-	return app.exec();
-}
