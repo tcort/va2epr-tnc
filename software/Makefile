@@ -19,10 +19,14 @@ TARGET=va2epr-tnc
 
 # Compiler and Options
 CXX=g++
-CXX_WIN32=i486-mingw32-g++
+CXX_WIN32=i586-mingw32msvc-g++
 CFLAGS=-Os -pedantic -Wall -Werror
 
-all: $(TARGET) $(TARGET).exe
+all: $(TARGET) $(TARGET)-installer.exe
+
+$(TARGET)-installer.exe: $(TARGET).exe
+	makensis va2epr-tnc.nsi
+	chmod 775 $(TARGET)-installer.exe
 
 $(TARGET).exe: WindowsSerialPort.win32.o SerialPort.win32.o main.win32.o
 	$(CXX_WIN32) $(CFLAGS) WindowsSerialPort.win32.o SerialPort.win32.o main.win32.o -o $(TARGET).exe
@@ -49,4 +53,4 @@ SerialPort.win32.o: SerialPort.cpp SerialPort.h
 	$(CXX_WIN32) $(CFLAGS) SerialPort.cpp -c -o SerialPort.win32.o
 
 clean:
-	rm -f $(TARGET) $(TARGET).exe *.o
+	rm -f $(TARGET) $(TARGET).exe $(TARGET)-installer.exe *.o
