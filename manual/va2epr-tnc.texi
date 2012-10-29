@@ -80,6 +80,22 @@ foo
 
 @chapter PC Software
 
+The PC Software provides a graphical user interface for interacting
+with the terminal node controller. Data can be sent to the device
+and data can be received from the device. As well, setting can be
+updated. This chapter provides details on building and using the
+software.
+
+@section Build Environment
+
+The @url{http://www.ubuntu.com/, Ubuntu Linux} operating system is
+used as the development platform for the software. This manual assumes
+that the person reading it has some level of proficiency in the use
+of UNIX-like operating systems. It is assumed that you have the latest
+version installed. At time of writing, that is Ubuntu 12.04.1 LTS (precise).
+
+@subsection Installing Build Tools
+
 foo
 
 @section Compilation
