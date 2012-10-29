@@ -1,7 +1,11 @@
+AboutDialog.o
 LinuxSerialPort.o
+Makefile
 SerialPort.o
-SerialPort.win32.o
 main.o
-main.win32.o
+moc_AboutDialog.cpp
+moc_AboutDialog.o
+moc_va2epr_tnc.cpp
+moc_va2epr_tnc.o
 va2epr-tnc
-va2epr-tnc.exe
+va2epr_tnc.o

@@ -22,4 +22,3 @@ then
 fi
 
 rm -f Makefile va2epr-tnc
-
