@@ -96,7 +96,10 @@ version installed. At time of writing, that is Ubuntu 12.04.1 LTS (precise).
 
 @subsection Installing Build Tools
 
-foo
+The software is written in the C++ language and uses the Qt libraries.
+To build it, you need to install the standard build tools such as
+make as well as a C++ compiler. In Ubuntu, you'll need to install
+the following packages: libqt4-dev build-essential g++
 
 @section Compilation
 
