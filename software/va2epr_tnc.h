@@ -42,6 +42,10 @@ class va2epr_tnc : public QMainWindow {
 		QAction *_quitAction;
 		QMenu *_help;
 		QAction *_helpAction;
+
+		QTabWidget *_tabs;
+
+		QLabel *_status;
 };
 
 #endif

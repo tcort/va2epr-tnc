@@ -58,7 +58,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="57"/>
+        <location filename="va2epr_tnc.cpp" line="56"/>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="va2epr_tnc.cpp" line="59"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="va2epr_tnc.cpp" line="67"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>

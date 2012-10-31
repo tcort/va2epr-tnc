@@ -43,15 +43,25 @@ va2epr_tnc::va2epr_tnc(void) {
 	_help = menuBar()->addMenu(tr("&Help"));
 	_help->addAction(_helpAction);
 
+	
 	QLabel *testLabel = new QLabel();
 	testLabel->setSizePolicy(QSizePolicy::Expanding,
                                     QSizePolicy::Expanding);
 	testLabel->setAlignment(Qt::AlignCenter);
-	testLabel->setMinimumSize(240, 160);
+	testLabel->setMinimumSize(640, 480);
 	testLabel->setText("test");
 
+	_tabs = new QTabWidget();
+	_tabs->setTabPosition(QTabWidget::South);
+	_tabs->addTab(testLabel, tr("Test"));
+
+	_status = new QLabel();
+	_status->setText(tr("Disconnected"));
+
+	statusBar()->addPermanentWidget(_status, 1);
+
 	_layout = new QVBoxLayout();
-	_layout->addWidget(testLabel);
+	_layout->addWidget(_tabs);
 	_widget->setLayout(_layout);
 
 	setWindowTitle(tr("%1").arg(PROGRAM_NAME));
