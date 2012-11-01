@@ -19,9 +19,10 @@
 #include <QtGui>
 #include <QDesktopServices>
 #include <QCoreApplication>
-
+#include <QtWebKit>
 
 #include "AboutDialog.h"
+#include "Console.h"
 #include "main.h"
 #include "va2epr_tnc.h"
 
@@ -43,17 +44,20 @@ va2epr_tnc::va2epr_tnc(void) {
 	_help = menuBar()->addMenu(tr("&Help"));
 	_help->addAction(_helpAction);
 
-	
-	QLabel *testLabel = new QLabel();
-	testLabel->setSizePolicy(QSizePolicy::Expanding,
-                                    QSizePolicy::Expanding);
-	testLabel->setAlignment(Qt::AlignCenter);
-	testLabel->setMinimumSize(640, 480);
-	testLabel->setText("test");
+	_www = new QWebView();
+	_www->load(QUrl("html/va2epr_tnc.html"));
+	_www->show();
+
+	// TODO here's a reminder how to call JS functions from C++
+	// I'll need this for later when I add/remove markers
+	// _www->page()->mainFrame()->evaluateJavaScript("alert('test'); null");
+
+	_console = new Console();
 
 	_tabs = new QTabWidget();
 	_tabs->setTabPosition(QTabWidget::South);
-	_tabs->addTab(testLabel, tr("Test"));
+	_tabs->addTab(_www, tr("Map"));
+	_tabs->addTab(_console, tr("Console"));
 
 	_status = new QLabel();
 	_status->setText(tr("Disconnected"));
@@ -65,7 +69,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_widget->setLayout(_layout);
 
 	setWindowTitle(tr("%1").arg(PROGRAM_NAME));
-	resize(300, 200);
+	resize(800, 600);
 }
 
 void va2epr_tnc::doAbout(void) {

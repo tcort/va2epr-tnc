@@ -21,7 +21,9 @@
 
 #include <QtGui>
 #include <QObject>
+#include <QtWebKit>
 
+#include "Console.h"
 
 class va2epr_tnc : public QMainWindow {
 
@@ -43,6 +45,8 @@ class va2epr_tnc : public QMainWindow {
 		QMenu *_help;
 		QAction *_helpAction;
 
+		QWebView *_www;
+		Console *_console;
 		QTabWidget *_tabs;
 
 		QLabel *_status;

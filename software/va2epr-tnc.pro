@@ -19,9 +19,12 @@ TARGET = va2epr-tnc
 DEPENDPATH += .
 INCLUDEPATH += .
 
-# Input
-HEADERS += AboutDialog.h   main.h   SerialPort.h   va2epr_tnc.h
-SOURCES += AboutDialog.cpp main.cpp SerialPort.cpp va2epr_tnc.cpp
+QT += webkit
+
+# Code
+
+HEADERS += AboutDialog.h   Console.h   main.h   SerialPort.h   va2epr_tnc.h
+SOURCES += AboutDialog.cpp Console.cpp main.cpp SerialPort.cpp va2epr_tnc.cpp
 
 win32 {
 	HEADERS += WindowsSerialPort.h

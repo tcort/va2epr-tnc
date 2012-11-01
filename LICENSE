@@ -4,12 +4,20 @@ License Information
 firmware/
 software/
 
-	All source code (i.e. software and firmware) is licensed under the 
-	terms of the GNU General Public License as published by the Free 
-	Software Foundation, either version 3 of the License, or (at your 
-	option) any later version. For specifics see the COPYING file in the
-	firmware and software directories.
+	All original source code in the software and firmware 
+	directories is licensed under the terms of the GNU General 
+	Public License as published by the Free Software Foundation, 
+	either version 3 of the License, or (at your option) any later 
+	version. For specifics see the COPYING file in the firmware and 
+	software directories.
 
+	Non-original source code (i.e. third party libraries) comes with
+	it's own licenses. The following is a list of third party code
+	and where to find the corresponding license text for each 
+	component:
+
+		- OpenLayers ~ 2-clause BSD License
+		See html/OpenLayers/license.txt
 
 hardware/
 

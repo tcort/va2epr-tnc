@@ -10,6 +10,7 @@ Section ""
 SetOutPath $INSTDIR
 File COPYING
 File va2epr-tnc.exe
+File va2epr_tnc.html
 
 CreateDirectory "$SMPROGRAMS\VA2EPR-TNC"
 CreateShortCut "$SMPROGRAMS\VA2EPR-TNC\va2epr-tnc.exe.lnk" "$INSTDIR\va2epr-tnc.exe"
@@ -29,6 +30,7 @@ Section "Uninstall"
 Delete $INSTDIR\Uninstall.exe
 Delete $INSTDIR\COPYING
 Delete $INSTDIR\va2epr-tnc.exe
+Delete $INSTDIR\va2epr_tnc.html
 RMDir $INSTDIR
 
 
