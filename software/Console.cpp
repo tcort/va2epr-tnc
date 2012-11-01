@@ -31,9 +31,21 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	_inputLayout = new QHBoxLayout();
 
 	_output = new QTextEdit();
+	_output->setReadOnly(true);
+	_output->setFontFamily("Courier");
+	_output->setFontPointSize(12.0);
+	_output->setFontWeight(QFont::DemiBold);
+
+	QPalette palette = _output->palette();
+	palette.setColor(QPalette::Base, Qt::black);
+	palette.setColor(QPalette::Text, Qt::cyan);
+	_output->setPalette(palette);
+
 	_layout->addWidget(_output);
 
 	_input = new QLineEdit();
+	_input->setFont(QFont("Courier", 12.0, QFont::DemiBold));
+	_input->setPalette(palette);
 	connect(_input, SIGNAL(returnPressed()), this, SLOT(doSend()));
 	_inputLayout->addWidget(_input);
 
