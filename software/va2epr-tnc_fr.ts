@@ -33,8 +33,8 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="Console.cpp" line="32"/>
-        <source>Insert Console Here</source>
+        <location filename="Console.cpp" line="41"/>
+        <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

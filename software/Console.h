@@ -29,6 +29,20 @@ class Console : public QWidget {
 	public:
 
 		Console(QWidget * parent = 0);
+
+	private slots:
+
+		void doSend();
+
+	private:
+
+		QVBoxLayout *_layout;
+		QHBoxLayout *_inputLayout;
+
+		QTextEdit *_output;
+
+		QLineEdit *_input;
+		QPushButton *_send;
 };
 
 #endif

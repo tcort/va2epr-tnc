@@ -27,17 +27,28 @@
 
 Console::Console(QWidget *parent) : QWidget(parent) {
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	_layout = new QVBoxLayout();
+	_inputLayout = new QHBoxLayout();
 
-	QLabel *testLabel = new QLabel(tr("Insert Console Here"));
+	_output = new QTextEdit();
+	_layout->addWidget(_output);
 
-	QFont font = testLabel->font();
-	font.setPointSize(font.pointSize() + 4);
-	font.setWeight(QFont::Bold);
-	testLabel->setFont(font);
-	testLabel->setMargin(4);
-	testLabel->setAlignment(Qt::AlignCenter);
-	layout->addWidget(testLabel);
+	_input = new QLineEdit();
+	connect(_input, SIGNAL(returnPressed()), this, SLOT(doSend()));
+	_inputLayout->addWidget(_input);
 
-	setLayout(layout);
+	_send = new QPushButton();
+	_send->setText(tr("Send"));
+	connect(_send, SIGNAL(clicked()), this, SLOT(doSend()));
+	_inputLayout->addWidget(_send);
+
+	_layout->addLayout(_inputLayout);
+
+	setLayout(_layout);
+}
+
+void Console::doSend(void) {
+
+	_output->append(_input->text());
+	_input->setText(tr(""));
 }
