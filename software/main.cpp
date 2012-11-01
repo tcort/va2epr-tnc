@@ -44,6 +44,6 @@ int main(int argc, char *argv[]) {
 	app.installTranslator(&myappTranslator);
 
 	va2epr_tnc tnc;
-	tnc.showMaximized();
+	tnc.show();
 	return app.exec();
 }
