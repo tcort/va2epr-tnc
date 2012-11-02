@@ -17,3 +17,6 @@ This is the firmware which runs directly on the terminal node controller's
 microcontroller. It manages encoding and decoding that data on the
 various communications channels. See the COPYING file in this directory for
 details on the license that applies to the project files.
+
+The tools/ directory contains a sine wave table generator that outputs
+C code.
