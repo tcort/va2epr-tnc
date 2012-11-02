@@ -1,0 +1,8 @@
+This file provides a general list of specific tasks that
+could and/or need to be done.
+
+- Store application settings.
+
+  * on first run, prompt user if user wants to
+  access the internet for map feature.
+
