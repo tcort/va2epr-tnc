@@ -6,3 +6,8 @@ could and/or need to be done.
   * on first run, prompt user if user wants to
   access the internet for map feature.
 
+- More appropriate names for SerialPort classes. The LinuxSerialPort
+  class would likely work on any system with termios, so rename it to
+  TermiosSerialPort. Similarly, the WindowsSerialPort class would likely
+  work on other systems (ReactOS, wine, etc), so rename it to something
+  less specific.
