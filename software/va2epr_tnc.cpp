@@ -46,7 +46,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_help->addAction(_helpAction);
 
 	_www = new QWebView();
-	_www->load(QUrl("qrc:/html/va2epr_tnc.html"));
+	_www->load(QUrl("qrc:/html/va2epr-tnc.html"));
 	_www->show();
 
 	// TODO here's a reminder how to call JS functions from C++
