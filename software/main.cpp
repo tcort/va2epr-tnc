@@ -25,25 +25,23 @@
 
 int main(int argc, char *argv[]) {
 
-	QTranslator qtTranslator;
-	QTranslator myappTranslator;
 	QApplication app(argc, argv);
 
 	app.setApplicationName(PROGRAM_NAME);
+	app.setApplicationVersion(PROGRAM_VERSION);
 	app.setOrganizationName(ORG_NAME);
 	app.setOrganizationDomain(ORG_DOMAIN);
 
+	QTranslator qtTranslator;
         qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	app.installTranslator(&qtTranslator);
 
-#ifdef _WIN32
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name());
-#else
-	myappTranslator.load("va2epr-tnc_" + QLocale::system().name(), QString(INSTALL_PREFIX));
-#endif
+	QTranslator myappTranslator;
+	myappTranslator.load(QString(":/locale/va2epr-tnc_%1.qm").arg(QLocale::system().name()));
 	app.installTranslator(&myappTranslator);
 
 	va2epr_tnc tnc;
 	tnc.show();
+
 	return app.exec();
 }

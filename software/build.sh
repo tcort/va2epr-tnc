@@ -16,7 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+PROJECT_FILE=va2epr-tnc.pro
+
+set -e
+
 ./clean.sh
-lupdate *cpp *h -ts va2epr-tnc_en.ts va2epr-tnc_fr.ts
-qmake va2epr-tnc.pro
+lupdate ${PROJECT_FILE}
+lrelease ${PROJECT_FILE}
+qmake ${PROJECT_FILE}
 make

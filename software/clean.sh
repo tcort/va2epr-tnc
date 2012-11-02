@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+set -e
+
 if [ -f Makefile ]
 then
         make clean
 fi
 
-rm -f Makefile va2epr-tnc
+rm -f Makefile va2epr-tnc *.qm

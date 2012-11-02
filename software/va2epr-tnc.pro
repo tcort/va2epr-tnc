@@ -35,3 +35,12 @@ unix {
 	HEADERS += LinuxSerialPort.h
 	SOURCES += LinuxSerialPort.cpp
 }
+
+# Words
+
+TRANSLATIONS =	va2epr-tnc_en.ts \
+		va2epr-tnc_fr.ts
+
+# Resources
+
+RESOURCES = locale.qrc

@@ -35,7 +35,7 @@
     <message>
         <location filename="Console.cpp" line="53"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer</translation>
     </message>
 </context>
 <context>

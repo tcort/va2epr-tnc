@@ -15,3 +15,7 @@ moc_va2epr_tnc.cpp
 moc_va2epr_tnc.o
 va2epr-tnc
 va2epr_tnc.o
+va2epr-tnc_en.qm
+va2epr-tnc_fr.qm
+qrc_locale.cpp
+qrc_locale.o
