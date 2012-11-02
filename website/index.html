@@ -56,13 +56,15 @@
               <a id="status"></a>
               <span class="h1">Current Status</span>
               <p>
-                I've developed the schematic, a bill of materials, and a 
-                printed circuit board layout. I've also tested portions 
-                of the circuit and written some proof of concept
-                code for the firmware. I've got the parts and enclosures
-                ready to go; I'm just waiting on the printed circuit 
-                boards to be manufactured. I'm just beginning to work on 
-                this website and push things to
+                I've developed a schematic, a bill of materials, and a 
+                printed circuit board layout. I've done several preliminary tests
+                and written some proof of concept firmware code.
+                The printed circuit boards, enclosures, and parts have arrived.
+                This week I'll be populating a couple of boards and doing some tests.
+                In the background, I've also been working on the graphical user
+                interface in the hopes that it will make debugging and testing
+                of the firmware easier.
+                I'm just beginning to work on this website and push things to
                 <a href="https://github.com/tcort/va2epr-tnc">github</a>.
                 I have a lot to add to the site, so check back often for
                 updates.
@@ -76,7 +78,7 @@
                 scope of the project, the project goals, the preliminary design,
                 and an implementation plan. In the future, I will be
                 posting end of semester reports in this section as well
-                as user manuals.
+                as a user manual.
               </p>
               <p class="indent">
                 <b><a href="va2epr-tnc/proposal.pdf">Project Proposal</a> (PDF)</b>
@@ -136,13 +138,13 @@
               <p>
                 There isn't much to the PC software at the moment since the 
                 software is scheduled to be done during the second 
-                semester (January 2013 to May 2013). The software will 
-                likely be written in C++ using the Qt library.
-                The software will be very involved. I'll be 
-                implementing KISS, AX.25, APRS, and other 
-                protocols. The text of the specifications for those protocols adds up to 
-                over 200 pages. In addition, I'll be writing code 
-                for the user interface, both a terminal emulator and
+                semester (January 2013 to May 2013). I'm focusing on the firmware and
+                the hardware right now. However, I do have a rudimentary interface
+                that I'm working on which should make debugging simpler. The software is
+                written in C++ using the Qt library. The finished software will be very involved as I'll be 
+                implementing KISS, AX.25, APRS, and other protocols. The text of the specifications for those protocols adds up to 
+                over 200 pages. In addition to doing the legwork for the underlying protocols, I'll be writing
+                code for the user interface which includes a terminal and
                 a map based graphical user interface.
               </p>
               <p class="indent">
@@ -151,6 +153,11 @@
 
               <a id="license"></a>
               <span class="h1">License</span>
+              <p>
+                One of the goals of this project is to create a free and open terminal
+                node controller with associated software that respects your freedom. The
+                licenses were chosen accordingly.
+              </p>
               <p>
                 All source code (i.e. software and firmware) is licensed 
                 under the terms of the GNU General Public License as 
