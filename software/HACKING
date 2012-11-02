@@ -1,0 +1,11 @@
+This software project is just getting started. The goal is to have a simple
+interface for testing and debugging the firmware by sometime in December.
+During the Winter/Spring, a lot of the remaining work, such as implementing
+AX.25 and APRS, will get some attention. Until then, my focus will be on
+the firmware and only the most fundamental features of the software.
+
+As you have probably already realized, this software was written in C++
+using the Qt libraries. I'm not sure what else to say here. At present,
+everything is very straightforward and very little needs explaination.
+When that changes, as I expect it to when I implement AX.25, I'll update
+this file.
