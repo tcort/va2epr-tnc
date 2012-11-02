@@ -16,8 +16,8 @@ software/
 	and where to find the corresponding license text for each 
 	component:
 
-		- OpenLayers ~ 2-clause BSD License
-		See html/OpenLayers/license.txt
+		OpenLayers ~ 2-clause BSD License
+		See ./software/html/OpenLayers/license.txt
 
 hardware/
 
