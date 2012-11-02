@@ -58,8 +58,8 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	_tabs = new QTabWidget();
 	_tabs->setTabPosition(QTabWidget::South);
-	_tabs->addTab(_www, tr("Map"));
 	_tabs->addTab(_console, tr("Console"));
+	_tabs->addTab(_www, tr("Map"));
 	_tabs->addTab(_settings, tr("Settings"));
 
 	_status = new QLabel();
