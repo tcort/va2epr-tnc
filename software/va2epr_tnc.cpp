@@ -24,6 +24,7 @@
 #include "AboutDialog.h"
 #include "Console.h"
 #include "main.h"
+#include "Settings.h"
 #include "va2epr_tnc.h"
 
 va2epr_tnc::va2epr_tnc(void) {
@@ -53,11 +54,13 @@ va2epr_tnc::va2epr_tnc(void) {
 	// _www->page()->mainFrame()->evaluateJavaScript("alert('test'); null");
 
 	_console = new Console();
+	_settings = new Settings();
 
 	_tabs = new QTabWidget();
 	_tabs->setTabPosition(QTabWidget::South);
 	_tabs->addTab(_www, tr("Map"));
 	_tabs->addTab(_console, tr("Console"));
+	_tabs->addTab(_settings, tr("Settings"));
 
 	_status = new QLabel();
 	_status->setText(tr("Disconnected"));

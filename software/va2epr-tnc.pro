@@ -23,8 +23,8 @@ QT += webkit
 
 # Code
 
-HEADERS += AboutDialog.h   Console.h   main.h   SerialPort.h   va2epr_tnc.h
-SOURCES += AboutDialog.cpp Console.cpp main.cpp SerialPort.cpp va2epr_tnc.cpp
+HEADERS += AboutDialog.h   Console.h   main.h   SerialPort.h   Settings.h   va2epr_tnc.h
+SOURCES += AboutDialog.cpp Console.cpp main.cpp SerialPort.cpp Settings.cpp va2epr_tnc.cpp
 
 win32 {
 	HEADERS += WindowsSerialPort.h

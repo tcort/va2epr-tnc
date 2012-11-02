@@ -39,49 +39,62 @@
     </message>
 </context>
 <context>
+    <name>Settings</name>
+    <message>
+        <location filename="Settings.cpp" line="33"/>
+        <source>Program</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>va2epr_tnc</name>
     <message>
-        <location filename="va2epr_tnc.cpp" line="34"/>
+        <location filename="va2epr_tnc.cpp" line="35"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="35"/>
+        <location filename="va2epr_tnc.cpp" line="36"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="38"/>
+        <location filename="va2epr_tnc.cpp" line="39"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="41"/>
+        <location filename="va2epr_tnc.cpp" line="42"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="44"/>
+        <location filename="va2epr_tnc.cpp" line="45"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="59"/>
+        <location filename="va2epr_tnc.cpp" line="61"/>
         <source>Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="60"/>
+        <location filename="va2epr_tnc.cpp" line="62"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="va2epr_tnc.cpp" line="63"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="va2epr_tnc.cpp" line="66"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="va2epr_tnc.cpp" line="71"/>
+        <location filename="va2epr_tnc.cpp" line="74"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>

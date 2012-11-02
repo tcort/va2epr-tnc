@@ -3,11 +3,14 @@ Console.o
 LinuxSerialPort.o
 Makefile
 SerialPort.o
+Settings.o
 main.o
 moc_AboutDialog.cpp
 moc_AboutDialog.o
 moc_Console.cpp
 moc_Console.o
+moc_Settings.cpp
+moc_Settings.o
 moc_va2epr_tnc.cpp
 moc_va2epr_tnc.o
 va2epr-tnc

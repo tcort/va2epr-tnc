@@ -16,42 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __VA2EPR_TNC_H
-#define __VA2EPR_TNC_H
+#ifndef __SETTINGS_H
+#define __SETTINGS_H
 
 #include <QtGui>
 #include <QObject>
-#include <QtWebKit>
 
-#include "Console.h"
-#include "Settings.h"
-
-class va2epr_tnc : public QMainWindow {
+class Settings : public QWidget {
 
 	Q_OBJECT
 
 	public:
-		va2epr_tnc(void);
-		~va2epr_tnc(void);
+
+		Settings(QWidget * parent = 0);
 
 	private slots:
-		void doAbout(void);
+
+		void doProgram();
 
 	private:
-		QWidget *_widget;
+
 		QVBoxLayout *_layout;
 
-		QMenu *_file;
-		QAction *_quitAction;
-		QMenu *_help;
-		QAction *_helpAction;
-
-		QWebView *_www;
-		Console *_console;
-		Settings *_settings;
-		QTabWidget *_tabs;
-
-		QLabel *_status;
+		QPushButton *_program;
 };
 
 #endif
