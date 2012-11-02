@@ -1,0 +1,6 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/html/">
+    <file>va2epr_tnc.html</file>
+  </qresource>
+</RCC>

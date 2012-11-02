@@ -19,3 +19,5 @@ va2epr-tnc_en.qm
 va2epr-tnc_fr.qm
 qrc_locale.cpp
 qrc_locale.o
+qrc_html.cpp
+qrc_html.o

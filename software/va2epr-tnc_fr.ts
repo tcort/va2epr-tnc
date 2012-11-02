@@ -93,6 +93,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="Settings.cpp" line="100"/>
+        <source>63</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="101"/>
+        <source>10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="Settings.cpp" line="104"/>
         <source>VA2EPR</source>
         <translation type="unfinished"></translation>

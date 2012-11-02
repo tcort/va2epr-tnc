@@ -43,4 +43,5 @@ TRANSLATIONS =	va2epr-tnc_en.ts \
 
 # Resources
 
-RESOURCES = locale.qrc
+RESOURCES =	html.qrc \
+		locale.qrc
