@@ -1,0 +1,32 @@
+Installing the firmware is fairly simple. Here's how I do it.
+
+Install the Tools
+-----------------
+
+You will need to install avr-gcc and GNU make as well as avrdude.
+
+Compile the Code
+----------------
+
+Run 'make' in this directory.
+
+	$ make
+
+Connect the Hardware
+--------------------
+
+I use the ATMEL AVR Dragon programmer's JTAG interface via USB to program
+the microcontroller. If you have something different, you'll have
+to change the avrdude settings in the Makefile.
+
+Connect your programmer of choice to the computer and to board via the
+board's JTAG connector. Apply power to the board
+
+Program
+-------
+
+Run the following commands to set the fuses and program the EEPROM and flash.
+
+	$ make write-fuses
+	$ make write-eeprom
+	$ make write-flash
