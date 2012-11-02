@@ -1,0 +1,14 @@
+This software is written in the C++ programming language and uses the Qt
+suite of libraries. You'll need both a C++ compiler installed as well
+as Qt. You can obtain them from the following places:
+
+	- http://gcc.gnu.org/
+	- http://qt-project.org/
+
+Simply execute the build script to build the application...
+
+	$ ./build.sh
+
+Installing the applcation is done with the following command (as root)...
+
+	# make install
