@@ -1,0 +1,20 @@
+            ____                      _              
+__   ____ _|___ \ ___ _ __  _ __     | |_ _ __   ___ 
+\ \ / / _` | __) / _ \ '_ \| '__|____| __| '_ \ / __|
+ \ V / (_| |/ __/  __/ |_) | | |_____| |_| | | | (__ 
+  \_/ \__,_|_____\___| .__/|_|        \__|_| |_|\___|
+                     |_|                             
+            __ _                          
+ ___  ___  / _| |___      ____ _ _ __ ___ 
+/ __|/ _ \| |_| __\ \ /\ / / _` | '__/ _ \
+\__ \ (_) |  _| |_ \ V  V / (_| | | |  __/
+|___/\___/|_|  \__| \_/\_/ \__,_|_|  \___|
+                                          
+  by Thomas Cort <va2epr@rac.ca> ( VA2EPR / KB1EPR )
+
+This is the graphical user interface that will communicate with the firmware
+to 'drive' the terminal node controller hardware. It is meant to be run on
+a desktop. It provides maps as well as a terminal interface. See the
+COPYING file in this directory for details on the license that applies to
+the project files.
+
