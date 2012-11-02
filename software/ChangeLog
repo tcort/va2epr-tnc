@@ -1,0 +1,7 @@
+I generally tend to make a lot of small commits which results in a HUGE
+changelog. Therefore, the ChangeLog has been omitted as it is easily
+accessible via 'git'. Major changes from the last version are always
+noted in the NEWS file. For those interested in every change, check out
+the va2epr-tnc git repository commit log:
+
+	https://github.com/tcort/va2epr-tnc/commits/master
