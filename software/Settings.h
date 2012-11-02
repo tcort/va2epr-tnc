@@ -33,12 +33,36 @@ class Settings : public QWidget {
 	private slots:
 
 		void doProgram();
+		void doRead();
+		void doDefaults();
 
 	private:
 
+		QFormLayout *_formLayout;
+		QHBoxLayout *_buttonLayout;
 		QVBoxLayout *_layout;
 
+		QLabel *_tx_delayLabel;
+		QLineEdit *_tx_delay;
+
+		QLabel *_pLabel;
+		QLineEdit *_p;
+
+		QLabel *_slot_timeLabel;
+		QLineEdit *_slot_time;
+
+		QLabel *_tx_tailLabel;
+		QLineEdit *_tx_tail;
+
+		QLabel *_full_duplexLabel;
+		QCheckBox *_full_duplex;
+
+		QLabel *_callsignLabel;
+		QLineEdit *_callsign;
+
 		QPushButton *_program;
+		QPushButton *_read;
+		QPushButton *_defaults;
 };
 
 #endif

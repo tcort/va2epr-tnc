@@ -28,15 +28,78 @@
 Settings::Settings(QWidget *parent) : QWidget(parent) {
 
 	_layout = new QVBoxLayout();
+	_buttonLayout = new QHBoxLayout();
+	_formLayout = new QFormLayout();
+
+	// TODO add tooltips
+
+	_tx_delayLabel = new QLabel();
+	_tx_delayLabel->setText(tr("TX Delay"));
+	_tx_delay = new QLineEdit();
+	_formLayout->addRow(_tx_delayLabel, _tx_delay);
+
+	_pLabel = new QLabel();
+	_pLabel->setText(tr("p"));
+	_p = new QLineEdit();
+	_formLayout->addRow(_pLabel, _p);
+
+	_slot_timeLabel = new QLabel();
+	_slot_timeLabel->setText(tr("Slot Time"));
+	_slot_time = new QLineEdit();
+	_formLayout->addRow(_slot_timeLabel, _slot_time);
+
+	_tx_tailLabel = new QLabel();
+	_tx_tailLabel->setText(tr("TX Tail"));
+	_tx_tail = new QLineEdit();
+	_formLayout->addRow(_tx_tailLabel, _tx_tail);
+
+	_full_duplexLabel = new QLabel();
+	_full_duplexLabel->setText(tr("Full Duplex"));
+	_full_duplex = new QCheckBox();
+	_formLayout->addRow(_full_duplexLabel, _full_duplex);
+
+	_callsignLabel = new QLabel();
+	_callsignLabel->setText(tr("Callsign"));
+	_callsign = new QLineEdit();
+	_formLayout->addRow(_callsignLabel, _callsign);
+
+	_layout->addLayout(_formLayout);
 
 	_program = new QPushButton();
-	_program->setText(tr("Program"));
+	_program->setText(tr("Program Device"));
 	connect(_program, SIGNAL(clicked()), this, SLOT(doProgram()));
-	_layout->addWidget(_program);
+	_buttonLayout->addWidget(_program);
+
+	_read = new QPushButton();
+	_read->setText(tr("Read Device"));
+	connect(_read, SIGNAL(clicked()), this, SLOT(doRead()));
+	_buttonLayout->addWidget(_read);
+
+	_defaults = new QPushButton();
+	_defaults->setText(tr("Load Defaults"));
+	connect(_defaults, SIGNAL(clicked()), this, SLOT(doDefaults()));
+	_buttonLayout->addWidget(_defaults);
+
+	_layout->addLayout(_buttonLayout);
 
 	setLayout(_layout);
 }
 
 void Settings::doProgram(void) {
 
+	// TODO do some data validation
+}
+
+void Settings::doRead(void) {
+
+}
+
+void Settings::doDefaults(void) {
+
+	_tx_delay->setText(tr("50"));
+	_p->setText(tr("63"));
+	_slot_time->setText(tr("10"));
+	_tx_tail->setText(tr("50"));
+	_full_duplex->setCheckState(Qt::Unchecked);
+	_callsign->setText(tr("VA2EPR"));
 }

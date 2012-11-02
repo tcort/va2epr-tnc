@@ -41,8 +41,60 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="Settings.cpp" line="33"/>
-        <source>Program</source>
+        <location filename="Settings.cpp" line="37"/>
+        <source>TX Delay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="42"/>
+        <source>p</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="47"/>
+        <source>Slot Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="52"/>
+        <source>TX Tail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="57"/>
+        <source>Full Duplex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="62"/>
+        <source>Callsign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="69"/>
+        <source>Program Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="74"/>
+        <source>Read Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="79"/>
+        <source>Load Defaults</source>
+        <oldsource>Load Default Settings</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="99"/>
+        <location filename="Settings.cpp" line="102"/>
+        <source>50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Settings.cpp" line="104"/>
+        <source>VA2EPR</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
