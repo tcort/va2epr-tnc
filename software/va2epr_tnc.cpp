@@ -41,6 +41,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_file->addAction(_quitAction);
 
 	_helpAction = new QAction(tr("&About %1").arg(PROGRAM_NAME), this);
+	_helpAction->setIcon(QIcon(":/icons/status/dialog-information.svg"));
 	connect(_helpAction, SIGNAL(triggered()), this, SLOT(doAbout()));
 
 	_help = menuBar()->addMenu(tr("&Help"));
@@ -59,9 +60,9 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	_tabs = new QTabWidget();
 	_tabs->setTabPosition(QTabWidget::South);
-	_tabs->addTab(_console, tr("Console"));
-	_tabs->addTab(_www, tr("Map"));
-	_tabs->addTab(_settings, tr("Settings"));
+	_tabs->addTab(_console, QIcon(":/icons/apps/utilities-terminal.svg"), tr("Console"));
+	_tabs->addTab(_www, QIcon(":/icons/apps/internet-web-browser.svg"), tr("Map"));
+	_tabs->addTab(_settings, QIcon(":/icons/categories/preferences-system.svg"), tr("Settings"));
 
 	_status = new QLabel();
 	_status->setText(tr("Disconnected"));

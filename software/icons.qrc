@@ -2,6 +2,10 @@
 <RCC version="1.0">
   <qresource>
     <file>icons/actions/system-log-out.svg</file>
+    <file>icons/apps/internet-web-browser.svg</file>
+    <file>icons/apps/utilities-terminal.svg</file>
+    <file>icons/categories/preferences-system.svg</file>
     <file>icons/devices/network-wireless.svg</file>
+    <file>icons/status/dialog-information.svg</file>
   </qresource>
 </RCC>

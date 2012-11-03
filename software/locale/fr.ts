@@ -130,32 +130,32 @@
         <translation>À &amp;propos de %1</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="46"/>
+        <location filename="../va2epr_tnc.cpp" line="47"/>
         <source>&amp;Help</source>
         <translation>Aid&amp;e</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="62"/>
+        <location filename="../va2epr_tnc.cpp" line="63"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="63"/>
+        <location filename="../va2epr_tnc.cpp" line="64"/>
         <source>Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="64"/>
+        <location filename="../va2epr_tnc.cpp" line="65"/>
         <source>Settings</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="67"/>
+        <location filename="../va2epr_tnc.cpp" line="68"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="75"/>
+        <location filename="../va2epr_tnc.cpp" line="76"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
