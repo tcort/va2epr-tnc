@@ -65,20 +65,13 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
 
 	_layout->addLayout(_formLayout);
 
-	_program = new QPushButton();
-	_program->setText(tr("Program Device"));
-	connect(_program, SIGNAL(clicked()), this, SLOT(doProgram()));
-	_buttonLayout->addWidget(_program);
-
-	_read = new QPushButton();
-	_read->setText(tr("Read Device"));
+	_read = new QPushButton(QIcon(":/icons/actions/document-open.svg"), tr("Read Device"));
 	connect(_read, SIGNAL(clicked()), this, SLOT(doRead()));
 	_buttonLayout->addWidget(_read);
 
-	_defaults = new QPushButton();
-	_defaults->setText(tr("Load Defaults"));
-	connect(_defaults, SIGNAL(clicked()), this, SLOT(doDefaults()));
-	_buttonLayout->addWidget(_defaults);
+	_program = new QPushButton(QIcon(":/icons/actions/document-save.svg"), tr("Program Device"));
+	connect(_program, SIGNAL(clicked()), this, SLOT(doProgram()));
+	_buttonLayout->addWidget(_program);
 
 	_layout->addLayout(_buttonLayout);
 
@@ -92,14 +85,4 @@ void Settings::doProgram(void) {
 
 void Settings::doRead(void) {
 
-}
-
-void Settings::doDefaults(void) {
-
-	_tx_delay->setText(tr("50"));
-	_p->setText(tr("63"));
-	_slot_time->setText(tr("10"));
-	_tx_tail->setText(tr("50"));
-	_full_duplex->setCheckState(Qt::Unchecked);
-	_callsign->setText(tr("VA2EPR"));
 }

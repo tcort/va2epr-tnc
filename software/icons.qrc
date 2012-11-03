@@ -1,6 +1,9 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource>
+    <file>icons/actions/document-open.svg</file>
+    <file>icons/actions/document-save.svg</file>
+    <file>icons/actions/mail-reply-sender.svg</file>
     <file>icons/actions/system-log-out.svg</file>
     <file>icons/apps/internet-web-browser.svg</file>
     <file>icons/apps/utilities-terminal.svg</file>

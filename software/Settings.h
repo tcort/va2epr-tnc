@@ -34,7 +34,6 @@ class Settings : public QWidget {
 
 		void doProgram();
 		void doRead();
-		void doDefaults();
 
 	private:
 
@@ -62,7 +61,6 @@ class Settings : public QWidget {
 
 		QPushButton *_program;
 		QPushButton *_read;
-		QPushButton *_defaults;
 };
 
 #endif

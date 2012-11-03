@@ -33,7 +33,7 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../Console.cpp" line="53"/>
+        <location filename="../Console.cpp" line="52"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -71,40 +71,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="69"/>
+        <location filename="../Settings.cpp" line="72"/>
         <source>Program Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="74"/>
+        <location filename="../Settings.cpp" line="68"/>
         <source>Read Device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="79"/>
-        <source>Load Defaults</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Settings.cpp" line="99"/>
-        <location filename="../Settings.cpp" line="102"/>
         <source>50</source>
-        <translation>50</translation>
+        <translation type="obsolete">50</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="100"/>
         <source>63</source>
-        <translation>63</translation>
+        <translation type="obsolete">63</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="101"/>
         <source>10</source>
-        <translation>10</translation>
+        <translation type="obsolete">10</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="104"/>
         <source>VA2EPR</source>
-        <translation>VA2EPR</translation>
+        <translation type="obsolete">VA2EPR</translation>
     </message>
 </context>
 <context>

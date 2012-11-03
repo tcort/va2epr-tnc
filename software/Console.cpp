@@ -49,8 +49,7 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	connect(_input, SIGNAL(returnPressed()), this, SLOT(doSend()));
 	_inputLayout->addWidget(_input);
 
-	_send = new QPushButton();
-	_send->setText(tr("Send"));
+	_send = new QPushButton(QIcon(":/icons/actions/mail-reply-sender.svg"), tr("Send"));
 	connect(_send, SIGNAL(clicked()), this, SLOT(doSend()));
 	_inputLayout->addWidget(_send);
 
