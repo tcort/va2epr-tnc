@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource>
+    <file>icons/actions/system-log-out.svg</file>
+    <file>icons/devices/network-wireless.svg</file>
+  </qresource>
+</RCC>

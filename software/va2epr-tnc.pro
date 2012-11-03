@@ -43,4 +43,19 @@ TRANSLATIONS =	locale/fr.ts
 # Resources
 
 RESOURCES =	html.qrc \
+		icons.qrc \
 		locale.qrc
+
+# Icons
+
+win32 {
+	RC_FILE = va2epr-tnc.rc
+}
+
+macosx {
+	ICON = va2epr-tnc.icns
+}
+
+symbian {
+	ICON = va2epr-tnc.svg
+}

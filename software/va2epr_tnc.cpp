@@ -33,6 +33,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	setCentralWidget(_widget);
 
 	_quitAction = new QAction(tr("&Quit"), this);
+	_quitAction->setIcon(QIcon(":/icons/actions/system-log-out.svg"));
 	_quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
 	connect(_quitAction, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -72,6 +73,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_widget->setLayout(_layout);
 
 	setWindowTitle(tr("%1").arg(PROGRAM_NAME));
+	setWindowIcon(QIcon(":/icons/devices/network-wireless.svg"));
 	resize(800, 600);
 }
 

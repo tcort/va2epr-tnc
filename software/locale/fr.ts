@@ -115,47 +115,47 @@
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="36"/>
+        <location filename="../va2epr_tnc.cpp" line="37"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="39"/>
+        <location filename="../va2epr_tnc.cpp" line="40"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="42"/>
+        <location filename="../va2epr_tnc.cpp" line="43"/>
         <source>&amp;About %1</source>
         <translation>À &amp;propos de %1</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="45"/>
+        <location filename="../va2epr_tnc.cpp" line="46"/>
         <source>&amp;Help</source>
         <translation>Aid&amp;e</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="61"/>
+        <location filename="../va2epr_tnc.cpp" line="62"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="62"/>
+        <location filename="../va2epr_tnc.cpp" line="63"/>
         <source>Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="63"/>
+        <location filename="../va2epr_tnc.cpp" line="64"/>
         <source>Settings</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="66"/>
+        <location filename="../va2epr_tnc.cpp" line="67"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="74"/>
+        <location filename="../va2epr_tnc.cpp" line="75"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
