@@ -38,8 +38,7 @@ unix {
 
 # Words
 
-TRANSLATIONS =	va2epr-tnc_en.ts \
-		va2epr-tnc_fr.ts
+TRANSLATIONS =	locale/fr.ts
 
 # Resources
 

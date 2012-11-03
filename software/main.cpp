@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 	app.installTranslator(&qtTranslator);
 
 	QTranslator myappTranslator;
-	myappTranslator.load(QString(":/locale/va2epr-tnc_%1.qm").arg(QLocale::system().name()));
+	myappTranslator.load(QString(":/locale/%1.qm").arg(QLocale::system().name()));
 	app.installTranslator(&myappTranslator);
 
 	va2epr_tnc tnc;

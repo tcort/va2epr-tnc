@@ -23,4 +23,4 @@ then
         make clean
 fi
 
-rm -f Makefile va2epr-tnc *.qm
+rm -f Makefile va2epr-tnc locale/*.qm

@@ -1,7 +1,6 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-  <qresource prefix="/locale/">
-    <file>va2epr-tnc_en.qm</file>
-    <file>va2epr-tnc_fr.qm</file>
+  <qresource>
+    <file>locale/fr.qm</file>
   </qresource>
 </RCC>
