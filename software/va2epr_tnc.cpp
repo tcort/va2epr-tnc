@@ -39,7 +39,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_file = menuBar()->addMenu(tr("&File"));
 	_file->addAction(_quitAction);
 
-	_helpAction = new QAction(tr("&About"), this);
+	_helpAction = new QAction(tr("&About %1").arg(PROGRAM_NAME), this);
 	connect(_helpAction, SIGNAL(triggered()), this, SLOT(doAbout()));
 
 	_help = menuBar()->addMenu(tr("&Help"));

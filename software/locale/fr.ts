@@ -22,7 +22,7 @@
     <message>
         <location filename="../AboutDialog.cpp" line="55"/>
         <source>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="61"/>
@@ -117,22 +117,22 @@
     <message>
         <location filename="../va2epr_tnc.cpp" line="36"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="39"/>
         <source>&amp;File</source>
-        <translation>Fichier</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="42"/>
-        <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;About %1</source>
+        <translation>À &amp;propos de %1</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="45"/>
         <source>&amp;Help</source>
-        <translation>Aide</translation>
+        <translation>Aid&amp;e</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="61"/>
@@ -157,7 +157,7 @@
     <message>
         <location filename="../va2epr_tnc.cpp" line="74"/>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
+        <translation>%1</translation>
     </message>
 </context>
 </TS>
