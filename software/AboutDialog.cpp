@@ -48,7 +48,7 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	copyright->setAlignment(Qt::AlignCenter);
 	layout->addWidget(copyright);
 
-	QLabel *program_version = new QLabel(tr("Software Version %1").arg(PROGRAM_VERSION));
+	QLabel *program_version = new QLabel(tr("Version %1").arg(PROGRAM_VERSION));
 	program_version->setAlignment(Qt::AlignCenter);
 	layout->addWidget(program_version);
 

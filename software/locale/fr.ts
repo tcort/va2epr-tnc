@@ -16,8 +16,8 @@
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="51"/>
-        <source>Software Version %1</source>
-        <translation type="unfinished"></translation>
+        <source>Version %1</source>
+        <translation>Version %1</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cpp" line="55"/>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../AboutDialog.cpp" line="61"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../Console.cpp" line="52"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer</translation>
     </message>
 </context>
 <context>
@@ -73,28 +73,12 @@
     <message>
         <location filename="../Settings.cpp" line="72"/>
         <source>Program Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Écriture</translation>
     </message>
     <message>
         <location filename="../Settings.cpp" line="68"/>
         <source>Read Device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>50</source>
-        <translation type="obsolete">50</translation>
-    </message>
-    <message>
-        <source>63</source>
-        <translation type="obsolete">63</translation>
-    </message>
-    <message>
-        <source>10</source>
-        <translation type="obsolete">10</translation>
-    </message>
-    <message>
-        <source>VA2EPR</source>
-        <translation type="obsolete">VA2EPR</translation>
+        <translation>Lecture</translation>
     </message>
 </context>
 <context>
@@ -127,12 +111,12 @@
     <message>
         <location filename="../va2epr_tnc.cpp" line="52"/>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Connectés</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="55"/>
         <source>Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Déconnectés</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="61"/>
@@ -142,12 +126,12 @@
     <message>
         <location filename="../va2epr_tnc.cpp" line="77"/>
         <source>Console</source>
-        <translation type="unfinished"></translation>
+        <translation>Console</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="78"/>
         <source>Map</source>
-        <translation type="unfinished"></translation>
+        <translation>Carte</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="79"/>
@@ -158,7 +142,7 @@
         <location filename="../va2epr_tnc.cpp" line="82"/>
         <location filename="../va2epr_tnc.cpp" line="117"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Déconnectés</translation>
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="91"/>
@@ -168,7 +152,7 @@
     <message>
         <location filename="../va2epr_tnc.cpp" line="106"/>
         <source>Connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Connectés</translation>
     </message>
 </context>
 </TS>
