@@ -36,6 +36,8 @@ class va2epr_tnc : public QMainWindow {
 
 	private slots:
 		void doAbout(void);
+		void doConnect(void);
+		void doDisconnect(void);
 
 	private:
 		QWidget *_widget;
@@ -45,6 +47,12 @@ class va2epr_tnc : public QMainWindow {
 		QAction *_quitAction;
 		QMenu *_help;
 		QAction *_helpAction;
+
+		QToolBar *_toolbar;
+		QAction *_toolbarQuitAction;
+		QAction *_toolbarConnectAction;
+		QAction *_toolbarDisconnectAction;
+
 
 		QWebView *_www;
 		Console *_console;

@@ -47,6 +47,20 @@ va2epr_tnc::va2epr_tnc(void) {
 	_help = menuBar()->addMenu(tr("&Help"));
 	_help->addAction(_helpAction);
 
+	_toolbar = addToolBar("_toolbar");
+
+	_toolbarConnectAction = _toolbar->addAction(QIcon(":/icons/status/network-idle.svg"), tr("Connect"));
+	connect(_toolbarConnectAction, SIGNAL(triggered()), this, SLOT(doConnect()));
+
+	_toolbarDisconnectAction = _toolbar->addAction(QIcon(":/icons/status/network-offline.svg"), tr("Disconnect"));
+	_toolbarDisconnectAction->setEnabled(false);
+	connect(_toolbarDisconnectAction, SIGNAL(triggered()), this, SLOT(doDisconnect()));
+
+	_toolbar->addSeparator();
+
+	_toolbarQuitAction = _toolbar->addAction(QIcon(":/icons/actions/system-log-out.svg"), tr("Quit"));
+	connect(_toolbarQuitAction, SIGNAL(triggered()), this, SLOT(close()));
+
 	_www = new QWebView();
 	_www->load(QUrl("qrc:/html/va2epr-tnc.html"));
 	_www->show();
@@ -66,6 +80,7 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	_status = new QLabel();
 	_status->setText(tr("Disconnected"));
+	// TODO call doDisconnect here
 
 	statusBar()->addPermanentWidget(_status, 1);
 
@@ -82,6 +97,28 @@ void va2epr_tnc::doAbout(void) {
 
 	AboutDialog about(this);
 	about.exec();
+}
+
+void va2epr_tnc::doConnect(void) {
+
+	_toolbarConnectAction->setEnabled(false);
+	_toolbarDisconnectAction->setEnabled(true);
+	_status->setText(tr("Connected"));
+
+	// TODO: Do Serial Port Magic Here
+	// TODO: enable [Send] button and input area
+	// TODO: enable read/program on settings tab
+}
+
+void va2epr_tnc::doDisconnect(void) {
+
+	_toolbarConnectAction->setEnabled(true);
+	_toolbarDisconnectAction->setEnabled(false);
+	_status->setText(tr("Disconnected"));
+
+	// TODO: Do Serial Port Magic Here
+	// TODO: disable [Send] button and input area
+	// TODO: disable read/program on settings tab
 }
 
 va2epr_tnc::~va2epr_tnc(void) {

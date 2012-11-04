@@ -125,29 +125,50 @@
         <translation>Aid&amp;e</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="63"/>
+        <location filename="../va2epr_tnc.cpp" line="52"/>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../va2epr_tnc.cpp" line="55"/>
+        <source>Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../va2epr_tnc.cpp" line="61"/>
+        <source>Quit</source>
+        <translation>Quitter</translation>
+    </message>
+    <message>
+        <location filename="../va2epr_tnc.cpp" line="77"/>
         <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="64"/>
+        <location filename="../va2epr_tnc.cpp" line="78"/>
         <source>Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="65"/>
+        <location filename="../va2epr_tnc.cpp" line="79"/>
         <source>Settings</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="68"/>
+        <location filename="../va2epr_tnc.cpp" line="82"/>
+        <location filename="../va2epr_tnc.cpp" line="117"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="76"/>
+        <location filename="../va2epr_tnc.cpp" line="91"/>
         <source>%1</source>
         <translation>%1</translation>
+    </message>
+    <message>
+        <location filename="../va2epr_tnc.cpp" line="106"/>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

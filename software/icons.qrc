@@ -10,5 +10,7 @@
     <file>icons/categories/preferences-system.svg</file>
     <file>icons/devices/network-wireless.svg</file>
     <file>icons/status/dialog-information.svg</file>
+    <file>icons/status/network-idle.svg</file>
+    <file>icons/status/network-offline.svg</file>
   </qresource>
 </RCC>
