@@ -33,30 +33,44 @@ Free Documentation License".
 @chapter Introduction
 
 This manual describes the steps taken to create the VA2EPR Terminal
-Node Controller. It covers everything from ordering components to
-setting up and running the PC software. The goal is to provide a
-set of instructions that could be used to rebuild and use the device.
+Node Controller. It includes details on everything from ordering components to
+setting up and running the PC software. The aim of this document is to
+provide a set of instructions that could be used to rebuild and use the device.
 
 @chapter Obtaining Materials
 
 One of the design goals of the project was to choose generic parts
 and materials such that it would be easy to find parts and part suppliers. This
 chapter will describe where parts were obtained and provide general
-information about the supplier.
+information about each of the suppliers. In each instance, I tried to choose
+the best. most economical supplier.
 
 @section Printed Circuit Boards (iTead Studio)
 
-The printed circuit boards were fabricated by iTead Studio in
-Shenzhen, China. The GERBER files provided on the website were
-sent to iTead Studio.
+The printed circuit boards were fabricated by
+@url{http://iteadstudio.com/,iTead Studio} in
+Shenzhen, China. The cost was under $25 for 10 green boards which
+measure 10cm x 10cm (or less) each. Shipping was under $10. After paying,
+I e-mailed the @url{http://www.tomcort.com/va2epr-tnc/gerber.zip,GERBER} files
+to iTead Studio. I got a response back saying they were sent to the factory.
+It took about a week for the boards to be produced, and two weeks for the
+PCBs to make it from China to Canada through the postal system. I've used
+iTead Studio more than once, and I've always had good results.
 
 @section Electronic Components (Digi-key)
 
-foo
+I purchased all of the electronic components from
+@url{http://digikey.ca,Digi-key}. The parts I ordered,
+along with Digi-key part numbers, are listed in the
+@url{http://www.tomcort.com/va2epr-tnc/materials.htm,Bill of Materials}.
+Digi-key parts are relatively inexpensive and overnight shipping is $8.
+I've never had a problem with a Digi-key order.
 
 @section Enclosure (TenTec)
 
-foo
+I purchased the enclosure from @url{http://tentec.com/,TenTec}. I went with
+the TP-41 due to cost, but the TG-24 will also work. The prices was reasonable,
+and the shipping was pretty fast.
 
 @chapter Assembly and Test
 
