@@ -40,7 +40,7 @@
  * Timer 1 (Input Capture)
  * Timer 2 (Waveform Generation)
  *
- * PORTA (AFSK Output)
+ * PORTB (AFSK Output)
  * PD6 (Input Capture Input)
  * PD7 (Push to Talk Output)
  */
@@ -138,9 +138,9 @@ void afsk_init(void) {
 	/* -- Output DAC (TX) -- */
 	/* do all setup except enabling the compare match interrupt (done in tx()) */
 
-	/* AFSK DAC is on PORTA */
-	DDRA |= 0xFF; /* AFSK output */
-	PORTA = 0x00; /* initialize */
+	/* AFSK DAC is on PORTB */
+	DDRB |= 0xFF; /* AFSK output */
+	PORTB = 0x00; /* initialize */
 
 	/* Timer 2 CTC, pre-scalar 8 */
 	TCCR2A |= (1<<WGM21); /* CTC */
@@ -483,13 +483,13 @@ ISR(TIMER2_COMPA_vect) {
 	static unsigned char sinewave_index = 0;
 
 	/*
-	 * output sinewave to PORTA.
+	 * output sinewave to PORTB.
 	 *
-	 * PORTA is to be connected to an external R-2R ladder.
+	 * PORTB is to be connected to an external R-2R ladder.
 	 * The ladder output should be attenuated to 1Vpp and
 	 * AC coupled to create line level audio.
 	 */
-	PORTA = sinewave[sinewave_index++];
+	PORTB = sinewave[sinewave_index++];
 
 	/*
 	 * I set OCR2A here because setting it somewhere else
