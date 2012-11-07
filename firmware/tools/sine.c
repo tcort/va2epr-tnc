@@ -20,7 +20,10 @@
 #include <math.h>
 
 /* Default size of sinewave value table */
-#define NSAMPLES 16
+#define NSAMPLES 32
+
+/* Define LSB_FIRST for a Rev B board (least significant bit first) */
+#define LSB_FIRST
 
 /*
  * Generate a table of sinewave values
@@ -45,6 +48,17 @@ int main(int argc, char *argv[]) {
 
 		double sine = sin(((i*1.0)/nsamples_f) * (M_PI*2.0));
 		unsigned char wave = (sine + 1.0) * 127.5;
+
+#ifdef LSB_FIRST
+		unsigned char j;
+		unsigned char wave_fixed = 0;
+
+		for (j = 0; j < 8; j++) {
+			wave_fixed |= ((wave >> (7-j)) & 0x01) << (j);
+		}
+
+		wave = wave_fixed;
+#endif
 
 		printf("%3d", wave);
 
