@@ -1,3 +1,4 @@
  * Redo schematic and pcb using a free / open source CAD program.
  * USB A connector for a stronger hold.
  * Smaller PCB to reduce costs (10cm x 5cm or smaller).
+ * For the DAC, put DAC0 on PB0 (currently it's reversed DAC0 is on PB7)
