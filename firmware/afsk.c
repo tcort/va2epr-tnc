@@ -128,10 +128,6 @@ unsigned char sinewave[32] = {
  */
 unsigned char in_kiss_frame = 0;
 
-/* timer1 input capture housekeeping */
-unsigned int capture_last_time = 0;
-unsigned int capture_overflows = 0;
-
 /* setup ports and timers */
 void afsk_init(void) {
 
@@ -149,7 +145,7 @@ void afsk_init(void) {
 	OCR2A = afsk_output_frequency; /* set with some default value */
 
 	/* -- Input Capture (RX) -- */
-	/* do all setup except enabling of overflow and input capture interrupts (done in rx()) */
+	/* do all setup except enabling of input capture interrupt (done in rx()) */
 
 	/* Input Capture on PD6 */
 	DDRD &= ~(1<<PD6); /* ICP as Input */
@@ -184,7 +180,7 @@ void tx(void) {
 
 	/* Turn off RX interrupts */
 	TIMSK0 &= ~(1<<OCIE0A); /* disable afsk decoder */
-	TIMSK1 &= ~((1<<ICIE1)|(1<<TOIE1)); /* disable overflow and input capture interrupts */
+	TIMSK1 &= ~(1<<ICIE1); /* disable input capture interrupt */
 
 	/*
 	 * If it goes into TX without finishing receiving the current AX.25 frame,
@@ -214,7 +210,7 @@ void rx(void) {
 	PORTD &= ~(1<<PD7); /* PTT OFF */
 
 	/* Turn on RX interrupts */
-	TIMSK1 |= ((1<<ICIE1)|(1<<TOIE1)); /* enable overflow and input capture interrupts */
+	TIMSK1 |= (1<<ICIE1); /* enable input capture interrupt */
 	TIMSK0 |= (1<<OCIE0A); /* enable afsk decoder */
 }
 
@@ -415,15 +411,28 @@ ISR(TIMER0_COMPA_vect) {
 	}
 }
 
-/* capture the period of an input waveform */
+/* capture the period of an input waveform (rising edge triggered) */
 ISR(TIMER1_CAPT_vect) {
 
-	unsigned int capture_period = 0;
+	static unsigned int capture_period;
 
-	/* compute period taking into account overflows */
-	capture_period = ICR1 + (0xffff * capture_overflows) - capture_last_time;
-	capture_last_time = ICR1; /* keep track of when the last period ended */
-	capture_overflows = 0; /* reset the overflow counter */
+	/*
+	 * Get the clock count since the last rising edge (i.e. the period of
+	 * the waveform).
+	 *
+	 * To make this as simple as possible, so that it executes quickly,
+	 * I have done away with the house keeping for counting overflows
+	 * and computing the time since the last rising edge. Instead, the
+	 * CPU just counts from zero. When control gets to this part of the
+	 * code, the period is just ICR1.
+	 */
+	capture_period = ICR1;
+
+	/*
+	 * reset counter so that this function doesn't have to keep track of
+	 * the prior ICR1 value. (e.x. capture_period = ICR1 - last_ICR1_value;
+	 */
+	TCNT1 = 0;
 
 	/*
 	 * capture_period is used to determine the input signal's frequnecy.
@@ -458,22 +467,6 @@ ISR(TIMER1_CAPT_vect) {
 
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
-	}
-}
-
-/* keep track of timer 1 overflows */
-ISR(TIMER1_OVF_vect) {
-
-	capture_overflows++;
-
-	/*
-	 * if the timer has overflow twice, the count since the
-	 * last zero crossing is at least 64k which is many more
-	 * times the upper threshold. That means it definitely isn't
-         * detecting an AFSK signal.
-	 */
-	if (capture_overflows > 1) {
-		carrier_sense = 0;
 	}
 }
 
