@@ -20,7 +20,7 @@ PROJECT_FILE=va2epr-tnc.pro
 
 set -e
 
-./clean.sh
+sh clean.sh
 lupdate ${PROJECT_FILE}
 lrelease ${PROJECT_FILE}
 qmake ${PROJECT_FILE}
