@@ -27,7 +27,23 @@
 #include "Settings.h"
 #include "va2epr_tnc.h"
 
+#ifdef __linux
+#include "LinuxSerialPort.h"
+#endif
+
+#ifdef _WIN32
+#include "WindowsSerialPort.h"
+#endif
+
 va2epr_tnc::va2epr_tnc(void) {
+
+#ifdef __linux
+	_serial = new LinuxSerialPort();
+#endif
+
+#ifdef _WIN32
+	_serial = new LinuxSerialPort();
+#endif
 
 	_widget = new QWidget();
 	setCentralWidget(_widget);
@@ -91,6 +107,8 @@ va2epr_tnc::va2epr_tnc(void) {
 	setWindowTitle(tr("%1").arg(PROGRAM_NAME));
 	setWindowIcon(QIcon(":/icons/devices/network-wireless.svg"));
 	resize(800, 600);
+
+	doDisconnect();
 }
 
 void va2epr_tnc::doAbout(void) {
@@ -101,13 +119,18 @@ void va2epr_tnc::doAbout(void) {
 
 void va2epr_tnc::doConnect(void) {
 
+	if (_serial->isOpen()) {
+		_serial->close();
+	}
+
+	// Try _serial->open() here
+
 	_toolbarConnectAction->setEnabled(false);
 	_toolbarDisconnectAction->setEnabled(true);
 	_status->setText(tr("Connected"));
 
-	// TODO: Do Serial Port Magic Here
 	// TODO: enable [Send] button and input area
-	// TODO: enable read/program on settings tab
+	// TODO: disable read/program on settings tab
 }
 
 void va2epr_tnc::doDisconnect(void) {
@@ -116,11 +139,19 @@ void va2epr_tnc::doDisconnect(void) {
 	_toolbarDisconnectAction->setEnabled(false);
 	_status->setText(tr("Disconnected"));
 
-	// TODO: Do Serial Port Magic Here
+	if (_serial->isOpen()) {
+		_serial->close();
+	}
+
 	// TODO: disable [Send] button and input area
 	// TODO: disable read/program on settings tab
 }
 
 va2epr_tnc::~va2epr_tnc(void) {
 
+	if (_serial->isOpen()) {
+		doDisconnect();
+	}
+
+	delete _serial;
 }

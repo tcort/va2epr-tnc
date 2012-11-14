@@ -24,6 +24,7 @@
 #include <QtWebKit>
 
 #include "Console.h"
+#include "SerialPort.h"
 #include "Settings.h"
 
 class va2epr_tnc : public QMainWindow {
@@ -60,6 +61,8 @@ class va2epr_tnc : public QMainWindow {
 		QTabWidget *_tabs;
 
 		QLabel *_status;
+
+		SerialPort *_serial;
 };
 
 #endif
