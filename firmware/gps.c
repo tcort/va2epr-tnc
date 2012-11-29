@@ -55,6 +55,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "kiss.h"
 #include "gps.h"
@@ -69,8 +70,74 @@ void gps_init(void) {
 	UBRR1H = (GPS_UBRR_VAL >> 8);
 	UBRR1L = (GPS_UBRR_VAL & 0xFF);
 
-	UCSR1B |= (1 << RXEN1) | (1 << TXEN1) | (1<<RXCIE0);
 	UCSR1C |= (1 << UCSZ10) | (1 << UCSZ11);
+}
+
+void gps_enable(void) {
+
+	/* Enable RX/TX and RX interrupt */
+	UCSR1B |= ((1 <<  RXEN1) | (1 << TXEN1) | (1<<RXCIE0));
+
+}
+
+char gps_is_connected(void) {
+
+	/* state of the GPS (-1 = unsure, 0 = not connected, 1 = connected) */
+	static unsigned int status = -1;
+
+	/* index */
+	unsigned int x = 0;
+
+	/* temp variable for read USART data */
+	unsigned char c;
+
+	/* number of bytes read from USART */
+	unsigned char count = 0;
+
+	if (status == -1) {
+
+		status = 0;
+
+		/* Turn on USART */
+		UCSR1B |= ((1 <<  RXEN1) | (1 << TXEN1));
+
+		for (x = 0; x < 2048; x++) {
+
+			if (UCSR1A & (1<<RXC1)) {
+
+				c = UDR1;
+				c = c; /* avoid unused variable warning */
+
+				count++;
+
+				/*
+				 * if I can read more than 16 bytes in 2
+				 * seconds, then the GPS is probably
+				 * connected and sending data.
+				 */
+				if (count >= 16) {
+					status = 1;
+					break;
+				}
+			}
+
+			_delay_ms(1);
+
+		}
+
+		/* Turn OFF USART */
+		UCSR1B &= ~((1 <<  RXEN1) | (1 << TXEN1));
+
+	}
+
+	return status;
+}
+
+void gps_disable(void) {
+
+	/* Disable RX/TX and RX interrupt */
+	UCSR1B &= ~((1 <<  RXEN1) | (1 << TXEN1) | (1<<RXCIE0));
+
 }
 
 /*
@@ -84,5 +151,6 @@ ISR(USART1_RX_vect) {
 	/* Read from UART */
 	c = UDR1;
 
-	kiss_tx_raw(c);
+	c = c; /* avoid unused variable error */
+	/* TODO buffer a line of data at a time */
 }

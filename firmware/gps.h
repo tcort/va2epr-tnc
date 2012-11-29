@@ -31,5 +31,8 @@
  */
 
 void gps_init(void);
+void gps_enable(void);
+void gps_disable(void);
+char gps_is_connected(void);
 
 #endif

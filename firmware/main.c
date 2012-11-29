@@ -38,11 +38,10 @@ int main(void) {
 	config_read();
 	afsk_init();
 	kiss_init();
-/*
 	gps_init();
-*/	
+
 	sei();
-	
+
 	rx();
 
 	while (1) {
@@ -62,8 +61,22 @@ int main(void) {
 			
 			rx(); /* go back to receive mode */
 		}
-		
+
+#ifdef __IN_PROGRESS_CODE__
+		/* TODO implement some sort of 10 minute timer */
 		/* TODO occasionally get some data from the GPS */
+		if (gps_is_connected()) {
+
+			gps_enable();
+			/*
+			 * TODO wait for lock, parse nmea sentences, 
+			 * fill tx buffer
+			 */
+			gps_disable();
+		}
+		/* TODO for APRS tracker, don't do rx(); */
+#endif
+
 	}
 
 	return 0;
