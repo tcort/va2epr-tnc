@@ -19,26 +19,13 @@
 /*
  * This file implements 1200 baud AFSK NRZI with 1200 Hz and 2200 Hz tones.
  *
- * Current Status
- * --------------
- * Can differentiate between 1200 Hz, 2200 Hz, and tones outside of
- * a given tolerance. Can output waveforms at 1200 Hz and 2200 Hz. This is
- * enough to show that the circuits used in the schematic are viable.
- *
- * Code to capture incoming data and output it via USART0 is written
- * but untested.
- *
- * The code needs to be enhanced to output data from a buffer. This can probably be
- * done by using Timer 3 to periodically sample data or periodically
- * change afsk_output_frequency to TONE_1200HZ or TONE_2200HZ. When in TX mode,
- * consider using a watchdog timer to help prevent getting stuck in TX mode.
- *
  * Ports and Peripherals Used
  * --------------------------
  *
  * Timer 0 (AFSK Decoding)
  * Timer 1 (Input Capture)
  * Timer 2 (Waveform Generation)
+ * Timer 3 (AFSK Encoding)
  *
  * PORTB (AFSK Output)
  * PD6 (Input Capture Input)
@@ -87,6 +74,14 @@
  * 14745600/8/9600 - 1 = 191
  */
 #define TIMER_9600 191 /* 9600 Hz */
+
+/*
+ * This is the counter value for the AFSK encoding interrupt
+ * running on Timer 3.
+ *
+ * 14745600/8/1200 - 1 = 1535
+ */
+#define TIMER_1200 1535 /* 1200 Hz */
 
 /*
  * This is the value that is used to set OCR2A. It controls the
@@ -144,6 +139,12 @@ void afsk_init(void) {
 	TCNT2 = 0x00; /* initialize counter to 0 */
 	OCR2A = afsk_output_frequency; /* set with some default value */
 
+	/* Timer 3 CTC, pre-scalar 8 */
+	TCCR3A |= (1<<WGM31); /* CTC */
+	TCCR3B |= (1<<CS31); /* pre-scalar = 8 */
+	TCNT3 = 0x00; /* initialize counter to 0 */
+	OCR3A = TIMER_1200; /* 1200 times per second */
+
 	/* -- Input Capture (RX) -- */
 	/* do all setup except enabling of input capture interrupt (done in rx()) */
 
@@ -199,6 +200,7 @@ void tx(void) {
 	/* Turn on TX interrupts/pins */
 	PORTD |= (1<<PD7); /* PTT ON */
 	TIMSK2 |= (1<<OCIE2A); /* enable compare match interrupt */
+	TIMSK3 |= (1<<OCIE3A); /* enable afsk encoder */
 }
 
 /*
@@ -208,6 +210,7 @@ void rx(void) {
 
 	/* Turn off TX interrupts/pins */
 	TIMSK2 &= ~(1<<OCIE2A); /* disable compare match interrupt */
+	TIMSK3 &= ~(1<<OCIE3A); /* disable afsk encoder */
 	PORTD &= ~(1<<PD7); /* PTT OFF */
 
 	/* Turn on RX interrupts */
@@ -594,4 +597,58 @@ ISR(TIMER2_COMPA_vect) {
 
 	/* keep sinewave_index in the range 0-31 */
 	sinewave_index &= 0x1f;
+}
+
+/* vary afsk_output_frequency to encode data */
+ISR(TIMER3_COMPA_vect) {
+
+	/* byte to send (LSB first) */
+	static unsigned char bits = 0;
+
+	/* number of bits in 'bits' sent */
+	static unsigned char bit_count = 0;
+
+	/* count the 1's sent - used for AX.25 bit stuffing */
+	static unsigned char ones_count = 0;
+
+	/* list of possible tones */
+	static unsigned char tones[2] = {
+		TONE_1200HZ, TONE_2200HZ
+	};
+
+	/* index in the tones array */
+	static unsigned char tones_index = 0;
+
+	if (bit_count == 0) {
+
+		if (kiss_rx_buffer_empty()) {
+
+			/* TODO this function should set a flag to end TX */
+			return;
+		}
+
+		bits = kiss_rx_buffer_dequeue();
+	}
+
+	if (!(bits & 0x01)) {
+
+		/* if the current bit is a 0, then toggle */
+		tones_index = !tones_index;
+		afsk_output_frequency = tones[tones_index];
+		ones_count = 0;
+
+	} else if (ones_count++ >= 5) {
+
+		/* bit stuff */
+		tones_index = !tones_index;
+		afsk_output_frequency = tones[tones_index];
+		ones_count = 0;
+
+		bits <<= 1;
+		bit_count = (bit_count-1) & 0x07;
+	}
+
+	bits >>= 1;
+	bit_count = (bit_count+1) & 0x07;
+
 }
