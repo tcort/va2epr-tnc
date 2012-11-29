@@ -71,14 +71,14 @@
  * captured input is 1200 Hz or 2200 Hz. You can compute these
  * the same as above...
  *
- *  For  200 Hz, 14745600/8/ 200 - 1 = 9216
+ *  For  200 Hz, 14745600/8/ 800 - 1 = 2303
  *  For 1700 Hz, 14745600/8/1700 - 1 = 1083
- *  For 4700 Hz, 14745600/8/4700 - 1 = 391
+ *  For 4700 Hz, 14745600/8/2600 - 1 = 708
  */
-#define PERIOD_2200_MIN  391 /* 2.7 kHz */
+#define PERIOD_2200_MIN  708 /* 2.6 kHz */
 #define PERIOD_2200_MAX 1083 /* 1.7 kHz */
 #define PERIOD_1200_MIN 1083 /* 1.7 kHz */
-#define PERIOD_1200_MAX 9216 /* 0.2 kHz */
+#define PERIOD_1200_MAX 2303 /* 0.8 kHz */
 
 /*
  * This is the counter value for the AFSK decoding interrupt
@@ -150,6 +150,7 @@ void afsk_init(void) {
 	/* Input Capture on PD6 */
 	DDRD &= ~(1<<PD6); /* ICP as Input */
 	PORTD |= (1<<PD6); /* enable pull-up on ICP1 */
+	ACSR &= ~(1<<ACIC); /* select ICP1 input for source for input capture (default) */
 
 	/* Timer 1 ICP */
 	TCCR1A = 0x00; /* Normal Mode */
@@ -245,6 +246,97 @@ void rx(void) {
  */
 ISR(TIMER0_COMPA_vect) {
 
+	/* receive buffer holding the last 8 received bits */
+	static unsigned char bits = 0x00;
+
+	/* counter used to track the number of bits in 'bits' */
+	static unsigned char bits_count = 0;
+
+	/* count the 1's received - used for AX.25 bit stuffing */
+	static unsigned char ones_count = 0;
+
+	/* pseudo-timer used to decide when to sample */
+	static unsigned char next_sample = 8;
+
+	if (shift_detect) {
+
+		/* clear shift_detect so we don't re-sample the same bit */
+		shift_detect = 0;
+
+		/*
+		 * Check for AX.25 bit stuffing. If stuffing, don't sample the '0'.
+		 *
+		 * From the AX.25 spec (v2.2):
+		 *
+		 *	"any time five contiguous “1” bits are received, a “0” bit
+		 *	immediately following five “1” bits is discarded."
+		 */
+		if (ones_count != 5) {
+
+			/*
+			 * frequency shift decodes to '0'
+			 *
+			 * I can't find a document that explains NZRI anywhere
+			 * (as it pertains to amateur radio), but I saw it in a comment
+			 * in the BertOS source code, so I assume it's true :)
+			 */
+			bits >>= 1; /* insert a 0 from the left */
+			bits_count++;
+		}
+
+		/*
+		 * Set the pseudo-timer to sample the next bit.
+		 *
+		 * If we are here, then the signal is at the leading edge of an
+		 * AFSK clock (since a shift was detected and this interrupt is
+		 * running 8 times faster than the AFSK baud rate of 1200).
+		 *
+		 * I want to make the next sample 1/1200 of a second from now,
+		 * but I want some wiggle room. For example, I don't want to
+		 * beat the AFSK clock to the next bit. Therefore, I will check
+		 * the state half way through the next AFSK clock cycle.
+		 *
+		 * 9600/1200 == 8, 8*1.5 == 12
+		 */
+		next_sample = 12;
+
+		ones_count = 0; /* clear consecutive 1's counter */
+
+	} else if (--next_sample == 0) {
+
+		/* no frequency shift decodes to '1' */
+		bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
+		bits_count++;
+
+		/* 9600/1200 == 8 */
+		next_sample = 8;
+
+		ones_count++; /* keep a tally of consecutive 1's received */
+	}
+
+	/*
+	 * The only time there is supposed to be six '1' bits in a row is the
+	 * AX.25 flag (0b01111110). I use this property to synchronize the
+	 * 'bits_count' variable. That variable is used to know when to sample
+	 * the byte held in 'bits'.
+	 *
+	 * If the flag is found or the byte buffer is full, then send the byte
+	 * and reset the bits_count to 0.
+	 */
+	if (bits == AX25_FLAG || bits_count >= 8) {
+
+		kiss_tx(bits);
+		next_sample--;
+
+		/* clear bit counter */
+		bits_count = 0;
+	}
+
+
+
+
+
+#ifdef __TEST_CODE__
 	/* receive buffer holding the last 8 received bits */
 	static unsigned char bits = 0x00;
 
@@ -409,11 +501,14 @@ ISR(TIMER0_COMPA_vect) {
 		ones_count = 0;
 		sample_timer = 1;
 	}
+#endif
 }
 
 /* capture the period of an input waveform (rising edge triggered) */
 ISR(TIMER1_CAPT_vect) {
 
+	static unsigned int low;
+	static unsigned int high;
 	static unsigned int capture_period;
 
 	/*
@@ -426,7 +521,9 @@ ISR(TIMER1_CAPT_vect) {
 	 * CPU just counts from zero. When control gets to this part of the
 	 * code, the period is just ICR1.
 	 */
-	capture_period = ICR1;
+	low = ICR1L;
+	high = ICR1H;
+	capture_period = ((high << 8) | low);
 
 	/*
 	 * reset counter so that this function doesn't have to keep track of
@@ -455,7 +552,7 @@ ISR(TIMER1_CAPT_vect) {
 	if (capture_period >= PERIOD_1200_MIN && capture_period < PERIOD_1200_MAX) {
 
 		/* If the last frequency was 1200 Hz, then there wasn't a shift. */
-		shift_detect = (carrier_sense == TONE_1200HZ) ? 0 : 1;
+		shift_detect |= (carrier_sense != TONE_1200HZ);
 
 		/* 1200 Hz Carrier Present */
 		carrier_sense = TONE_1200HZ;
@@ -463,7 +560,7 @@ ISR(TIMER1_CAPT_vect) {
 	} else if (capture_period >= PERIOD_2200_MIN && capture_period < PERIOD_2200_MAX) {
 
 		/* If the last frequency was 2200 Hz, then there wasn't a shift. */
-		shift_detect = (carrier_sense == TONE_2200HZ) ? 0 : 1;
+		shift_detect |= (carrier_sense != TONE_2200HZ);
 
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
