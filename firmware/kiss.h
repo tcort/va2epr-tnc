@@ -23,7 +23,7 @@
  * Baud Rate
  */
 
-#define KISS_BAUDRATE 9600
+#define KISS_BAUDRATE 115200
 #define KISS_UBRR_VAL (((F_CPU / (KISS_BAUDRATE * 16UL))) - 1)
 
 /*
