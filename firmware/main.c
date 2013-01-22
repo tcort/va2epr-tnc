@@ -30,6 +30,7 @@
 #include "csma.h"
 #include "gps.h"
 #include "kiss.h"
+#include "nmea.h"
 
 int main(void) {
 
@@ -62,20 +63,27 @@ int main(void) {
 			rx(); /* go back to receive mode */
 		}
 
-#ifdef __IN_PROGRESS_CODE__
+#ifdef __NOT_READY_TO_USE_YET__
 		/* TODO implement some sort of 10 minute timer */
-		/* TODO occasionally get some data from the GPS */
 		if (gps_is_connected()) {
+			struct nmea_coordinates	*location;
 
 			gps_enable();
-			/*
-			 * TODO wait for lock, parse nmea sentences, 
-			 * fill tx buffer
-			 */
+
+			do {
+				/*
+				 * loop until we get valid coordinates. Note,
+				 * this could take forever if the GPS is indoors.
+				 */
+				location = gps_get_coords();
+				_delay_ms(100);
+
+			} while (!location->valid);
+
 			gps_disable();
 		}
-		/* TODO for APRS tracker, don't do rx(); */
 #endif
+		/* TODO for APRS tracker, don't do rx(); */
 
 	}
 
