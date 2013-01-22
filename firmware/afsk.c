@@ -259,7 +259,10 @@ ISR(TIMER0_COMPA_vect) {
 	static unsigned char ones_count = 0;
 
 	/* pseudo-timer used to decide when to sample */
-	static unsigned char next_sample = 8;
+	static signed char next_sample = 8;
+
+	/* track bytes sent by kiss_tx so that next_sample can be adjusted properly */
+	static unsigned char extra_bytes_sent = 0;
 
 	if (shift_detect) {
 
@@ -305,7 +308,7 @@ ISR(TIMER0_COMPA_vect) {
 
 		ones_count = 0; /* clear consecutive 1's counter */
 
-	} else if (--next_sample == 0) {
+	} else if (--next_sample <= 0) {
 
 		/* no frequency shift decodes to '1' */
 		bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
@@ -328,8 +331,14 @@ ISR(TIMER0_COMPA_vect) {
 	 */
 	if (bits == AX25_FLAG || bits_count >= 8) {
 
-		kiss_tx(bits);
-		next_sample--;
+		extra_bytes_sent = kiss_tx(bits) - 1;
+
+		/* We additional escape characters sent? */
+		if (extra_bytes_sent) {
+
+			/* Each additional byte sent delays this ISR (43us @ 230400 baud). */
+			next_sample -= (unsigned char) ((1.0/9600) / ((extra_bytes_sent*1.0*(8+1+1)) / KISS_BAUDRATE));
+		}
 
 		/* clear bit counter */
 		bits_count = 0;
