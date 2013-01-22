@@ -55,11 +55,40 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <string.h>
 #include <util/delay.h>
 
 #include "kiss.h"
 #include "gps.h"
 #include "nmea.h"
+
+#define GPS_BUFFER_SIZE (128)
+
+/*
+ * Input buffer for GPS data. It should hold an NMEA sentence.
+ */
+unsigned char gps_buffer[GPS_BUFFER_SIZE];
+
+/*
+ * Current location in the gps_buffer to put the next byte.
+ */
+unsigned char gps_buffer_index;
+
+struct nmea_coordinates coords;
+
+/*
+ * Type of the sentence stored in gps_buffer
+ */
+enum nmea_sentence_type gps_buffer_type;
+
+/*
+ * Simple State Machine for getting an NMEA sentence from a stream.
+ *
+ *  SEARCHING - looking for start of sentence '$'
+ *  LOADING - copying data into gps_buffer_type[]
+ *  DONE - gps_buffer_type[] has a sentence in it, ignore input until manual state change.
+ */
+enum gps_state { SEARCHING = 0, LOADING = 1, DONE = 2 } current_state;
 
 /*
  * Initialize the GPS interface
@@ -71,13 +100,18 @@ void gps_init(void) {
 	UBRR1L = (GPS_UBRR_VAL & 0xFF);
 
 	UCSR1C |= (1 << UCSZ10) | (1 << UCSZ11);
+
+	current_state = DONE;
 }
 
 void gps_enable(void) {
 
+	memset(&coords, '\0', sizeof(struct nmea_coordinates));
+
 	/* Enable RX/TX and RX interrupt */
 	UCSR1B |= ((1 <<  RXEN1) | (1 << TXEN1) | (1<<RXCIE0));
 
+	current_state = SEARCHING;
 }
 
 char gps_is_connected(void) {
@@ -135,9 +169,16 @@ char gps_is_connected(void) {
 
 void gps_disable(void) {
 
+	current_state = DONE;
+
 	/* Disable RX/TX and RX interrupt */
 	UCSR1B &= ~((1 <<  RXEN1) | (1 << TXEN1) | (1<<RXCIE0));
 
+}
+
+struct nmea_coordinates *gps_get_coords(void) {
+
+	return &coords;
 }
 
 /*
@@ -151,6 +192,63 @@ ISR(USART1_RX_vect) {
 	/* Read from UART */
 	c = UDR1;
 
-	c = c; /* avoid unused variable error */
-	/* TODO buffer a line of data at a time */
+	switch (current_state) {
+
+		case SEARCHING:
+			if (c == '$') {
+
+				current_state = LOADING;
+				gps_buffer_index = 0;
+
+			}
+
+			/* fall through */
+
+		case LOADING:
+
+			if (c == '\r' || c == '\n') {
+
+				current_state = DONE;
+
+				if (nmea_validate(gps_buffer)) {
+
+
+					if (nmea_extract_coordinates(gps_buffer, &coords) != 0) {
+
+						/* couldn't parse, try finding another sentence that is valid */
+						current_state = SEARCHING;
+					}
+
+				} else {
+
+					/* invalid checksum, try finding another sentence that is valid */
+					current_state = SEARCHING;
+				}
+
+			} else {
+
+				gps_buffer[gps_buffer_index] = c;
+				gps_buffer_index = (gps_buffer_index + 1) & 0x7f; /* prevent overflow */
+			}
+
+			gps_buffer[gps_buffer_index] = '\0'; /* ensure null terminated string */
+
+			if (gps_buffer_index == 6 && !(!strcmp("$GPGGA", (const char *) gps_buffer) || !strcmp("$GPRMC", (const char *) gps_buffer))) {
+
+				/*
+				 * If the sentence isn't GPGGA nor GPRMC, then it doesn't contain coords.
+				 * The parser can only parse coordinates, so we skip all other sentences
+				 * and wait for a GPGGA or GPRMC sentence.
+				 */
+				current_state = SEARCHING;
+			}
+
+			break;
+
+		case DONE:
+		default:
+			break;
+
+	}
+
 }

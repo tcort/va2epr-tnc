@@ -34,5 +34,6 @@ void gps_init(void);
 void gps_enable(void);
 void gps_disable(void);
 char gps_is_connected(void);
+struct nmea_coordinates	*gps_get_coords(void);
 
 #endif
