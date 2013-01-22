@@ -20,7 +20,7 @@
 #define __NMHEA_H
 
 /* Yes there are other message types, but they aren't used by the firmware (yet) */
-enum nmea_sentence_type { GGA, RMC } sentence_type;
+enum nmea_sentence_type { GGA = 1, RMC = 2 } sentence_type;
 
 struct coordinate {
 
@@ -34,6 +34,7 @@ struct coordinate {
 
 struct nmea_coordinates {
 
+	unsigned char valid;
 	struct coordinate latitude;
 	struct coordinate longitude;
 
