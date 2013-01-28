@@ -64,11 +64,20 @@
 /* 0 for half duplex mode, non-zero for full duplex mode. */
 #define KISS_CMD_FULL_DUPLEX 0x05
 
-/* Set something hardware specific. This command has no meaning for this TNC */
+/* Set something hardware specific. See EPR Commands below. */
 #define KISS_CMD_SET_HARDWARE 0x06
 
 /* return control to a higher level program. spoiler: there is none for this TNC*/
 #define KISS_CMD_RETURN 0xff
+
+/*
+ * EPR Commands (Commands that are specific to this TNC)
+ * Used in conjunction with KISS_CMD_SET_HARDWARE to implement extensions.
+ * Note: custom commands that talk back to the PC will interrupt an RX in progress.
+ */
+
+/* Return the entire config struct stored in EEPROM */
+#define EPR_CMD_READ_CONFIG 0x52
 
 /*
  * Prototypes

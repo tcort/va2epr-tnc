@@ -177,7 +177,11 @@ unsigned char kiss_tx(unsigned char c) {
  */
 ISR(USART0_RX_vect) {
 
+	/* input byte from UART */
 	static unsigned char c = 0x00;
+
+	/* 2nd byte when using a custom (VA2)EPR command */
+	static unsigned char epr_c = 0x00;
 
 	/* persistent flags */
 	static unsigned char cmd_follows = 0;
@@ -280,6 +284,32 @@ ISR(USART0_RX_vect) {
 			case KISS_CMD_SET_HARDWARE:
 				/* this command has no meaning for this TNC */
 				/* TODO add support for setting callsign and reading config values */
+
+				while ((UCSR0A & (1 << UDRE0)) == 0) {
+					/* wait for send buffer to be clear */;
+				}
+
+				epr_c = UDR0;
+
+				switch (epr_c) {
+
+					case EPR_CMD_READ_CONFIG:
+						{
+							unsigned char *config_p = (unsigned char *) &config;
+							unsigned int i;
+
+							for (i = 0; i < sizeof(struct conf); i++) {
+
+								kiss_tx( config_p[i] );
+							}
+						}
+						break;
+
+					default:
+						/* ignore invalid commands */
+						break;
+				}
+
 				break;
 
 			case KISS_CMD_RETURN:
