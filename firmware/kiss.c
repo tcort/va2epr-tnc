@@ -279,6 +279,7 @@ ISR(USART0_RX_vect) {
 
 			case KISS_CMD_SET_HARDWARE:
 				/* this command has no meaning for this TNC */
+				/* TODO add support for setting callsign and reading config values */
 				break;
 
 			case KISS_CMD_RETURN:
