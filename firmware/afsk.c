@@ -345,182 +345,15 @@ ISR(TIMER0_COMPA_vect) {
 	}
 
 
+	/* TODO test if this code works, then re-add KISS framing bytes */
 
-
-
-#ifdef __TEST_CODE__
-	/* receive buffer holding the last 8 received bits */
-	static unsigned char bits = 0x00;
-
-	/* counter used to track the number of bits in 'bits' */
-	static unsigned char bits_count = 0;
-
-	/* count the 1's received - used for AX.25 bit stuffing */
-	static unsigned char ones_count = 0;
-
-	/* pseudo-timer used to decide when to sample */
-	static unsigned char sample_timer = 1;
-
-	/* Check if the timeout timer is active */
-	if (carrier_sense_timeout) {
-
-		carrier_sense_timeout--; /* decrement */
-
-		/* check if we've reached the timeout */
-		if (carrier_sense_timeout == 0) {
-
-			/* No Carrier Present */
-			carrier_sense = 0;
-		}
-	}
-
-	/* is a signal being received? */
-	if (carrier_sense) {
-
-		/*
-		 * synchronize the sample_timer on shift_detect; sample when the time comes.
-		 */
-		if (shift_detect) {
-
-			carrier_sense_timeout = 96; /* reset timeout */
-
-			/*
-			 * Check for AX.25 bit stuffing. If stuffing, don't sample the '0'.
-			 *
-			 * From the AX.25 spec (v2.2):
-			 *
-			 *	"any time five contiguous “1” bits are received, a “0” bit
-			 *	immediately following five “1” bits is discarded."
-			 */
-			if (ones_count != 5) {
-
-				/*
-				 * frequency shift decodes to '0'
-				 *
-				 * I can't find a document that explains NZRI anywhere
-				 * (as it pertains to amateur radio), but I saw it in a comment
-				 * in the BertOS source code, so I assume it's true :)
-				 */
-				bits >>= 1; /* insert a 0 from the left */
-				bits_count++;
-			}
-
-			/* clear shift_detect so we don't re-sample the same bit */
-			shift_detect = 0;
-
-			/*
-			 * Set the pseudo-timer to sample the next bit.
-			 *
-			 * If we are here, then the signal is at the leading edge of an
-			 * AFSK clock (since a shift was detected and this interrupt is
-			 * running 8 times faster than the AFSK baud rate of 1200).
-			 *
-			 * I want to make the next sample 1/1200 of a second from now,
-			 * but I want some wiggle room. For example, I don't want to
-			 * beat the AFSK clock to the next bit. Therefore, I will check
-			 * the state half way through the next AFSK clock cycle.
-			 *
-			 * 9600/1200 == 8, 8*1.5 == 12
-			 */
-			sample_timer = 12;
-
-			ones_count = 0; /* clear consecutive 1's counter */
-
-		} else {
-
-			/* when the time is right, sample! */
-			if (--sample_timer == 0) {
-
-				/* no frequency shift decodes to '1' */
-				bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
-				bits_count++;
-
-				/* 9600/1200 == 8 */
-				sample_timer = 8;
-
-				ones_count++; /* keep a tally of consecutive 1's received */
-			}
-		}
-
-		/*
-		 * The only time there is supposed to be six '1' bits in a row is the
-		 * AX.25 flag (0b01111110). I use this property to synchronize the
-		 * 'bits_count' variable. That variable is used to know when to sample
-		 * the byte held in 'bits'.
-		 *
-		 * If the flag is found or the byte buffer is full, then send the byte
-		 * and reset the bits_count to 0.
-		 */
-		if ((bits == AX25_FLAG) || (bits_count >= 8 && in_kiss_frame == 1)) {
-
-
-			/*
-			 * When AX25_FLAG is received, it begins and/or ends an
-			 * AX.25 frame. KISS encapsulates AX.25 frames, so I need
-			 * to send an unescaped KISS_FEND byte with kiss_tx_raw()
-			 */
-			if (bits == AX25_FLAG) {
-
-				if (in_kiss_frame) {
-					/*
-					 * End the current KISS frame. I also send 'bits'
-					 * (the AX25_FLAG) before KISS_FEND to ensure that
-					 * the encapsulated frame ends with an AX25_FLAG. I
-					 * do this because there isn't a 1 to 1 relationship
-					 * between KISS_FENDS and AX25_FLAG. At best, this will
-					 * comply with the spec. At worse, it will send empty
-					 * AX.25 frames to the computer.
-					 */
-					kiss_tx(bits);
-					kiss_tx_raw(KISS_FEND);
-					sample_timer -= 2;
-					in_kiss_frame = 0;
-				}
-
-				/* start the next frame */
-				kiss_tx_raw(KISS_FEND);
-				sample_timer--;
-				in_kiss_frame = 1;
-			}
-
-			/*
-			 * Send the byte over USART0. Use kiss_tx() to ensure that
-			 * special characters are escaped properly.
-			 *
-			 * If more than 1 character is sent, the sample_time is
-			 * adjusted accordingly. This is because the USART transmit
-			 * is running at 9600 baud. If it has to wait to send a 2nd byte,
-			 * then that wait time needs to be subtracted from the sample_time.
-			 */
-			sample_timer -= (kiss_tx(bits) - 1);
-
-			/* clear bit counter */
-			bits_count = 0;
-		}
-
-	} else {
-
-		if (in_kiss_frame) {
-			/* End the current KISS frame. */
-			kiss_tx(AX25_FLAG);
-			kiss_tx_raw(KISS_FEND);
-			in_kiss_frame = 0;
-		}
-
-		/* Reset Internal State */
-		bits = 0x00;
-		bits_count = 0;
-		ones_count = 0;
-		sample_timer = 1;
-	}
-#endif
 }
 
 /* capture the period of an input waveform (rising edge triggered) */
 ISR(TIMER1_CAPT_vect) {
 
-	static unsigned int low;
-	static unsigned int high;
+	static unsigned int low; /* low bits of capture period */
+	static unsigned int high; /* high bits of capture period */
 	static unsigned int capture_period;
 
 	/*
@@ -620,6 +453,9 @@ ISR(TIMER3_COMPA_vect) {
 	/* count the 1's sent - used for AX.25 bit stuffing */
 	static unsigned char ones_count = 0;
 
+	/* Does 'bits' contain the AX.25 Flag? Used to avoid bit stuffing in that case. */
+	static unsigned char sending_ax25_flag = 0;
+
 	/* list of possible tones */
 	static unsigned char tones[2] = {
 		TONE_1200HZ, TONE_2200HZ
@@ -628,25 +464,29 @@ ISR(TIMER3_COMPA_vect) {
 	/* index in the tones array */
 	static unsigned char tones_index = 0;
 
+	/* Is the buffer 'bits' empty? If so, get more bits */
 	if (bit_count == 0) {
 
+		/* Do we have any bytes that need to be sent? */
 		if (kiss_rx_buffer_empty()) {
 
+			/* The buffer is empty. We can stop sending now. */
 			/* TODO this function should set a flag to end TX */
 			return;
 		}
 
 		bits = kiss_rx_buffer_dequeue();
+		sending_ax25_flag = (bits == AX25_FLAG);
 	}
 
-	if (!(bits & 0x01)) {
+	if (!(bits & 0x01)) { /* is current bit 0? */
 
 		/* if the current bit is a 0, then toggle */
 		tones_index = !tones_index;
 		afsk_output_frequency = tones[tones_index];
 		ones_count = 0;
 
-	} else if (ones_count++ >= 5) {
+	} else if (ones_count++ >= 5 && !sending_ax25_flag) {
 
 		/* bit stuff */
 		tones_index = !tones_index;
