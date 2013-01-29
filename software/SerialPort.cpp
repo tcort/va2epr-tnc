@@ -129,7 +129,7 @@ void SerialPort::open(void) {
 	config.c_cc[VMIN]  = 1;
 	config.c_cc[VTIME] = 0;
 
-	if (cfsetispeed(&config, B9600) < 0 || cfsetospeed(&config, B9600) < 0) {
+	if (cfsetispeed(&config, B230400) < 0 || cfsetospeed(&config, B230400) < 0) {
 
 		errno_save = errno;
 		close();
