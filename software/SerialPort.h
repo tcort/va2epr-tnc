@@ -25,11 +25,11 @@
 class SerialPort {
 
 	public:
-		SerialPort() { };
-		virtual ~SerialPort() { };
+		SerialPort();
+		~SerialPort();
 
-		virtual void open() = 0;
-		virtual void close() = 0;
+		void open(void);
+		void close(void);
 
 		std::string getPort(void);
 		void setPort(std::string port);
@@ -39,9 +39,12 @@ class SerialPort {
 	protected:
 
 		void setOpen(bool open);
+		int getFd() { return _fd; }
+		void setFd(int fd) { _fd = fd; }
 
 	private:
 
+		int _fd;
 		bool _open;
 		std::string _port;
 

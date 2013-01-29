@@ -27,23 +27,9 @@
 #include "Settings.h"
 #include "va2epr_tnc.h"
 
-#ifdef __linux
-#include "LinuxSerialPort.h"
-#endif
-
-#ifdef _WIN32
-#include "WindowsSerialPort.h"
-#endif
-
 va2epr_tnc::va2epr_tnc(void) {
 
-#ifdef __linux
-	_serial = new LinuxSerialPort();
-#endif
-
-#ifdef _WIN32
-	_serial = new LinuxSerialPort();
-#endif
+	_serial = new SerialPort();
 
 	_widget = new QWidget();
 	setCentralWidget(_widget);

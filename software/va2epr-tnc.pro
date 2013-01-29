@@ -26,16 +26,6 @@ QT += webkit
 HEADERS += AboutDialog.h   Console.h   main.h   SerialPort.h   Settings.h   va2epr_tnc.h
 SOURCES += AboutDialog.cpp Console.cpp main.cpp SerialPort.cpp Settings.cpp va2epr_tnc.cpp
 
-win32 {
-	HEADERS += WindowsSerialPort.h
-	SOURCES += WindowsSerialPort.cpp
-}
-
-unix {
-	HEADERS += LinuxSerialPort.h
-	SOURCES += LinuxSerialPort.cpp
-}
-
 # Words
 
 TRANSLATIONS =	locale/fr.ts
