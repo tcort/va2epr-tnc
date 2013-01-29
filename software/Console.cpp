@@ -59,6 +59,23 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 }
 
 void Console::doSend(void) {
+/*
+	static unsigned int x = 0;
+
+	x++;
+
+	if (x > 10) {
+
+		// Remove 1st line of text, then move the line below up.
+		QTextCursor tc = _output->textCursor();
+		tc.movePosition(QTextCursor::Start);
+		tc.select(QTextCursor::LineUnderCursor);
+		tc.removeSelectedText();
+		tc.movePosition(QTextCursor::Down);
+		tc.deletePreviousChar();
+		tc.movePosition(QTextCursor::End);
+	}
+*/
 
 	_output->append(_input->text());
 	_input->setText(tr(""));
