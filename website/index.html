@@ -59,15 +59,10 @@
               <p>
                 As you can see by the picture in the upper right, I've completed the
                 hardware aspect of the project; the printed circuit board I designed is populated
-                with parts. The remaining month or so of the semester will be spent developing the
-                firmware and working on side tasks like making cables and putting the board in an
-                enclosure. I've also been working on the graphical user
-                interface (PC software) in the hopes that it will make debugging and testing
-                of the firmware easier.
-                I'm just beginning to work on this website and push things to
-                <a href="https://github.com/tcort/va2epr-tnc">github</a>.
-                I have a lot to add to the site, so check back often for
-                updates.
+                with parts. I'm spending most of my time these days working on the firmware.
+                I've got about a week or two of work left until I can start testing it as a KISS TNC.
+                Then I'll be working on APRS and the PC software. The projected date of completion is
+                the end of April 2013.
               </p>
 
               <a id="documentation"></a>
@@ -120,14 +115,10 @@
               <a id="firmware"></a>
               <span class="h1">Firmware</span>
               <p>
-                The firmware is a work in progress and so far it has 
-                only been lightly tested. The purpose of the firmware 
-                for right now is to test the major functionality of the 
-                hardware on a breadboard to see if I can generate sine 
-                waves, capture incoming signals, handle communications 
-                with the PC and GPS, etc. It will likely be towards the 
-                end of the semester, early December 2012, before
-                it's ready for prime time.
+                The firmware is a work in progress, but it's nearly feature complete for
+                a KISS TNC. I will begin testing in the next week or two. So far I've written
+                about 2,000 lines of code. When the basics are working, I'll move on to adding
+                a simple APRS encoder and a micro implementation of AX.25 UI Frames.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/firmware">Firmware Source Code</a></b>
@@ -136,16 +127,9 @@
               <a id="software"></a>
               <span class="h1">Software</span>
               <p>
-                There isn't much to the PC software at the moment since the 
-                software is scheduled to be done during the second 
-                semester (January 2013 to May 2013). I'm focusing on the firmware and
-                the hardware right now. However, I do have a rudimentary interface
-                that I'm working on which should make debugging simpler. The software is
-                written in C++ using the Qt library. The finished software will be very involved as I'll be 
-                implementing KISS, AX.25, APRS, and other protocols. The text of the specifications for those protocols adds up to 
-                over 200 pages. In addition to doing the legwork for the underlying protocols, I'll be writing
-                code for the user interface which includes a terminal and
-                a map based graphical user interface.
+                There isn't much to the PC software at the moment. I've got the start of a console,
+                an interactive map, and a configuration form that doesn't do much at the moment. I will
+                be adding functionality to the skeleton code as the semester progresses.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/software">Software Source Code</a></b>
