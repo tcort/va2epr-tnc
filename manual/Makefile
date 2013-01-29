@@ -1,5 +1,5 @@
 # VA2EPR-TNC Manual
-# Copyright 2012 Thomas Cort <va2epr@rac.ca>
+# Copyright 2012, 2013 Thomas Cort <va2epr@rac.ca>
 #
 # Permission is granted to copy, distribute and/or modify this document
 # under the terms of the GNU Free Documentation License, Version 1.3

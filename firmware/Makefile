@@ -1,5 +1,5 @@
 # va2epr-tnc firmware - terminal node controller firmware for va2epr-tnc
-# Copyright (C) 2012 Thomas Cort <va2epr@rac.ca>
+# Copyright (C) 2012, 2013 Thomas Cort <va2epr@rac.ca>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
