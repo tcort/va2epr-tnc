@@ -27,6 +27,8 @@
 
 Console::Console(QWidget *parent) : QWidget(parent) {
 
+	_num_lines = 0;
+
 	_layout = new QVBoxLayout();
 	_inputLayout = new QHBoxLayout();
 
@@ -59,12 +61,9 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 }
 
 void Console::doSend(void) {
-/*
-	static unsigned int x = 0;
 
-	x++;
-
-	if (x > 10) {
+	// 1000 line scroll buffer
+	if (++_num_lines > 1000) {
 
 		// Remove 1st line of text, then move the line below up.
 		QTextCursor tc = _output->textCursor();
@@ -74,8 +73,9 @@ void Console::doSend(void) {
 		tc.movePosition(QTextCursor::Down);
 		tc.deletePreviousChar();
 		tc.movePosition(QTextCursor::End);
+
+		_num_lines--;
 	}
-*/
 
 	_output->append(_input->text());
 	_input->setText(tr(""));

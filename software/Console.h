@@ -36,6 +36,8 @@ class Console : public QWidget {
 
 	private:
 
+		unsigned int _num_lines;
+
 		QVBoxLayout *_layout;
 		QHBoxLayout *_inputLayout;
 
