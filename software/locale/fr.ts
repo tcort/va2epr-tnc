@@ -124,33 +124,33 @@
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="82"/>
+        <location filename="../va2epr_tnc.cpp" line="81"/>
         <source>Console</source>
         <translation>Console</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="83"/>
+        <location filename="../va2epr_tnc.cpp" line="82"/>
         <source>Map</source>
         <translation>Carte</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="84"/>
+        <location filename="../va2epr_tnc.cpp" line="83"/>
         <source>Settings</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="87"/>
-        <location filename="../va2epr_tnc.cpp" line="138"/>
+        <location filename="../va2epr_tnc.cpp" line="86"/>
+        <location filename="../va2epr_tnc.cpp" line="140"/>
         <source>Disconnected</source>
         <translation>Déconnectés</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="96"/>
+        <location filename="../va2epr_tnc.cpp" line="95"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="125"/>
+        <location filename="../va2epr_tnc.cpp" line="127"/>
         <source>Connected</source>
         <translation>Connectés</translation>
     </message>

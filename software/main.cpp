@@ -24,6 +24,8 @@
 #include "main.h"
 #include "va2epr_tnc.h"
 
+#include <unistd.h>
+
 /**
  * The main Function for the application.
  *
@@ -37,7 +39,11 @@ int main(int argc, char *argv[]) {
 	QSplashScreen splash(pixmap);
 
 	splash.show();
+	splash.showMessage(QString(PROGRAM_NAME) + " " + QString(PROGRAM_VERSION), Qt::AlignCenter | Qt::AlignBottom, Qt::white);
 	app.processEvents();
+
+	// Give the splash screen a chance to display something
+	sleep(1);
 
 	// Initialize Application
 	app.setApplicationName(PROGRAM_NAME);
