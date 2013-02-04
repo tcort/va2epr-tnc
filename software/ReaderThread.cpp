@@ -16,39 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONSOLE_H
-#define __CONSOLE_H
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <termios.h>
+#include <unistd.h>
 
-#include <QtGui>
-#include <QObject>
-
+#include <QString>
 #include "ReaderThread.h"
 
-class Console : public QWidget {
+void ReaderThread::run(void) {
 
-	Q_OBJECT
+	int rc;
+	const char str[2] = { '\0', '\0' };
 
-	public:
+	do {
 
-		Console(QWidget * parent = 0);
+		rc = ::read(_fd, (void *) str, 1);
+		if (rc == 1) {
+			_output_lock->lock();
+			_output->append(QString(str));
+			_output_lock->unlock();
+		}
 
-	private slots:
-
-		void doSend();
-
-	private:
-
-		unsigned int _num_lines;
-
-		QVBoxLayout *_layout;
-		QHBoxLayout *_inputLayout;
-
-		QTextEdit *_output;
-
-		QLineEdit *_input;
-		QPushButton *_send;
-
-		ReaderThread *_reader;
-};
-
-#endif
+	} while (1);
+}

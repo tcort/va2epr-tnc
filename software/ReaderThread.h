@@ -16,39 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONSOLE_H
-#define __CONSOLE_H
+#ifndef __READERTHREAD_H
+#define __READERTHREAD_H
 
-#include <QtGui>
-#include <QObject>
+#include <QMutex>
+#include <QTextEdit>
+#include <QThread>
 
-#include "ReaderThread.h"
-
-class Console : public QWidget {
-
-	Q_OBJECT
+class ReaderThread : public QThread {
 
 	public:
-
-		Console(QWidget * parent = 0);
-
-	private slots:
-
-		void doSend();
+		ReaderThread(int fd, QTextEdit *output, QMutex *output_lock) : QThread() { 
+			_fd = fd;
+			_output = output;
+			_output_lock = output_lock;
+		};
+		void run(void);
 
 	private:
-
-		unsigned int _num_lines;
-
-		QVBoxLayout *_layout;
-		QHBoxLayout *_inputLayout;
-
+		int _fd;
 		QTextEdit *_output;
+		QMutex *_output_lock;
 
-		QLineEdit *_input;
-		QPushButton *_send;
-
-		ReaderThread *_reader;
 };
 
 #endif
