@@ -68,7 +68,6 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	_www = new QWebView();
 	_www->load(QUrl("qrc:/html/va2epr-tnc.html"));
-	_www->show();
 
 	// TODO here's a reminder how to call JS functions from C++
 	// I'll need this for later when I add/remove markers
@@ -98,6 +97,9 @@ va2epr_tnc::va2epr_tnc(void) {
 	resize(800, 600);
 
 	doDisconnect();
+
+	this->show();
+	_www->show();
 }
 
 /**

@@ -19,6 +19,7 @@
 #include <QtGui>
 #include <QDesktopServices>
 #include <QCoreApplication>
+#include <QObject>
 
 #include "main.h"
 #include "va2epr_tnc.h"
@@ -32,6 +33,11 @@
 int main(int argc, char *argv[]) {
 
 	QApplication app(argc, argv);
+	QPixmap pixmap(":/icons/devices/network-wireless-420x420.png");
+	QSplashScreen splash(pixmap);
+
+	splash.show();
+	app.processEvents();
 
 	// Initialize Application
 	app.setApplicationName(PROGRAM_NAME);
@@ -51,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 	// Launch main window
 	va2epr_tnc tnc;
-	tnc.show();
+	splash.finish(&tnc);
 
 	return app.exec();
 }
