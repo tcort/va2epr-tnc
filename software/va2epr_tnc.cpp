@@ -27,6 +27,9 @@
 #include "Settings.h"
 #include "va2epr_tnc.h"
 
+/**
+ * Main TNC Window
+ */
 va2epr_tnc::va2epr_tnc(void) {
 
 	_serial = new SerialPort();
@@ -97,12 +100,18 @@ va2epr_tnc::va2epr_tnc(void) {
 	doDisconnect();
 }
 
+/**
+ * Process clicks of the about menu item
+ */
 void va2epr_tnc::doAbout(void) {
 
 	AboutDialog about(this);
 	about.exec();
 }
 
+/**
+ * Process clicks of the connect button
+ */
 void va2epr_tnc::doConnect(void) {
 
 	if (_serial->isOpen()) {
@@ -119,6 +128,9 @@ void va2epr_tnc::doConnect(void) {
 	// TODO: disable read/program on settings tab
 }
 
+/**
+ * Process clicks of the disconnect button
+ */
 void va2epr_tnc::doDisconnect(void) {
 
 	_toolbarConnectAction->setEnabled(true);
@@ -133,6 +145,9 @@ void va2epr_tnc::doDisconnect(void) {
 	// TODO: disable read/program on settings tab
 }
 
+/**
+ * Destructor
+ */
 va2epr_tnc::~va2epr_tnc(void) {
 
 	if (_serial->isOpen()) {
@@ -141,3 +156,4 @@ va2epr_tnc::~va2epr_tnc(void) {
 
 	delete _serial;
 }
+

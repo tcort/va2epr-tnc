@@ -24,6 +24,9 @@
 
 #include "SerialPort.h"
 
+/**
+ * Default Constructor
+ */
 SerialPort::SerialPort(void) {
 
 	setPort(std::string("/dev/ttyUSB0"));
@@ -31,33 +34,61 @@ SerialPort::SerialPort(void) {
 	setOpen(false);
 }
 
+/**
+ * Default Destructor
+ */
 SerialPort::~SerialPort(void) {
 
+	// Close the connection in the event that the user forgot to.
 	if (isOpen()) {
 		close();
 	}
 }
 
+/**
+ * Get the serial port used
+ *
+ * @return the serial port name (example: "/dev/ttyUSB0")
+ */
 std::string SerialPort::getPort(void) {
 
 	return _port;
 }
 
+/**
+ * Set the serial port to use
+ *
+ * @param port the name of the serial port (example "/dev/ttyUSB0")
+ */
 void SerialPort::setPort(std::string port) {
 
 	_port = port;
 }
 
+/**
+ * Check if the serial connection is open
+ *
+ * @return the state of the serial port (true==open)
+ */
 bool SerialPort::isOpen(void) {
 
 	return _open;
 }
 
+/**
+ * Set the state of the serial port (open or closed)
+ *
+ * @param open set to true for open
+ */
 void SerialPort::setOpen(bool open) {
 
 	_open = open;
 }
 
+/**
+ * Open the serial port (i.e. connect to the device
+ * This throws an exception when there is an error passing the value of errno.
+ */
 void SerialPort::open(void) {
 
 	int fd, errno_save;
@@ -143,6 +174,8 @@ void SerialPort::open(void) {
 		throw errno_save;
 	}
 
+	// if we made it here, the port is open an ready to recv/send
+
 #ifdef __TEST_CODE__
 	while (1) {
 		unsigned char c;
@@ -152,6 +185,9 @@ void SerialPort::open(void) {
 #endif
 }
 
+/**
+ * Close down the connection to the serial port
+ */
 void SerialPort::close(void) {
 
 	if (isOpen()) {

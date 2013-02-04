@@ -23,14 +23,23 @@
 #include "main.h"
 #include "va2epr_tnc.h"
 
+/**
+ * The main Function for the application.
+ *
+ * @param argc number of command line arguments
+ * @param argv list of command line arguments
+ */
 int main(int argc, char *argv[]) {
 
 	QApplication app(argc, argv);
 
+	// Initialize Application
 	app.setApplicationName(PROGRAM_NAME);
 	app.setApplicationVersion(PROGRAM_VERSION);
 	app.setOrganizationName(ORG_NAME);
 	app.setOrganizationDomain(ORG_DOMAIN);
+
+	// Load Translations
 
 	QTranslator qtTranslator;
         qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
@@ -40,6 +49,7 @@ int main(int argc, char *argv[]) {
 	myappTranslator.load(QString(":/locale/%1.qm").arg(QLocale::system().name()));
 	app.installTranslator(&myappTranslator);
 
+	// Launch main window
 	va2epr_tnc tnc;
 	tnc.show();
 

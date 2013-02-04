@@ -27,6 +27,8 @@
 
 /**
  * The about dialog for this program. It displays some copyright info, version info, and a link to the project website.
+ *
+ * @param parent the parent widget
  */
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 
@@ -64,3 +66,4 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 
 	setLayout(layout);
 }
+

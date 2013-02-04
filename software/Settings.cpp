@@ -25,6 +25,9 @@
 #include "Settings.h"
 #include "main.h"
 
+/**
+ * Settings widget for TNCs
+ */
 Settings::Settings(QWidget *parent) : QWidget(parent) {
 
 	_layout = new QVBoxLayout();
@@ -78,11 +81,17 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
 	setLayout(_layout);
 }
 
+/**
+ * Process clicks of the program device button.
+ */
 void Settings::doProgram(void) {
 
 	// TODO do some data validation
 }
 
+/**
+ * Process clicks of the read device button.
+ */
 void Settings::doRead(void) {
 
 }

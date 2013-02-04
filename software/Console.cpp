@@ -25,6 +25,11 @@
 #include "Console.h"
 #include "main.h"
 
+/**
+ * Console widget with display area and line input.
+ *
+ * @param parent the parent widget.
+ */
 Console::Console(QWidget *parent) : QWidget(parent) {
 
 	_num_lines = 0;
@@ -60,9 +65,11 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	setLayout(_layout);
 }
 
+/**
+ * Handle an enter press or send button click causing the data in the input line to be sent
+ */
 void Console::doSend(void) {
 
-	// 1000 line scroll buffer
 	if (++_num_lines > 1000) {
 
 		// Remove 1st line of text, then move the line below up.
@@ -80,3 +87,4 @@ void Console::doSend(void) {
 	_output->append(_input->text());
 	_input->setText(tr(""));
 }
+
