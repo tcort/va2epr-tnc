@@ -18,5 +18,7 @@ a desktop. It provides maps as well as a terminal interface. See the
 COPYING file in this directory for details on the license that applies to
 the project files.
 
-The software has one external dependency at present, libfap. libfap can be
-downloaded at http://pakettiradio.net/libfap
+The software has the following external dependencies:
+
+	* libfap - http://pakettiradio.net/libfap
+	* QextSerialPort - code.google.com/p/qextserialport

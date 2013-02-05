@@ -32,8 +32,6 @@
  */
 va2epr_tnc::va2epr_tnc(void) {
 
-	_serial = new SerialPort();
-
 	_widget = new QWidget();
 	setCentralWidget(_widget);
 
@@ -116,10 +114,6 @@ void va2epr_tnc::doAbout(void) {
  */
 void va2epr_tnc::doConnect(void) {
 
-	if (_serial->isOpen()) {
-		_serial->close();
-	}
-
 	// Try _serial->open() here
 
 	_toolbarConnectAction->setEnabled(false);
@@ -139,10 +133,7 @@ void va2epr_tnc::doDisconnect(void) {
 	_toolbarDisconnectAction->setEnabled(false);
 	_status->setText(tr("Disconnected"));
 
-	if (_serial->isOpen()) {
-		_serial->close();
-	}
-
+	// TODO: disconnect serial
 	// TODO: disable [Send] button and input area
 	// TODO: disable read/program on settings tab
 }
@@ -152,10 +143,6 @@ void va2epr_tnc::doDisconnect(void) {
  */
 va2epr_tnc::~va2epr_tnc(void) {
 
-	if (_serial->isOpen()) {
-		doDisconnect();
-	}
-
-	delete _serial;
+	// TODO disconnect / clean up serial port
 }
 

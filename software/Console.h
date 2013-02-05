@@ -22,8 +22,6 @@
 #include <QtGui>
 #include <QObject>
 
-#include "ReaderThread.h"
-
 class Console : public QWidget {
 
 	Q_OBJECT
@@ -47,8 +45,6 @@ class Console : public QWidget {
 
 		QLineEdit *_input;
 		QPushButton *_send;
-
-		ReaderThread *_reader;
 };
 
 #endif

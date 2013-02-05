@@ -23,12 +23,17 @@ QT += webkit
 
 # Code
 
-HEADERS += AboutDialog.h   Console.h   main.h   ReaderThread.h   SerialPort.h   Settings.h   va2epr_tnc.h
-SOURCES += AboutDialog.cpp Console.cpp main.cpp ReaderThread.cpp SerialPort.cpp Settings.cpp va2epr_tnc.cpp
+HEADERS += AboutDialog.h   Console.h   main.h   Settings.h   va2epr_tnc.h
+SOURCES += AboutDialog.cpp Console.cpp main.cpp Settings.cpp va2epr_tnc.cpp
 
 # Libraries
 
-LIBS += -lfap	# Finnish APRS Parser Library - pakettiradio.net/libfap
+LIBS += -lfap			# Finnish APRS Parser Library - pakettiradio.net/libfap
+LIBS += -lqextserialport-1.2	# QextSerialPort - code.google.com/p/qextserialport
+
+# Definitions
+
+DEFINES += QEXTSERIALPORT_USING_SHARED
 
 # Words
 

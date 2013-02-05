@@ -25,4 +25,7 @@ lupdate-qt4 ${PROJECT_FILE}
 lrelease-qt4 ${PROJECT_FILE}
 qmake-qt4 ${PROJECT_FILE}
 make
+
+rm -rf docs
+mkdir docs
 make docs
