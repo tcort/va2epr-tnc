@@ -27,5 +27,4 @@ qmake-qt4 ${PROJECT_FILE}
 make
 
 rm -rf docs
-mkdir docs
 make docs
