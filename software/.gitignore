@@ -21,4 +21,5 @@ qrc_html.cpp
 qrc_html.o
 qrc_icons.cpp
 qrc_icons.o
-ReadThread.o
+ReaderThread.o
+docs

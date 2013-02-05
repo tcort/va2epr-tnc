@@ -36,6 +36,12 @@ RESOURCES =	html.qrc \
 		icons.qrc \
 		locale.qrc
 
+# Docs
+
+docs.depends = $(SOURCES)
+docs.commands = doxygen
+QMAKE_EXTRA_TARGETS += docs
+
 # Icons
 
 win32 {
