@@ -33,7 +33,7 @@
 <context>
     <name>Console</name>
     <message>
-        <location filename="../Console.cpp" line="59"/>
+        <location filename="../Console.cpp" line="69"/>
         <source>Send</source>
         <translation>Envoyer</translation>
     </message>

@@ -22,6 +22,9 @@
 #include <QtGui>
 #include <QObject>
 
+#include <QtExtSerialPort/qextserialport.h>
+
+
 class Console : public QWidget {
 
 	Q_OBJECT
@@ -29,6 +32,7 @@ class Console : public QWidget {
 	public:
 
 		Console(QWidget * parent = 0);
+		~Console();
 
 	private slots:
 
@@ -45,6 +49,8 @@ class Console : public QWidget {
 
 		QLineEdit *_input;
 		QPushButton *_send;
+
+		QextSerialPort *_port;
 };
 
 #endif

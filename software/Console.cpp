@@ -20,6 +20,8 @@
 
 #include <QtGui>
 
+#include <QtExtSerialPort/qextserialport.h>
+
 /* LOCAL INCLUDES */
 
 #include "Console.h"
@@ -31,6 +33,14 @@
  * @param parent the parent widget.
  */
 Console::Console(QWidget *parent) : QWidget(parent) {
+
+	// Setup Serial Port - 230400 baud 8 bits 1 stop no parity no flow ctrl.
+	_port = new QextSerialPort("/usr/ttyUSB0", QextSerialPort::EventDriven);
+	_port->setBaudRate(BAUD230400);
+	_port->setFlowControl(FLOW_OFF);
+	_port->setParity(PAR_NONE);
+	_port->setDataBits(DATA_8);
+	_port->setStopBits(STOP_1);
 
 	_num_lines = 0;
 
@@ -88,3 +98,7 @@ void Console::doSend(void) {
 	_input->setText(tr(""));
 }
 
+Console::~Console() {
+
+	delete _port;
+}
