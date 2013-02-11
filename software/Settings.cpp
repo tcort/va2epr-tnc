@@ -25,6 +25,13 @@
 #include "Settings.h"
 #include "main.h"
 
+#define TX_DELAY_TIP tr("Transmitter Keyup Delay in 10ms Units (Default 50)")
+#define P_TIP tr("Scaled Persistance Paramter (Default 63)")
+#define SLOT_TIME_TIP tr("Slot Interval in 10ms Units (Default 10)")
+#define TX_TAIL_TIP tr("Time to hold after FCS in 10ms Units (Default 50)")
+#define FULL_DUPLEX_TIP tr("Unchecked = Half Duplex, Checked = Full Duplex (Default Half Duplex)")
+#define CALLSIGN_TIP tr("Enter Your Callsign")
+
 /**
  * Settings widget for TNCs
  */
@@ -38,41 +45,55 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
 
 	_tx_delayLabel = new QLabel();
 	_tx_delayLabel->setText(tr("TX Delay"));
+	_tx_delayLabel->setToolTip(TX_DELAY_TIP);
 	_tx_delay = new QLineEdit();
+	_tx_delay->setToolTip(TX_DELAY_TIP);
 	_formLayout->addRow(_tx_delayLabel, _tx_delay);
 
 	_pLabel = new QLabel();
 	_pLabel->setText(tr("p"));
+	_pLabel->setToolTip(P_TIP);
 	_p = new QLineEdit();
+	_p->setToolTip(P_TIP);
 	_formLayout->addRow(_pLabel, _p);
 
 	_slot_timeLabel = new QLabel();
 	_slot_timeLabel->setText(tr("Slot Time"));
+	_slot_timeLabel->setToolTip(SLOT_TIME_TIP);
 	_slot_time = new QLineEdit();
+	_slot_time->setToolTip(SLOT_TIME_TIP);
 	_formLayout->addRow(_slot_timeLabel, _slot_time);
 
 	_tx_tailLabel = new QLabel();
 	_tx_tailLabel->setText(tr("TX Tail"));
+	_tx_tailLabel->setToolTip(TX_TAIL_TIP);
 	_tx_tail = new QLineEdit();
+	_tx_tail->setToolTip(TX_TAIL_TIP);
 	_formLayout->addRow(_tx_tailLabel, _tx_tail);
 
 	_full_duplexLabel = new QLabel();
 	_full_duplexLabel->setText(tr("Full Duplex"));
+	_full_duplexLabel->setToolTip(FULL_DUPLEX_TIP);
 	_full_duplex = new QCheckBox();
+	_full_duplex->setToolTip(FULL_DUPLEX_TIP);
 	_formLayout->addRow(_full_duplexLabel, _full_duplex);
 
 	_callsignLabel = new QLabel();
 	_callsignLabel->setText(tr("Callsign"));
+	_callsignLabel->setToolTip(CALLSIGN_TIP);
 	_callsign = new QLineEdit();
+	_callsign->setToolTip(CALLSIGN_TIP);
 	_formLayout->addRow(_callsignLabel, _callsign);
 
 	_layout->addLayout(_formLayout);
 
 	_read = new QPushButton(QIcon(":/icons/actions/document-open.svg"), tr("Read Device"));
+	_read->setToolTip(tr("Read configuration settings from the TNC (works on va2epr-tnc only)"));
 	connect(_read, SIGNAL(clicked()), this, SLOT(doRead()));
 	_buttonLayout->addWidget(_read);
 
 	_program = new QPushButton(QIcon(":/icons/actions/document-save.svg"), tr("Program Device"));
+	_program->setToolTip(tr("Write configuration settings to the TNC"));
 	connect(_program, SIGNAL(clicked()), this, SLOT(doProgram()));
 	_buttonLayout->addWidget(_program);
 
