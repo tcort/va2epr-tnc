@@ -84,6 +84,10 @@ void Console::doSend(void) {
 	_input->setText(tr(""));
 }
 
+/**
+ * Append text to the output area and manages the scroll buffer.
+ * @param s string to write to the output area.
+ */
 void Console::append(QString s) {
 
 	if (++_num_lines > 1000) {
@@ -116,6 +120,10 @@ void Console::doRecv() {
 	this->append(QString(bytes));
 }
 
+/**
+ * Open the Serial Port
+ * @return successfulness of the operation (false == fail)
+ */
 bool Console::openPort() {
 
 	_port->open(QIODevice::ReadWrite);
@@ -131,6 +139,10 @@ bool Console::openPort() {
 	}
 }
 
+/**
+ * Close the serial port
+ * @return successfulness of the operation (false == fail)
+ */
 bool Console::closePort() {
 
 	if (_port->isOpen()) {
@@ -144,6 +156,10 @@ bool Console::closePort() {
 	return !(_port->isOpen());
 }
 
+/**
+ * Deconstruct the COnsole and perform clean up.
+ * Closes serial port if it is open.
+ */
 Console::~Console() {
 
 	if (_port->isOpen()) {

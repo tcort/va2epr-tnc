@@ -41,42 +41,52 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../Settings.cpp" line="40"/>
+        <location filename="../Settings.cpp" line="47"/>
         <source>TX Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="45"/>
+        <location filename="../Settings.cpp" line="54"/>
         <source>p</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="50"/>
+        <location filename="../Settings.cpp" line="61"/>
         <source>Slot Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="55"/>
+        <location filename="../Settings.cpp" line="68"/>
         <source>TX Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="60"/>
+        <location filename="../Settings.cpp" line="75"/>
         <source>Full Duplex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="65"/>
+        <location filename="../Settings.cpp" line="82"/>
         <source>Callsign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="75"/>
+        <location filename="../Settings.cpp" line="91"/>
+        <source>Read configuration settings from the TNC (works on va2epr-tnc only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="95"/>
         <source>Program Device</source>
         <translation>Écriture</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="71"/>
+        <location filename="../Settings.cpp" line="96"/>
+        <source>Write configuration settings to the TNC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="90"/>
         <source>Read Device</source>
         <translation>Lecture</translation>
     </message>

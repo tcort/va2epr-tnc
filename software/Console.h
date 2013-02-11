@@ -32,7 +32,13 @@ class Console : public QWidget {
 	public:
 
 		Console(QWidget * parent = 0);
+
+		/**
+		 * Check if the port is open. 
+		 * @return state of the port (true == open)
+		 */
 		bool isPortOpen() { return _port->isOpen(); }
+
 		bool openPort();
 		bool closePort();
 
