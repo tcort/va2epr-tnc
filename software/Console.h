@@ -32,11 +32,17 @@ class Console : public QWidget {
 	public:
 
 		Console(QWidget * parent = 0);
+		bool isPortOpen() { return _port->isOpen(); }
+		bool openPort();
+		bool closePort();
+
+		void append(QString s);
 		~Console();
 
 	private slots:
 
 		void doSend();
+		void doRecv();
 
 	private:
 

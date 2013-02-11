@@ -84,6 +84,8 @@ va2epr_tnc::va2epr_tnc(void) {
 	_status->setText(tr("Disconnected"));
 	// TODO call doDisconnect here
 
+
+	_tabs->setTabEnabled(2, false);
 	statusBar()->addPermanentWidget(_status, 1);
 
 	_layout = new QVBoxLayout();
@@ -114,14 +116,22 @@ void va2epr_tnc::doAbout(void) {
  */
 void va2epr_tnc::doConnect(void) {
 
+	bool rc;
+
 	// Try _serial->open() here
+	if (_console->isPortOpen()) {
 
-	_toolbarConnectAction->setEnabled(false);
-	_toolbarDisconnectAction->setEnabled(true);
-	_status->setText(tr("Connected"));
+		_console->closePort();
+	}
 
-	// TODO: enable [Send] button and input area
-	// TODO: disable read/program on settings tab
+	rc = _console->openPort();
+	if (rc) {
+		_toolbarConnectAction->setEnabled(false);
+		_toolbarDisconnectAction->setEnabled(true);
+		_status->setText(tr("Connected"));
+		_tabs->setTabEnabled(2, true);
+	}
+
 }
 
 /**
@@ -132,9 +142,12 @@ void va2epr_tnc::doDisconnect(void) {
 	_toolbarConnectAction->setEnabled(true);
 	_toolbarDisconnectAction->setEnabled(false);
 	_status->setText(tr("Disconnected"));
+	_tabs->setTabEnabled(2, false);
+	if(_console->isPortOpen()) {
 
-	// TODO: disconnect serial
-	// TODO: disable [Send] button and input area
+		_console->closePort();
+	}
+
 	// TODO: disable read/program on settings tab
 }
 
@@ -143,6 +156,9 @@ void va2epr_tnc::doDisconnect(void) {
  */
 va2epr_tnc::~va2epr_tnc(void) {
 
-	// TODO disconnect / clean up serial port
+	if (_console->isPortOpen()) {
+
+		_console->closePort();
+	}
 }
 

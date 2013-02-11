@@ -80,6 +80,12 @@ Console::Console(QWidget *parent) : QWidget(parent) {
  */
 void Console::doSend(void) {
 
+	this->append(_input->text());
+	_input->setText(tr(""));
+}
+
+void Console::append(QString s) {
+
 	if (++_num_lines > 1000) {
 
 		// Remove 1st line of text, then move the line below up.
@@ -94,11 +100,56 @@ void Console::doSend(void) {
 		_num_lines--;
 	}
 
-	_output->append(_input->text());
-	_input->setText(tr(""));
+	_output->append(s);
+}
+
+
+/**
+ * When data is ready to be read, read it.
+ */
+void Console::doRecv() {
+
+	QByteArray bytes;
+	int bytesAvailable = _port->bytesAvailable();
+	bytes.resize(bytesAvailable);
+	_port->read(bytes.data(), bytes.size());
+	this->append(QString(bytes));
+}
+
+bool Console::openPort() {
+
+	_port->open(QIODevice::ReadWrite);
+	if (_port->isOpen()) {
+
+		_send->setEnabled(true);
+		_input->setEnabled(true);
+		connect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
+		return true;
+	} else {
+
+		return false;
+	}
+}
+
+bool Console::closePort() {
+
+	if (_port->isOpen()) {
+
+		_input->setEnabled(false);
+		_send->setEnabled(false);
+		disconnect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
+		_port->close();
+	}
+
+	return !(_port->isOpen());
 }
 
 Console::~Console() {
+
+	if (_port->isOpen()) {
+
+		closePort();
+	}
 
 	delete _port;
 }
