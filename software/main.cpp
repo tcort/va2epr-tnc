@@ -42,9 +42,6 @@ int main(int argc, char *argv[]) {
 	splash.showMessage(QString(PROGRAM_NAME) + " " + QString(PROGRAM_VERSION), Qt::AlignCenter | Qt::AlignBottom, Qt::white);
 	app.processEvents();
 
-	// Give the splash screen a chance to display something
-	sleep(1);
-
 	// Initialize Application
 	app.setApplicationName(PROGRAM_NAME);
 	app.setApplicationVersion(PROGRAM_VERSION);
