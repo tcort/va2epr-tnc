@@ -186,17 +186,17 @@
     </message>
     <message>
         <location filename="../va2epr_tnc.cpp" line="84"/>
-        <location filename="../va2epr_tnc.cpp" line="144"/>
+        <location filename="../va2epr_tnc.cpp" line="142"/>
         <source>Disconnected</source>
         <translation>Déconnectés</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="95"/>
+        <location filename="../va2epr_tnc.cpp" line="93"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="131"/>
+        <location filename="../va2epr_tnc.cpp" line="129"/>
         <source>Connected</source>
         <translation>Connectés</translation>
     </message>
