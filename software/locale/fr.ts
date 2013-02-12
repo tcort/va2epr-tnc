@@ -41,52 +41,88 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../Settings.cpp" line="47"/>
+        <location filename="../Settings.cpp" line="38"/>
         <source>TX Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="54"/>
+        <location filename="../Settings.cpp" line="39"/>
+        <location filename="../Settings.cpp" line="41"/>
+        <source>Transmitter Keyup Delay in 10ms Units (Default 50)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="45"/>
         <source>p</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="61"/>
+        <location filename="../Settings.cpp" line="46"/>
+        <location filename="../Settings.cpp" line="48"/>
+        <source>Scaled Persistance Paramter (Default 63)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="52"/>
         <source>Slot Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="68"/>
+        <location filename="../Settings.cpp" line="53"/>
+        <location filename="../Settings.cpp" line="55"/>
+        <source>Slot Interval in 10ms Units (Default 10)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="59"/>
         <source>TX Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="75"/>
+        <location filename="../Settings.cpp" line="60"/>
+        <location filename="../Settings.cpp" line="62"/>
+        <source>Time to hold after FCS in 10ms Units (Default 50)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="66"/>
         <source>Full Duplex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="82"/>
+        <location filename="../Settings.cpp" line="67"/>
+        <location filename="../Settings.cpp" line="69"/>
+        <source>Unchecked = Half Duplex, Checked = Full Duplex (Default Half Duplex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="73"/>
         <source>Callsign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="91"/>
+        <location filename="../Settings.cpp" line="74"/>
+        <location filename="../Settings.cpp" line="76"/>
+        <source>Enter Your Callsign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Settings.cpp" line="82"/>
         <source>Read configuration settings from the TNC (works on va2epr-tnc only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="95"/>
+        <location filename="../Settings.cpp" line="86"/>
         <source>Program Device</source>
         <translation>Écriture</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="96"/>
+        <location filename="../Settings.cpp" line="87"/>
         <source>Write configuration settings to the TNC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="90"/>
+        <location filename="../Settings.cpp" line="81"/>
         <source>Read Device</source>
         <translation>Lecture</translation>
     </message>
