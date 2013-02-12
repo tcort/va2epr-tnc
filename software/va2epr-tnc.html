@@ -24,14 +24,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   <script src="http://www.tomcort.com/OpenLayers/lib/OpenLayers.js"></script>
   <script type="text/javascript">
 
-    var map, layer;
+    var map, layer, markers, icon;
 
     function init() {
 
       map = new OpenLayers.Map('map');
       layer = new OpenLayers.Layer.OSM("osm");
+      markers = new OpenLayers.Layer.Markers("Markers");
 
       map.addLayer(layer);
+      map.addLayer(markers);
+
       map.setCenter(
         new OpenLayers.LonLat(-75.69, 45.42).transform(
           new OpenLayers.Projection("EPSG:4326"),
@@ -39,18 +42,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         ),
         12
       );    
+
+      var size = new OpenLayers.Size(21,25);
+      var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+      icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
     }
 
-    </script>
+    function addMarker(lon,lat) {
+      markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat), icon.clone()));
+    }
+  </script>
 
-    <style type="text/css">
+  <style type="text/css">
 
-      * {
-        padding: 0;
-        margin: 0;
-      }
+    * {
+      padding: 0;
+      margin: 0;
+    }
 
-    </style>
+  </style>
 </head>
 <body onload="init()">
   <div id="map"></div>
