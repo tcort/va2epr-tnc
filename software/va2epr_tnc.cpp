@@ -82,8 +82,6 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	_status = new QLabel();
 	_status->setText(tr("Disconnected"));
-	// TODO call doDisconnect here
-
 
 	_tabs->setTabEnabled(2, false);
 	statusBar()->addPermanentWidget(_status, 1);
@@ -147,8 +145,6 @@ void va2epr_tnc::doDisconnect(void) {
 
 		_console->closePort();
 	}
-
-	// TODO: disable read/program on settings tab
 }
 
 /**
