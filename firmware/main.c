@@ -34,6 +34,7 @@
 
 int main(void) {
 
+	unsigned int last_beacon_timestamp = 0;
 	volatile char i = 0;
 	void (*idle_mode)(void);
 
@@ -73,6 +74,7 @@ int main(void) {
 		}
 
 		if (idle_mode == &notxrx) {
+			unsigned int current_timestamp;
 			struct nmea_coordinates	*location;
 
 			gps_enable();
@@ -89,10 +91,19 @@ int main(void) {
 
 			gps_disable();
 
-			/* TODO if time elapsed is > 9:30, fill TX buffer, do tx() */
+			/* Beacon location every 10 minutes */
+			current_timestamp = atoui(location->gpstime);
+			if (gpstime_diff(current_timestamp, last_beacon_timestamp) >= 10) {
+
+
+				/* TODO beacon location */;
+
+				last_beacon_timestamp = current_timestamp;
+			}
 		}
 
 	}
 
 	return 0;
 }
+

@@ -72,6 +72,44 @@ static unsigned char hex2deci(unsigned char c) {
 }
 
 /*
+ * Minimal implementation of string to unsigned int function.
+ * Only works with positive numbers, no error checking.
+ * Used with time strings from the gps. Be careful using for
+ * other purposes.
+ */
+unsigned int atoui(unsigned char *s) {
+
+	unsigned int result = 0;
+
+	while (*s++) {
+		result = (result * 10) + (s[0] - '0');
+	}
+
+	return result;
+}
+
+/*
+ * Return the number of minutes between the two parameters.
+ */
+int gpstime_diff(unsigned int x, unsigned int y) {
+
+	int duration;
+
+	int xmin = (x / 100) % 100;
+	int ymin = (y / 100) % 100;
+
+	int xhour = (x / 10000);
+	int yhour = (y / 10000);
+
+	duration = ((xhour * 60) + xmin) - ((yhour * 60) + ymin);
+	if (duration < 0) {
+		duration += 1440;
+	}
+
+	return duration;
+}
+
+/*
  * Extract the NMEA checksum from the end of the sentence, converting
  * the hex digits to decimal.
  */
@@ -139,6 +177,8 @@ static unsigned char *nmea_next_field(unsigned char *s) {
  */
 char nmea_extract_coordinates(unsigned char *s, struct nmea_coordinates *coordinates) {
 
+	unsigned char i;
+
 	/* Does the checksum check out? */
 	if (!nmea_validate(s)) {
 
@@ -163,6 +203,13 @@ char nmea_extract_coordinates(unsigned char *s, struct nmea_coordinates *coordin
 	}
 
 	s = nmea_next_field(s); /* Move past GPGGA/GPRMC field */
+
+	/* Get Time */
+	for (i = 0; i < 6; i++) {
+		coordinates->gpstime[i] = s[i];
+	}
+	coordinates->gpstime[6] = '\0';
+
 	if (sentence_type == RMC) {
 		s = nmea_next_field(s); /* Move on to status */
 		if (s[0] == ',' || s[0] == 'V') { /* is field empty or void ('V')? */

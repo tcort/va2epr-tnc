@@ -35,10 +35,14 @@ struct coordinate {
 struct nmea_coordinates {
 
 	unsigned char valid;
+	unsigned char gpstime[7]; /* HHMMSS\0 */
 	struct coordinate latitude;
 	struct coordinate longitude;
 
 };
+
+unsigned int atoui(unsigned char *s);
+int gpstime_diff(unsigned int x, unsigned int y);
 
 unsigned char nmea_checksum(unsigned char *s);
 unsigned char nmea_extact_checksum(unsigned char *s);
