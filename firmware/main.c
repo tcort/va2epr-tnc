@@ -35,6 +35,7 @@
 int main(void) {
 
 	volatile char i = 0;
+	void (*idle_mode)(void);
 
 	config_read();
 	afsk_init();
@@ -43,7 +44,15 @@ int main(void) {
 
 	sei();
 
-	rx();
+	/* When not transmitting the TNC is either receiving
+	 * or getting position location from the GPS. If a GPS
+	 * is connected, it is assumed that the user is a mobile
+	 * and doesn't have a computer connected. Thus she has no
+	 * need to receive.
+	 */
+	idle_mode = gps_is_connected() ? &notxrx : &rx;
+
+	(*idle_mode)();
 
 	while (1) {
 
@@ -60,12 +69,10 @@ int main(void) {
 				i++; 
 			}
 			
-			rx(); /* go back to receive mode */
+			(*idle_mode)(); /* go back to receive mode if no GPS */
 		}
 
-#ifdef __NOT_READY_TO_USE_YET__
-		/* TODO implement some sort of 10 minute timer */
-		if (gps_is_connected()) {
+		if (idle_mode == &notxrx) {
 			struct nmea_coordinates	*location;
 
 			gps_enable();
@@ -81,9 +88,9 @@ int main(void) {
 			} while (!location->valid);
 
 			gps_disable();
+
+			/* TODO if time elapsed is > 9:30, fill TX buffer, do tx() */
 		}
-#endif
-		/* TODO for APRS tracker, don't do rx(); */
 
 	}
 

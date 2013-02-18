@@ -20,6 +20,7 @@
 #define __AFSK_H
 
 void afsk_init(void);
+void notxrx(void);
 void tx(void);
 void rx(void);
 

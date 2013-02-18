@@ -204,6 +204,21 @@ void tx(void) {
 }
 
 /*
+ * This is used when a GPS is connected to disable RX when not transmitting.
+ */
+void notxrx(void) {
+
+	/* Turn off RX interrupts */
+	TIMSK0 &= ~(1<<OCIE0A); /* disable afsk decoder */
+	TIMSK1 &= ~(1<<ICIE1); /* disable input capture interrupt */
+
+	/* Turn off TX interrupts/pins */
+	TIMSK2 &= ~(1<<OCIE2A); /* disable compare match interrupt */
+	TIMSK3 &= ~(1<<OCIE3A); /* disable afsk encoder */
+	PORTD &= ~(1<<PD7); /* PTT OFF */
+}
+
+/*
  * Disable output DAC and Push-to-Talk line, enable input capture
  */
 void rx(void) {
@@ -470,8 +485,10 @@ ISR(TIMER3_COMPA_vect) {
 		/* Do we have any bytes that need to be sent? */
 		if (kiss_rx_buffer_empty()) {
 
-			/* The buffer is empty. We can stop sending now. */
-			/* TODO this function should set a flag to end TX */
+			/* The buffer is empty. We can stop sending now.
+			 * The loop in main() will detect an empty buffer
+			 * and disable this interrupt for us.
+			 */
 			return;
 		}
 

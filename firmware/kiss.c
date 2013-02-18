@@ -282,8 +282,6 @@ ISR(USART0_RX_vect) {
 				config.full_duplex = c;
 
 			case KISS_CMD_SET_HARDWARE:
-				/* this command has no meaning for this TNC */
-				/* TODO add support for setting callsign and reading config values */
 
 				while ((UCSR0A & (1 << UDRE0)) == 0) {
 					/* wait for send buffer to be clear */;
@@ -349,23 +347,6 @@ ISR(USART0_RX_vect) {
 		 * becomes equal to head. This will either stop transmitting which
 		 * is polling the buffer size, or if data is coming in from the PC,
 		 * it will keep sending but it will have dropped 8k in the middle.
-		 *
-		 * The prescibed implementation is mentioned in the KISS specification.
-		 * Accordingly, I should drop the last frame (i.e. the one busting the buffer).
-		 * However, this will require a re-factoring of the planned transmit design which
-		 * currently starts sending as soon as the first byte is added to kiss_rx_buffer[].
-		 *
-		 * TODO: implement kiss_rx_buffer[] bounds checking with proper frame drop.
-		 * I'll need to do additional house keeping -- keeping track of how many frames
-		 * are in the buffer (possibly where they start/end) as well as if I should discard
-		 * the current frame coming in over the USART interface. The code polling
-		 * the the buffer size should instead poll the number of complete frames in the buffer.
 		 */
-
-		/*
-		 * micro-optimization - this saves 1 jmp instruction
-		 * (jumping to the end of the if/else block).
-		 */
-		return;
 	}
 }
