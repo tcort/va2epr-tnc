@@ -37,7 +37,7 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	qDebug() << "Console::Console() Enter";
 
 	// Setup Serial Port - 230400 baud 8 bits 1 stop no parity no flow ctrl.
-	_port = new QextSerialPort("/usr/ttyUSB0", QextSerialPort::EventDriven);
+	_port = new QextSerialPort("/dev/ttyUSB0", QextSerialPort::EventDriven);
 	_port->setBaudRate(BAUD230400);
 	_port->setFlowControl(FLOW_OFF);
 	_port->setParity(PAR_NONE);
@@ -130,7 +130,7 @@ void Console::append(QString s) {
 
 	qDebug() << "Console::append() Enter";
 
-	if (++_num_lines > 1000) {
+	if (++_num_lines > 100) {
 
 		// Remove 1st line of text, then move the line below up.
 		QTextCursor tc = _output->textCursor();
@@ -179,7 +179,7 @@ bool Console::openPort() {
 		qDebug() << "Port Opened OK\n";
 		_send->setEnabled(true);
 		_input->setEnabled(true);
-		connect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
+		connect(_port, SIGNAL(readyRead()), this, SLOT(doRecv()));
 
 		qDebug() << "Console::openPort() Complete";
 		return true;
@@ -203,7 +203,7 @@ bool Console::closePort() {
 
 		_input->setEnabled(false);
 		_send->setEnabled(false);
-		disconnect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
+		disconnect(_port, SIGNAL(readyRead()), this, SLOT(doRecv()));
 		_port->close();
 
 	} else {
