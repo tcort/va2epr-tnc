@@ -28,7 +28,7 @@
 /**
  * Settings widget for TNCs
  */
-Settings::Settings(QWidget *parent) : QWidget(parent) {
+Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 
 	qDebug() << "Settings::Settings() Enter";
 
@@ -93,6 +93,8 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
 	_layout->addLayout(_buttonLayout);
 
 	setLayout(_layout);
+
+	_console = console;
 
 	qDebug() << "Settings::Settings() Complete";
 }

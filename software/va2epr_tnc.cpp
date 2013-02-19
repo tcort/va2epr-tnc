@@ -74,7 +74,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	// _www->page()->mainFrame()->evaluateJavaScript("alert('test'); null");
 
 	_console = new Console();
-	_settings = new Settings();
+	_settings = new Settings(_console); // share the console with Settings so it can access the serial port
 
 	_tabs = new QTabWidget();
 	_tabs->setTabPosition(QTabWidget::South);

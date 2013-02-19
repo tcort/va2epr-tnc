@@ -22,13 +22,15 @@
 #include <QtGui>
 #include <QObject>
 
+#include "Console.h"
+
 class Settings : public QWidget {
 
 	Q_OBJECT
 
 	public:
 
-		Settings(QWidget * parent = 0);
+		Settings(Console *console, QWidget * parent = 0);
 
 	private slots:
 
@@ -36,6 +38,8 @@ class Settings : public QWidget {
 		void doRead();
 
 	private:
+
+		Console *_console;
 
 		QFormLayout *_formLayout;
 		QHBoxLayout *_buttonLayout;
