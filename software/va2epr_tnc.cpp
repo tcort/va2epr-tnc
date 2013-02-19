@@ -32,6 +32,8 @@
  */
 va2epr_tnc::va2epr_tnc(void) {
 
+	qDebug() << "va2epr_tnc::va2epr_tnc() Enter";
+
 	_widget = new QWidget();
 	setCentralWidget(_widget);
 
@@ -98,6 +100,8 @@ va2epr_tnc::va2epr_tnc(void) {
 
 	this->show();
 	_www->show();
+
+	qDebug() << "va2epr_tnc::va2epr_tnc() Complete";
 }
 
 /**
@@ -105,14 +109,20 @@ va2epr_tnc::va2epr_tnc(void) {
  */
 void va2epr_tnc::doAbout(void) {
 
+	qDebug() << "va2epr_tnc::doAbout() Enter";
+
 	AboutDialog about(this);
 	about.exec();
+
+	qDebug() << "va2epr_tnc::doAbout() Complete";
 }
 
 /**
  * Process clicks of the connect button
  */
 void va2epr_tnc::doConnect(void) {
+
+	qDebug() << "va2epr_tnc::doConnect() Enter";
 
 	bool rc;
 
@@ -130,12 +140,15 @@ void va2epr_tnc::doConnect(void) {
 		_tabs->setTabEnabled(2, true);
 	}
 
+	qDebug() << "va2epr_tnc::doConnect() Complete";
 }
 
 /**
  * Process clicks of the disconnect button
  */
 void va2epr_tnc::doDisconnect(void) {
+
+	qDebug() << "va2epr_tnc::doDisconnect() Enter";
 
 	_toolbarConnectAction->setEnabled(true);
 	_toolbarDisconnectAction->setEnabled(false);
@@ -145,6 +158,8 @@ void va2epr_tnc::doDisconnect(void) {
 
 		_console->closePort();
 	}
+
+	qDebug() << "va2epr_tnc::doDisconnect() Complete";
 }
 
 /**
@@ -152,9 +167,7 @@ void va2epr_tnc::doDisconnect(void) {
  */
 va2epr_tnc::~va2epr_tnc(void) {
 
-	if (_console->isPortOpen()) {
-
-		_console->closePort();
-	}
+	qDebug() << "va2epr_tnc::~va2epr_tnc() Enter";
+	qDebug() << "va2epr_tnc::~va2epr_tnc() Complete";
 }
 

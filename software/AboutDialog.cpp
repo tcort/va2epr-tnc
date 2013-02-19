@@ -32,6 +32,8 @@
  */
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 
+	qDebug() << "AboutDialog::AboutDialog() Enter";
+
 	setWindowTitle(tr("About %1").arg(PROGRAM_NAME));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -65,5 +67,7 @@ AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	layout->addWidget(close);
 
 	setLayout(layout);
+
+	qDebug() << "AboutDialog::AboutDialog() Complete";
 }
 

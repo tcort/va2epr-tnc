@@ -34,6 +34,8 @@
  */
 Console::Console(QWidget *parent) : QWidget(parent) {
 
+	qDebug() << "Console::Console() Enter";
+
 	// Setup Serial Port - 230400 baud 8 bits 1 stop no parity no flow ctrl.
 	_port = new QextSerialPort("/usr/ttyUSB0", QextSerialPort::EventDriven);
 	_port->setBaudRate(BAUD230400);
@@ -73,6 +75,8 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	_layout->addLayout(_inputLayout);
 
 	setLayout(_layout);
+
+	qDebug() << "Console::Console() Complete";
 }
 
 /**
@@ -80,8 +84,12 @@ Console::Console(QWidget *parent) : QWidget(parent) {
  */
 void Console::doSend(void) {
 
+	qDebug() << "Console::doSend() Enter";
+
 	this->append(_input->text());
 	_input->setText(tr(""));
+
+	qDebug() << "Console::doSend() Complete";
 }
 
 /**
@@ -89,6 +97,8 @@ void Console::doSend(void) {
  * @param s string to write to the output area.
  */
 void Console::append(QString s) {
+
+	qDebug() << "Console::append() Enter";
 
 	if (++_num_lines > 1000) {
 
@@ -105,6 +115,8 @@ void Console::append(QString s) {
 	}
 
 	_output->append(s);
+
+	qDebug() << "Console::append() Complete";
 }
 
 
@@ -113,11 +125,15 @@ void Console::append(QString s) {
  */
 void Console::doRecv() {
 
+	qDebug("Console::doRecv() Enter");
+
 	QByteArray bytes;
 	int bytesAvailable = _port->bytesAvailable();
 	bytes.resize(bytesAvailable);
 	_port->read(bytes.data(), bytes.size());
 	this->append(QString(bytes));
+
+	qDebug("Console::doRecv() Complete");
 }
 
 /**
@@ -126,15 +142,21 @@ void Console::doRecv() {
  */
 bool Console::openPort() {
 
+	qDebug() << "Console::openPort() Enter";
 	_port->open(QIODevice::ReadWrite);
 	if (_port->isOpen()) {
 
+		qDebug() << "Port Opened OK\n";
 		_send->setEnabled(true);
 		_input->setEnabled(true);
 		connect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
+
+		qDebug() << "Console::openPort() Complete";
 		return true;
 	} else {
 
+		qDebug() << "Failed to Open Port\n";
+		qDebug() << "Console::openPort() Complete";
 		return false;
 	}
 }
@@ -145,13 +167,21 @@ bool Console::openPort() {
  */
 bool Console::closePort() {
 
+	qDebug() << "Console::closePort() Enter";
+
 	if (_port->isOpen()) {
 
 		_input->setEnabled(false);
 		_send->setEnabled(false);
 		disconnect(_port, SIGNAL(doRecv()), this, SLOT(onReadyRead()));
 		_port->close();
+
+	} else {
+
+		qDebug() << "Console::closePort() Port was not Open";
 	}
+
+	qDebug() << "Console::closePort() Complete";
 
 	return !(_port->isOpen());
 }
@@ -162,10 +192,14 @@ bool Console::closePort() {
  */
 Console::~Console() {
 
+	qDebug() << "Console::~Console() Enter";
+
 	if (_port->isOpen()) {
 
 		closePort();
 	}
 
 	delete _port;
+
+	qDebug() << "Console::~Console() Complete";
 }

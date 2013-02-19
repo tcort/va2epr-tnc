@@ -30,6 +30,8 @@
  */
 Settings::Settings(QWidget *parent) : QWidget(parent) {
 
+	qDebug() << "Settings::Settings() Enter";
+
 	_layout = new QVBoxLayout();
 	_buttonLayout = new QHBoxLayout();
 	_formLayout = new QFormLayout();
@@ -91,6 +93,8 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
 	_layout->addLayout(_buttonLayout);
 
 	setLayout(_layout);
+
+	qDebug() << "Settings::Settings() Complete";
 }
 
 /**
@@ -98,12 +102,22 @@ Settings::Settings(QWidget *parent) : QWidget(parent) {
  */
 void Settings::doProgram(void) {
 
+	qDebug() << "Settings::doProgram() Enter";
+
 	// TODO do some data validation
+
+	qDebug() << "Settings::doProgram() Complete";
 }
 
 /**
  * Process clicks of the read device button.
  */
 void Settings::doRead(void) {
+
+	qDebug() << "Settings::doRead() Enter";
+
+	// TODO do some data validation
+
+	qDebug() << "Settings::doRead() Complete";
 
 }
