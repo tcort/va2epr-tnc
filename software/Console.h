@@ -40,6 +40,7 @@ class Console : public QWidget {
 		bool isPortOpen() { return _port->isOpen(); }
 
 		bool openPort();
+		bool writePort(QString s);
 		bool closePort();
 
 		void append(QString s);

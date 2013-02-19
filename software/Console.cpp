@@ -80,14 +80,44 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 }
 
 /**
+ * Write to the serial port.
+ * @param s string to write
+ * @return true if string written OK
+ */
+bool Console::writePort(QString s) {
+
+	qDebug() << "Console::writePort() Enter";
+
+	bool rc;
+
+	if (_port->isOpen()) {
+
+		rc = (_port->write(s.toLatin1()) == s.toLatin1().length());
+
+	} else {
+
+		rc = false;
+		qDebug() << "Console::writePort() Port is closed";
+	}
+
+	qDebug() << "Console::writePort() Complete";
+	return rc;
+}
+
+/**
  * Handle an enter press or send button click causing the data in the input line to be sent
  */
 void Console::doSend(void) {
 
 	qDebug() << "Console::doSend() Enter";
 
-	this->append(_input->text());
-	_input->setText(tr(""));
+	if (this->writePort(_input->text())) {
+		this->append(_input->text());
+		_input->setText(tr(""));
+		qDebug() << "Console::doSend() write OK";
+	} else {
+		qDebug() << "Console::doSend() write FAIL";
+	}
 
 	qDebug() << "Console::doSend() Complete";
 }
