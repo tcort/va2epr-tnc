@@ -41,11 +41,14 @@ $(TARGET).hex: $(TARGET).obj
 $(TARGET).eep: $(TARGET).obj
 	$(OBJ2HEX) -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $(TARGET).obj $(TARGET).eep
 
-$(TARGET).obj: ax25.o afsk.o conf.o csma.o gps.o kiss.o main.o nmea.o
+$(TARGET).obj: ax25.o afsk.o aprs.o conf.o csma.o gps.o kiss.o main.o nmea.o
 	$(CC) $(CFLAGS) ax25.o afsk.o conf.o csma.o gps.o kiss.o main.o nmea.o -o $(TARGET).obj
 
 afsk.o: afsk.c afsk.h ax25.h csma.h kiss.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
+
+aprs.o: aprs.c aprs.h ax25.h conf.h kiss.h
+	$(CC) $(CFLAGS) aprs.c -c -o aprs.o
 
 ax25.o: ax25.c ax25.h
 	$(CC) $(CFLAGS) ax25.c -c -o ax25.o

@@ -87,6 +87,7 @@ void kiss_init(void);
 
 unsigned char kiss_rx_buffer_empty(void);
 unsigned char kiss_rx_buffer_dequeue(void);
+void kiss_rx_buffer_queue(unsigned char c);
 
 unsigned char kiss_tx(unsigned char c);
 void kiss_tx_raw(unsigned char c);

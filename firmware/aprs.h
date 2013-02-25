@@ -16,15 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __AX25_H
-#define __AX25_H
+#ifndef __APRS_H
+#define __APRS_H
 
-#define AX25_FLAG (0x7e)
+#include "conf.h"
 
-#define INITIAL_CRC16_VALUE (0xffff)
-
-#define CRC16CCITT_POLYNOMIAL (0x8408)
-
-unsigned int crc16(unsigned int crc, unsigned char byte);
+/*
+ * Equations to determine how many AX.25 flags to send for TX Delay
+ * and TX Tail. Delays are in 10ms units. We convert that to millis
+ * and divide by the time it takes to send 8 bits @ 1200 baud.
+ */
+#define TXDELAY ((config.tx_delay * 0.01) / (8.0 / 1200.0))
+#define TXTAIL  ((config.tx_tail  * 0.01) / (8.0 / 1200.0))
 
 #endif

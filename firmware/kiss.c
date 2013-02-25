@@ -90,6 +90,19 @@ unsigned char kiss_rx_buffer_empty(void) {
 }
 
 /*
+ * Queue a byte in kiss_rx_buffer[]. This is used by
+ * the APRS message generator to insert bytes into the buffer.
+ */
+void kiss_rx_buffer_queue(unsigned char c) {
+
+	/* Insert byte into circular buffer */
+	kiss_rx_buffer[kiss_rx_buffer_tail++] = c;
+
+	/* Keep kiss_tx_buffer_tail in the range 0-8191 */
+	kiss_rx_buffer_tail &= 0x1fff;
+}
+
+/*
  * Dequeue a byte from kiss_rx_buffer[]. This is used by
  * the AFSK transmit code to get data to send.
  */
