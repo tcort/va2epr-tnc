@@ -36,7 +36,7 @@
 #include <avr/io.h>
 
 #include "afsk.h"
-#include "ax25.h"
+#include "aprs.h"
 #include "csma.h"
 #include "kiss.h"
 

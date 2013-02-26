@@ -29,4 +29,12 @@
 #define TXDELAY ((config.tx_delay * 0.01) / (8.0 / 1200.0))
 #define TXTAIL  ((config.tx_tail  * 0.01) / (8.0 / 1200.0))
 
+#define AX25_FLAG (0x7e)
+#define AX25_APRS_UI_FRAME (0x03)
+#define AX25_PROTO_NO_LAYER3 (0xf0)
+
+#define INITIAL_CRC16_VALUE (0xffff)
+
+#define CRC16CCITT_POLYNOMIAL (0x8408)
+
 #endif

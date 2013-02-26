@@ -34,7 +34,7 @@
 #include <avr/interrupt.h>
 
 #include "afsk.h"
-#include "ax25.h"
+#include "aprs.h"
 #include "conf.h"
 #include "kiss.h"
 
