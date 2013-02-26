@@ -23,7 +23,15 @@
 #include "conf.h"
 #include "kiss.h"
 
-static unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
+static inline unsigned int send_byte(unsigned int crc, unsigned char c) {
+
+	crc = crc16(crc, c);
+	kiss_rx_buffer_queue(c);
+
+	return crc;
+}
+
+static inline unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
 
 	unsigned int i;
 	unsigned char c;
@@ -36,19 +44,10 @@ static unsigned int send_address(unsigned int crc, unsigned char *s, unsigned ch
 			c = s[i] << 1;
 		}
 
-		crc = crc16(crc, c);
-		kiss_rx_buffer_queue(c);
+		crc = send_byte(crc, c);
 	}
 
 	return crc;
-}
-
-static unsigned int send_byte(unsigned int crc, unsigned char c) {
-
-	crc = crc16(crc, c);
-	kiss_rx_buffer_queue(c);
-
-	return c;
 }
 
 void beacon(void) {
