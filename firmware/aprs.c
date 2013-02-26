@@ -16,17 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string.h>
+
 #include "aprs.h"
 #include "ax25.h"
 #include "conf.h"
 #include "kiss.h"
+
+static unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
+
+	unsigned int i;
+	unsigned char c;
+
+	for (i = 0; s[i]; i++) {
+
+		if (s[i + 1] == '\0' && last_bit_one) {
+			c = (s[i] << 1) | 0x01;
+		} else {
+			c = s[i] << 1;
+		}
+
+		crc = crc16(crc, c);
+		kiss_rx_buffer_queue(c);
+	}
+
+	return crc;
+}
+
+static unsigned int send_byte(unsigned int crc, unsigned char c) {
+
+	crc = crc16(crc, c);
+	kiss_rx_buffer_queue(c);
+
+	return c;
+}
 
 void beacon(void) {
 
 	unsigned int crc = INITIAL_CRC16_VALUE;
 	unsigned char crcl;
 	unsigned char crch;
-
+	unsigned char addr[8];
 	unsigned int i;
 
 	/*
@@ -45,15 +75,27 @@ void beacon(void) {
 		kiss_rx_buffer_queue(AX25_FLAG);
 	}
 
-	/* TODO - send bytes like this */
-	/* TODO - check byte order */
-		crc16(crc, 'X');
-		kiss_rx_buffer_queue('X');
+	/* addressing */
 
-	/* TODO - maybe make a struct for the frame, fill in the frame,
-	 * and then send each byte.
-	 */
+	strcpy((char *) addr, "APAVR00");
+	crc = send_address(crc, addr, 0);
 
+	strcpy((char *) addr, "VA2EPR0"); /* TODO use conf.callsign here */
+	crc = send_address(crc, addr, 0);
+
+	strcpy((char *) addr, "RELAY 0");
+	crc = send_address(crc, addr, 0);
+
+	strcpy((char *) addr, "WIDE2 2");
+	crc = send_address(crc, addr, 1);
+
+	/* control field */
+	crc = send_byte(crc, AX25_APRS_UI_FRAME);
+
+	/* protocol id */
+	crc = send_byte(crc, AX25_PROTO_NO_LAYER3);
+
+	/* TODO send payload */
 
 	/* Calculate the high and low parts of the final CRC */
 	crcl = crc ^ 0xff;

@@ -20,6 +20,8 @@
 #define __AX25_H
 
 #define AX25_FLAG (0x7e)
+#define AX25_APRS_UI_FRAME (0x03)
+#define AX25_PROTO_NO_LAYER3 (0xf0)
 
 #define INITIAL_CRC16_VALUE (0xffff)
 
