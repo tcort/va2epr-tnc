@@ -92,6 +92,10 @@ static unsigned int crc16(unsigned int crc, unsigned char byte) {
 	return crc;
 }
 
+/*
+ * Update the crc for the byte 'c' and queue it up for transmission.
+ * Returns the updated crc value.
+ */
 static inline unsigned int send_byte(unsigned int crc, unsigned char c) {
 
 	crc = crc16(crc, c);
@@ -100,7 +104,12 @@ static inline unsigned int send_byte(unsigned int crc, unsigned char c) {
 	return crc;
 }
 
-static inline unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
+/*
+ * Shift the address byte by one, update the crc, and queue the byte for transmission.
+ * The LSB of the last byte of the last address is 1 instead of 0. Set last_bit_one to enable this.
+ * Returns the updated crc value.
+ */
+static unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
 
 	unsigned int i;
 	unsigned char c;
@@ -119,12 +128,17 @@ static inline unsigned int send_address(unsigned int crc, unsigned char *s, unsi
 	return crc;
 }
 
-void beacon(void) {
+/*
+ * Beacon an APRS message.
+ */
+void aprs_beacon(void) {
 
 	unsigned int crc = INITIAL_CRC16_VALUE;
-	unsigned char crcl;
-	unsigned char crch;
-	unsigned char addr[8];
+
+	unsigned char crcl; /* low bits of crc */
+	unsigned char crch; /* high bits of crc */
+
+	unsigned char addr[8]; /* temp string to hold an address */
 	unsigned int i;
 
 	/*
@@ -136,6 +150,8 @@ void beacon(void) {
 
 	unsigned int txdelay = TXDELAY;
 	unsigned int txtail = TXTAIL;
+
+	/* Start transmitting... */
 
 	kiss_rx_buffer_queue(AX25_FLAG); /* must send at least one */
 
@@ -178,4 +194,5 @@ void beacon(void) {
 	}
 
 	kiss_rx_buffer_queue(AX25_FLAG); /* must send at least one */
+
 }

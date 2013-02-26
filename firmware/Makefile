@@ -42,7 +42,7 @@ $(TARGET).eep: $(TARGET).obj
 	$(OBJ2HEX) -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $(TARGET).obj $(TARGET).eep
 
 $(TARGET).obj: afsk.o aprs.o conf.o csma.o gps.o kiss.o main.o nmea.o
-	$(CC) $(CFLAGS) afsk.o conf.o csma.o gps.o kiss.o main.o nmea.o -o $(TARGET).obj
+	$(CC) $(CFLAGS) afsk.o aprs.o conf.o csma.o gps.o kiss.o main.o nmea.o -o $(TARGET).obj
 
 afsk.o: afsk.c afsk.h aprs.h csma.h kiss.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
@@ -62,7 +62,7 @@ gps.o: gps.c gps.h nmea.h
 kiss.o: kiss.c kiss.h afsk.h aprs.h conf.h
 	$(CC) $(CFLAGS) kiss.c -c -o kiss.o
 
-main.o: main.c afsk.h conf.h csma.h gps.h kiss.h nmea.h
+main.o: main.c afsk.h aprs.h conf.h csma.h gps.h kiss.h nmea.h
 	$(CC) $(CFLAGS) main.c -c -o main.o
 
 nmea.o: nmea.c nmea.h

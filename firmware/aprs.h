@@ -26,15 +26,28 @@
  * and TX Tail. Delays are in 10ms units. We convert that to millis
  * and divide by the time it takes to send 8 bits @ 1200 baud.
  */
+
+/* number of AX25_FLAGS to send before xmit of frame */
 #define TXDELAY ((config.tx_delay * 0.01) / (8.0 / 1200.0))
+
+/* number of AX25_FLAGS to send after xmit of frame */
 #define TXTAIL  ((config.tx_tail  * 0.01) / (8.0 / 1200.0))
 
+/* AX.25 Flag (Frame Delim) */
 #define AX25_FLAG (0x7e)
+
+/* Frame Type */
 #define AX25_APRS_UI_FRAME (0x03)
+
+/* Layer 3 protocol (none for our application) */
 #define AX25_PROTO_NO_LAYER3 (0xf0)
 
+/* The initial value of the crc register */
 #define INITIAL_CRC16_VALUE (0xffff)
 
+/* CRC Polynomial used for AX.25 FCS */
 #define CRC16CCITT_POLYNOMIAL (0x8408)
+
+void aprs_beacon(void);
 
 #endif

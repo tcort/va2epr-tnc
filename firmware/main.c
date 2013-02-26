@@ -26,6 +26,7 @@
 #include <util/delay.h>
 
 #include "afsk.h"
+#include "aprs.h"
 #include "conf.h"
 #include "csma.h"
 #include "gps.h"
@@ -96,8 +97,7 @@ int main(void) {
 			if (gpstime_diff(current_timestamp, last_beacon_timestamp) >= 10) {
 
 
-				/* TODO beacon location */;
-
+				aprs_beacon();
 				last_beacon_timestamp = current_timestamp;
 			}
 		}
