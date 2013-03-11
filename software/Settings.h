@@ -47,21 +47,26 @@ class Settings : public QWidget {
 
 		QLabel *_tx_delayLabel;
 		QLineEdit *_tx_delay;
+		QIntValidator *_tx_delay_validator;
 
 		QLabel *_pLabel;
 		QLineEdit *_p;
+		QIntValidator *_p_validator;
 
 		QLabel *_slot_timeLabel;
 		QLineEdit *_slot_time;
+		QIntValidator *_slot_time_validator;
 
 		QLabel *_tx_tailLabel;
 		QLineEdit *_tx_tail;
+		QIntValidator *_tx_tail_validator;
 
 		QLabel *_full_duplexLabel;
 		QCheckBox *_full_duplex;
 
 		QLabel *_callsignLabel;
 		QLineEdit *_callsign;
+		QRegExpValidator *_callsign_validator;
 
 		QPushButton *_program;
 		QPushButton *_read;

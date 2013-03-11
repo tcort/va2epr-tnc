@@ -41,6 +41,9 @@ Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 	_tx_delayLabel->setToolTip(tr("Transmitter Keyup Delay in 10ms Units (Default 50)"));
 	_tx_delay = new QLineEdit();
 	_tx_delay->setToolTip(tr("Transmitter Keyup Delay in 10ms Units (Default 50)"));
+	_tx_delay->setText(tr("10"));
+	_tx_delay_validator = new QIntValidator(0, 255);
+	_tx_delay->setValidator(_tx_delay_validator);
 	_formLayout->addRow(_tx_delayLabel, _tx_delay);
 
 	_pLabel = new QLabel();
@@ -48,6 +51,9 @@ Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 	_pLabel->setToolTip(tr("Scaled Persistance Paramter (Default 63)"));
 	_p = new QLineEdit();
 	_p->setToolTip(tr("Scaled Persistance Paramter (Default 63)"));
+	_p->setText(tr("63"));
+	_p_validator = new QIntValidator(0, 255);
+	_p->setValidator(_p_validator);
 	_formLayout->addRow(_pLabel, _p);
 
 	_slot_timeLabel = new QLabel();
@@ -55,6 +61,9 @@ Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 	_slot_timeLabel->setToolTip(tr("Slot Interval in 10ms Units (Default 10)"));
 	_slot_time = new QLineEdit();
 	_slot_time->setToolTip(tr("Slot Interval in 10ms Units (Default 10)"));
+	_slot_time->setText(tr("10"));
+	_slot_time_validator = new QIntValidator(0, 255);
+	_slot_time->setValidator(_slot_time_validator);
 	_formLayout->addRow(_slot_timeLabel, _slot_time);
 
 	_tx_tailLabel = new QLabel();
@@ -62,6 +71,9 @@ Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 	_tx_tailLabel->setToolTip(tr("Time to hold after FCS in 10ms Units (Default 50)"));
 	_tx_tail = new QLineEdit();
 	_tx_tail->setToolTip(tr("Time to hold after FCS in 10ms Units (Default 50)"));
+	_tx_tail->setText(tr("50"));
+	_tx_tail_validator = new QIntValidator(0, 255);
+	_tx_tail->setValidator(_tx_tail_validator);
 	_formLayout->addRow(_tx_tailLabel, _tx_tail);
 
 	_full_duplexLabel = new QLabel();
@@ -76,6 +88,10 @@ Settings::Settings(Console *console, QWidget *parent) : QWidget(parent) {
 	_callsignLabel->setToolTip(tr("Enter Your Callsign"));
 	_callsign = new QLineEdit();
 	_callsign->setToolTip(tr("Enter Your Callsign"));
+	_callsign->setText(tr("XX0XXX"));
+	QRegExp re("[A-Z0-9]{3,6}");
+	_callsign_validator = new QRegExpValidator(re);
+	_callsign->setValidator(_callsign_validator);
 	_formLayout->addRow(_callsignLabel, _callsign);
 
 	_layout->addLayout(_formLayout);
