@@ -36,7 +36,7 @@ struct conf {
 	unsigned char slot_time; /* the slot interval in 10 ms units. */
 	unsigned char tx_tail; /* OBSOLETE - the time to hold up the TX after the FCS has been sent, in 10 ms units. */
 	unsigned char full_duplex; /* 0 for half duplex mode, non-zero for full duplex mode. */
-	unsigned char callsign[7]; /* '\0' terminated call sign (for APRS Tracker) */
+	char callsign[7]; /* '\0' terminated call sign (for APRS Tracker) */
 };
 
 extern struct conf config;

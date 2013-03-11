@@ -164,7 +164,8 @@ void aprs_beacon(void) {
 	strcpy((char *) addr, "APAVR00");
 	crc = send_address(crc, addr, 0);
 
-	strcpy((char *) addr, "VA2EPR0"); /* TODO use conf.callsign here */
+	strcpy((char *) addr, "      0");
+	memcpy(addr, config.callsign, (strlen(config.callsign) < 6 ? strlen(config.callsign) : 6));
 	crc = send_address(crc, addr, 0);
 
 	strcpy((char *) addr, "RELAY 0");
