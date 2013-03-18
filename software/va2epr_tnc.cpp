@@ -22,6 +22,7 @@
 #include <QtWebKit>
 
 #include "AboutDialog.h"
+#include "ConnectDialog.h"
 #include "Console.h"
 #include "main.h"
 #include "Settings.h"
@@ -125,13 +126,16 @@ void va2epr_tnc::doConnect(void) {
 	qDebug() << "va2epr_tnc::doConnect() Enter";
 
 	bool rc;
+	ConnectDialog cd;
 
-	// Try _serial->open() here
-	if (_console->isPortOpen()) {
+	cd.exec();
 
-		_console->closePort();
-	}
-
+//	// Try _serial->open() here
+//	if (_console->isPortOpen()) {
+//
+//		_console->closePort();
+//	}
+//
 	rc = _console->openPort();
 	if (rc) {
 		_toolbarConnectAction->setEnabled(false);

@@ -23,8 +23,8 @@ QT += webkit
 
 # Code
 
-HEADERS += AboutDialog.h   Console.h   main.h   Settings.h   va2epr_tnc.h
-SOURCES += AboutDialog.cpp Console.cpp main.cpp Settings.cpp va2epr_tnc.cpp
+HEADERS += AboutDialog.h   ConnectDialog.h   Console.h   main.h   Settings.h   va2epr_tnc.h
+SOURCES += AboutDialog.cpp ConnectDialog.cpp Console.cpp main.cpp Settings.cpp va2epr_tnc.cpp
 
 # Libraries
 

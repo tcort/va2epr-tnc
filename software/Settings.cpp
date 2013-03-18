@@ -122,8 +122,6 @@ void Settings::doProgram(void) {
 
 	qDebug() << "Settings::doProgram() Enter";
 
-	// TODO do some data validation
-
 	qDebug() << "Settings::doProgram() Complete";
 }
 

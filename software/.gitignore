@@ -13,6 +13,8 @@ moc_Settings.cpp
 moc_Settings.o
 moc_va2epr_tnc.cpp
 moc_va2epr_tnc.o
+moc_ConnectDialog.o
+moc_ConnectDialog.cpp
 va2epr-tnc
 va2epr_tnc.o
 qrc_locale.cpp
@@ -22,4 +24,5 @@ qrc_html.o
 qrc_icons.cpp
 qrc_icons.o
 ReaderThread.o
+ConnectDialog.o
 docs
