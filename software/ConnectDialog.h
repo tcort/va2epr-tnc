@@ -36,6 +36,9 @@ class ConnectDialog : public QDialog {
 		 */
 		ConnectDialog(QWidget * parent = 0);
 
+		QString getPort();
+		QString getSpeed();
+
 	private:
 		QextSerialEnumerator *_portList;		
 		QComboBox *_portSelect;

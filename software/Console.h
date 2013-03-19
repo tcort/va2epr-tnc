@@ -39,7 +39,7 @@ class Console : public QWidget {
 		 */
 		bool isPortOpen() { return _port->isOpen(); }
 
-		bool openPort();
+		bool openPort(QString portName, QString portSpeed);
 		bool writePort(QString s);
 		bool closePort();
 

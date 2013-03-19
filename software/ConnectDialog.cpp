@@ -33,23 +33,37 @@
  */
 ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 
+	int i;
 	qDebug() << "ConnectDialog::ConnectDialog() Enter";
 
 	setWindowTitle(tr("Connect"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout();
 
 	_portList = new QextSerialEnumerator(this);
 	_portSelect = new QComboBox();
 	QList<QextPortInfo> portInfos = _portList->getPorts();
 	QextPortInfo portInfo;
 
+	QHBoxLayout *deviceLayout = new QHBoxLayout();
+        QLabel *device = new QLabel(tr("Device"));
+
+	deviceLayout->addWidget(device);
+
+	i = 0;
 	foreach(portInfo, portInfos) {
 		_portSelect->addItem(portInfo.portName);
+		if (!strcmp(portInfo.portName.toStdString().c_str(), "/dev/ttyUSB0")) {
+			_speedSelect->setCurrentIndex(i);
+		}
+		i++;
 	}
+	deviceLayout->addWidget(_portSelect);
+	layout->addLayout(deviceLayout);
 
-	layout->addWidget(_portSelect);
-	
+	QHBoxLayout *speedLayout = new QHBoxLayout();
+        QLabel *speed = new QLabel(tr("Baud Rate"));
+	speedLayout->addWidget(speed);
 
 	_speedSelect = new QComboBox();
 	_speedSelect->addItem(tr("1200"));
@@ -61,7 +75,9 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	_speedSelect->addItem(tr("115200"));
 	_speedSelect->addItem(tr("230400"));
 	_speedSelect->setCurrentIndex(_speedSelect->count()-1);
-	layout->addWidget(_speedSelect);
+
+	speedLayout->addWidget(_speedSelect);
+	layout->addLayout(speedLayout);
 
 	QPushButton *connect = new QPushButton;
 	connect->setText(tr("Connect"));
@@ -73,3 +89,12 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	qDebug() << "ConnectDialog::ConnectDialog() Complete";
 }
 
+QString ConnectDialog::getPort() {
+
+	return _portSelect->currentText();
+}
+
+QString ConnectDialog::getSpeed() {
+
+	return _speedSelect->currentText();
+}

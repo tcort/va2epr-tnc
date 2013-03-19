@@ -136,7 +136,7 @@ void va2epr_tnc::doConnect(void) {
 //		_console->closePort();
 //	}
 //
-	rc = _console->openPort();
+	rc = _console->openPort(cd.getPort(), cd.getSpeed());
 	if (rc) {
 		_toolbarConnectAction->setEnabled(false);
 		_toolbarDisconnectAction->setEnabled(true);
@@ -157,6 +157,7 @@ void va2epr_tnc::doDisconnect(void) {
 	_toolbarConnectAction->setEnabled(true);
 	_toolbarDisconnectAction->setEnabled(false);
 	_status->setText(tr("Disconnected"));
+
 	_tabs->setTabEnabled(2, false);
 	if(_console->isPortOpen()) {
 

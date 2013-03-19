@@ -34,9 +34,49 @@
     <name>ConnectDialog</name>
     <message>
         <location filename="../ConnectDialog.cpp" line="38"/>
-        <location filename="../ConnectDialog.cpp" line="55"/>
+        <location filename="../ConnectDialog.cpp" line="67"/>
         <source>Connect</source>
         <translation type="unfinished">Connectés</translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="55"/>
+        <source>1200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="56"/>
+        <source>4800</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="57"/>
+        <source>9600</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="58"/>
+        <source>19200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="59"/>
+        <source>38400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="60"/>
+        <source>57600</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="61"/>
+        <source>115200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="62"/>
+        <source>230400</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>

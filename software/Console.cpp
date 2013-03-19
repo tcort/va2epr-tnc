@@ -167,10 +167,12 @@ void Console::doRecv() {
 }
 
 /**
- * Open the Serial Port
- * @return successfulness of the operation (false == fail)
+ * Open the Serial Port.
+ * @param portName name of the port (example "/dev/ttyUSB0").
+ * @param portSpeed baud rate for the port.
+ * @return successfulness of the operation (false == fail).
  */
-bool Console::openPort() {
+bool Console::openPort(QString portName, QString portSpeed) {
 
 	qDebug() << "Console::openPort() Enter";
 	_port->open(QIODevice::ReadWrite);
