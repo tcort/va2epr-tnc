@@ -104,6 +104,16 @@ static inline unsigned int send_byte(unsigned int crc, unsigned char c) {
 	return crc;
 }
 
+static inline unsigned int send_string(unsigned int crc, unsigned char *s) {
+
+	while (*s) {
+		crc = send_byte(crc, *s);
+		s++;
+	}
+
+	return crc;
+}
+
 /*
  * Shift the address byte by one, update the crc, and queue the byte for transmission.
  * The LSB of the last byte of the last address is 1 instead of 0. Set last_bit_one to enable this.
@@ -180,7 +190,8 @@ void aprs_beacon(void) {
 	/* protocol id */
 	crc = send_byte(crc, AX25_PROTO_NO_LAYER3);
 
-	/* TODO send payload */
+	/* Simple "Status Report" */
+	crc = send_string(crc, (unsigned char *) "> va2epr-tnc (experimental)");
 
 	/* Calculate the high and low parts of the final CRC */
 	crcl = crc ^ 0xff;
