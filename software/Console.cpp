@@ -157,11 +157,24 @@ void Console::doRecv() {
 
 	qDebug("Console::doRecv() Enter");
 
+	int i, j;
 	QByteArray bytes;
+	QString output = "";
 	int bytesAvailable = _port->bytesAvailable();
 	bytes.resize(bytesAvailable);
 	_port->read(bytes.data(), bytes.size());
-	this->append(QString(bytes));
+
+	for (i = 0; i < bytes.length(); i++) {
+
+		unsigned char byte = bytes.at(i);
+		for (j = 0; j < 8; j++) {
+			output += (byte & 1) ? "1" : "0";
+			byte >>= 1;
+		}
+		output += "\n";
+	}
+
+	this->append(output);
 
 	qDebug("Console::doRecv() Complete");
 }
