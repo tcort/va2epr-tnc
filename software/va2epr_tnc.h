@@ -40,6 +40,8 @@ class va2epr_tnc : public QMainWindow {
 		void doDisconnect(void);
 
 	private:
+		void addMarker(QString lon, QString lat);
+
 		QWidget *_widget;
 		QVBoxLayout *_layout;
 
