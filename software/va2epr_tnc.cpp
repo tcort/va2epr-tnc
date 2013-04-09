@@ -70,10 +70,6 @@ va2epr_tnc::va2epr_tnc(void) {
 	_www = new QWebView();
 	_www->load(QUrl("qrc:/html/va2epr-tnc.html"));
 
-	// TODO here's a reminder how to call JS functions from C++
-	// I'll need this for later when I add/remove markers
-	// _www->page()->mainFrame()->evaluateJavaScript("alert('test'); null");
-
 	_console = new Console();
 	_settings = new Settings(_console); // share the console with Settings so it can access the serial port
 
@@ -105,6 +101,11 @@ va2epr_tnc::va2epr_tnc(void) {
 	qDebug() << "va2epr_tnc::va2epr_tnc() Complete";
 }
 
+void va2epr_tnc::addMarker(QString lon, QString lat) {
+	// _www->page()->mainFrame()->evaluateJavaScript("addMarker(-75.6919, 45.4214); null");
+	_www->page()->mainFrame()->evaluateJavaScript("addMarker(" + lon + ", " + lat + "); null");
+}
+
 /**
  * Process clicks of the about menu item
  */
@@ -114,6 +115,7 @@ void va2epr_tnc::doAbout(void) {
 
 	AboutDialog about(this);
 	about.exec();
+	addMarker("-75.692", "45.421");
 
 	qDebug() << "va2epr_tnc::doAbout() Complete";
 }

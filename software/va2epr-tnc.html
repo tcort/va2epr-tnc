@@ -24,7 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   <script src="http://www.tomcort.com/OpenLayers/lib/OpenLayers.js"></script>
   <script type="text/javascript">
 
-    var map, layer, markers, icon;
+    var map, layer, markers; // layers
+    var size, offset, icon; // marker info
 
     function init() {
 
@@ -43,13 +44,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         12
       );    
 
-      var size = new OpenLayers.Size(21,25);
-      var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+      size = new OpenLayers.Size(21,25);
+      offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
       icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
     }
 
     function addMarker(lon,lat) {
-      markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat), icon.clone()));
+      markers.addMarker
+	(
+			new OpenLayers.Marker(
+				new OpenLayers.LonLat(lon,lat).transform
+				(
+					new OpenLayers.Projection("EPSG:4326"),
+					map.getProjectionObject()
+				),
+				icon.clone()
+			)
+	);
     }
   </script>
 
