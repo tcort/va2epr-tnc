@@ -54,7 +54,8 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	foreach(portInfo, portInfos) {
 		_portSelect->addItem(portInfo.portName);
 		if (!strcmp(portInfo.portName.toStdString().c_str(), "/dev/ttyUSB0")) {
-			_speedSelect->setCurrentIndex(i);
+			_portSelect->setCurrentIndex(i);
+			break;
 		}
 		i++;
 	}
