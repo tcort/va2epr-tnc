@@ -20,7 +20,7 @@
  * This file manages the configuration parameters stored in EEPROM.
  * The following configuration parameters stored are: TX Delay, p,
  * Slot Time, TX Tail, and Full Duplex. TX Tail is obsolete according
- * to the kiss standard, so it is ignored. The device only supports
+ * to the uart standard, so it is ignored. The device only supports
  * half duplex, so any value for Full Duplex is ignored. Set Hardware
  * is ignored as it has no meaning in this TNC.
  */

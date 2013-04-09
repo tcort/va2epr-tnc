@@ -3,9 +3,9 @@ aprs.o
 conf.o
 csma.o
 gps.o
-kiss.o
 main.o
 nmea.o
+uart.o
 va2epr-tnc.eep
 va2epr-tnc.hex
 va2epr-tnc.obj

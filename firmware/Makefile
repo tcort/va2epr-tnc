@@ -41,13 +41,13 @@ $(TARGET).hex: $(TARGET).obj
 $(TARGET).eep: $(TARGET).obj
 	$(OBJ2HEX) -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $(TARGET).obj $(TARGET).eep
 
-$(TARGET).obj: afsk.o aprs.o conf.o csma.o gps.o kiss.o main.o nmea.o
-	$(CC) $(CFLAGS) afsk.o aprs.o conf.o csma.o gps.o kiss.o main.o nmea.o -o $(TARGET).obj
+$(TARGET).obj: afsk.o aprs.o conf.o csma.o gps.o uart.o main.o nmea.o
+	$(CC) $(CFLAGS) afsk.o aprs.o conf.o csma.o gps.o uart.o main.o nmea.o -o $(TARGET).obj
 
-afsk.o: afsk.c afsk.h aprs.h csma.h kiss.h
+afsk.o: afsk.c afsk.h aprs.h csma.h uart.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
 
-aprs.o: aprs.c aprs.h conf.h kiss.h
+aprs.o: aprs.c aprs.h conf.h uart.h
 	$(CC) $(CFLAGS) aprs.c -c -o aprs.o
 
 conf.o: conf.c conf.h
@@ -59,10 +59,10 @@ csma.o: csma.c csma.h conf.h
 gps.o: gps.c gps.h nmea.h
 	$(CC) $(CFLAGS) gps.c -c -o gps.o
 
-kiss.o: kiss.c kiss.h afsk.h aprs.h conf.h
-	$(CC) $(CFLAGS) kiss.c -c -o kiss.o
+uart.o: uart.c uart.h afsk.h aprs.h conf.h
+	$(CC) $(CFLAGS) uart.c -c -o uart.o
 
-main.o: main.c afsk.h aprs.h conf.h csma.h gps.h kiss.h nmea.h
+main.o: main.c afsk.h aprs.h conf.h csma.h gps.h uart.h nmea.h
 	$(CC) $(CFLAGS) main.c -c -o main.o
 
 nmea.o: nmea.c nmea.h

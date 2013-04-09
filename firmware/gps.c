@@ -58,7 +58,7 @@
 #include <string.h>
 #include <util/delay.h>
 
-#include "kiss.h"
+#include "uart.h"
 #include "gps.h"
 #include "nmea.h"
 

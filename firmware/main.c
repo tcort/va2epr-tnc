@@ -30,7 +30,7 @@
 #include "conf.h"
 #include "csma.h"
 #include "gps.h"
-#include "kiss.h"
+#include "uart.h"
 #include "nmea.h"
 
 int main(void) {
@@ -41,7 +41,7 @@ int main(void) {
 
 	config_read();
 	afsk_init();
-	kiss_init();
+	uart_init();
 	gps_init();
 
 	sei();
@@ -59,7 +59,7 @@ int main(void) {
 	while (1) {
 
 		/* do we have any data to transmit? */
-		if (!kiss_rx_buffer_empty()) {
+		if (0) {
 			
 			/* wait for the channel to become clear */
 			csma_obtain_slot();
@@ -67,7 +67,7 @@ int main(void) {
 			tx(); /* enter transmit mode */
 			
 			/* wait until everything has been sent */
-			while (!kiss_rx_buffer_empty()) {
+			while (0) {
 				i++; 
 			}
 			

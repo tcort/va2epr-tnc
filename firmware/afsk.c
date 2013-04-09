@@ -38,7 +38,7 @@
 #include "afsk.h"
 #include "aprs.h"
 #include "csma.h"
-#include "kiss.h"
+#include "uart.h"
 
 /*
  * For a 32 sample 2200 Hz tone, I need to change the output 70400
@@ -117,11 +117,11 @@ unsigned char sinewave[32] = {
 
 /*
  * House keeping for the RX code. This flag used to
- * indicate that a start-of-frame KISS_FEND has been
+ * indicate that a start-of-frame UART_FEND has been
  * sent via USART0, I am sending an AX25 frame, and
- * a KISS_FEND will be needed to complete the frame.
+ * a UART_FEND will be needed to complete the frame.
  */
-unsigned char in_kiss_frame = 0;
+unsigned char in_uart_frame = 0;
 
 /* setup ports and timers */
 void afsk_init(void) {
@@ -186,15 +186,17 @@ void tx(void) {
 
 	/*
 	 * If it goes into TX without finishing receiving the current AX.25 frame,
-	 * then it must be cleaned up and an ending KISS_FEND must be sent. This
+	 * then it must be cleaned up and an ending UART_FEND must be sent. This
          * situation could happen (maybe) if the sending station drops out or
 	 * something else goes wrong.
 	 */
-	if (in_kiss_frame) {
-		/* End the current KISS frame. */
-		kiss_tx(AX25_FLAG);
-		kiss_tx_raw(KISS_FEND);
-		in_kiss_frame = 0;
+	if (in_uart_frame) {
+		/* End the current UART frame. */
+/*
+		uart_tx(AX25_FLAG);
+		uart_tx(UART_FEND);
+*/
+		in_uart_frame = 0;
 	}
 
 	/* Turn on TX interrupts/pins */
@@ -252,7 +254,7 @@ void rx(void) {
 
 /*
  * decode incoming AFSK data, forward it to the computer
- * over USART0 using the KISS protocol.
+ * over USART0 using the UART protocol.
  *
  * There are some design decisions made which impact this code.
  * I could write the bytes to a buffer and CRC the frames before
@@ -276,7 +278,7 @@ ISR(TIMER0_COMPA_vect) {
 	/* pseudo-timer used to decide when to sample */
 	static signed char next_sample = 8;
 
-	/* track bytes sent by kiss_tx so that next_sample can be adjusted properly */
+	/* track bytes sent by uart_tx so that next_sample can be adjusted properly */
 	static unsigned char extra_bytes_sent = 0;
 
 	if (shift_detect) {
@@ -345,14 +347,16 @@ ISR(TIMER0_COMPA_vect) {
 	 * and reset the bits_count to 0.
 	 */
 	if (bits == AX25_FLAG || bits_count >= 8) {
-
-		extra_bytes_sent = kiss_tx(bits) - 1;
+/*
+		uart_tx(bits);
+*/
+		extra_bytes_sent = 1;
 
 		/* We additional escape characters sent? */
 		if (extra_bytes_sent) {
 
 			/* Each additional byte sent delays this ISR (43us @ 230400 baud). */
-			next_sample -= (unsigned char) ((1.0/9600) / ((extra_bytes_sent*1.0*(8+1+1)) / KISS_BAUDRATE));
+			next_sample -= (unsigned char) ((1.0/9600) / ((extra_bytes_sent*1.0*(8+1+1)) / UART_BAUDRATE));
 		}
 
 		/* clear bit counter */
@@ -360,7 +364,7 @@ ISR(TIMER0_COMPA_vect) {
 	}
 
 
-	/* TODO test if this code works, then re-add KISS framing bytes */
+	/* TODO test if this code works, then re-add UART framing bytes */
 
 }
 
@@ -479,22 +483,6 @@ ISR(TIMER3_COMPA_vect) {
 	/* index in the tones array */
 	static unsigned char tones_index = 0;
 
-	/* Is the buffer 'bits' empty? If so, get more bits */
-	if (bit_count == 0) {
-
-		/* Do we have any bytes that need to be sent? */
-		if (kiss_rx_buffer_empty()) {
-
-			/* The buffer is empty. We can stop sending now.
-			 * The loop in main() will detect an empty buffer
-			 * and disable this interrupt for us.
-			 */
-			return;
-		}
-
-		bits = kiss_rx_buffer_dequeue();
-		sending_ax25_flag = (bits == AX25_FLAG);
-	}
 
 	if (!(bits & 0x01)) { /* is current bit 0? */
 
