@@ -59,6 +59,8 @@ class Console : public QWidget {
 		QHBoxLayout *_inputLayout;
 
 		QTextEdit *_output;
+		QMutex _outputLock;
+		QString _recvBuf;
 
 		QLineEdit *_input;
 		QPushButton *_send;

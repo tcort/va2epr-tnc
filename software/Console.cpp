@@ -36,9 +36,9 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 
 	qDebug() << "Console::Console() Enter";
 
-	// Setup Serial Port - 230400 baud 8 bits 1 stop no parity no flow ctrl.
+	// Setup Serial Port - 57600 baud 8 bits 1 stop no parity no flow ctrl.
 	_port = new QextSerialPort("/dev/ttyUSB0", QextSerialPort::EventDriven);
-	_port->setBaudRate(BAUD230400);
+	_port->setBaudRate(BAUD57600);
 	_port->setFlowControl(FLOW_OFF);
 	_port->setParity(PAR_NONE);
 	_port->setDataBits(DATA_8);
@@ -75,6 +75,8 @@ Console::Console(QWidget *parent) : QWidget(parent) {
 	_layout->addLayout(_inputLayout);
 
 	setLayout(_layout);
+
+	_recvBuf = "";
 
 	qDebug() << "Console::Console() Complete";
 }
@@ -157,24 +159,21 @@ void Console::doRecv() {
 
 	qDebug("Console::doRecv() Enter");
 
-	int i, j;
+	_outputLock.lock();
+
 	QByteArray bytes;
-	QString output = "";
 	int bytesAvailable = _port->bytesAvailable();
 	bytes.resize(bytesAvailable);
 	_port->read(bytes.data(), bytes.size());
 
-	for (i = 0; i < bytes.length(); i++) {
+	_recvBuf += bytes;
 
-		unsigned char byte = bytes.at(i);
-		for (j = 0; j < 8; j++) {
-			output += (byte & 1) ? "1" : "0";
-			byte >>= 1;
-		}
-		output += "\n";
+	if (_recvBuf.contains("}")) {
+		this->append(_recvBuf);
+		_recvBuf = "";
 	}
 
-	this->append(output);
+	_outputLock.unlock();
 
 	qDebug("Console::doRecv() Complete");
 }

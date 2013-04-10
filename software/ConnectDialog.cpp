@@ -75,7 +75,7 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	_speedSelect->addItem(tr("57600"));
 	_speedSelect->addItem(tr("115200"));
 	_speedSelect->addItem(tr("230400"));
-	_speedSelect->setCurrentIndex(_speedSelect->count()-1);
+	_speedSelect->setCurrentIndex(_speedSelect->count()-3);
 
 	speedLayout->addWidget(_speedSelect);
 	layout->addLayout(speedLayout);

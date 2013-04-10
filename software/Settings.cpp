@@ -131,9 +131,7 @@ void Settings::doProgram(void) {
 void Settings::doRead(void) {
 
 	qDebug() << "Settings::doRead() Enter";
-
-	// TODO do some data validation
-
+	_console->writePort("{Gc}");
 	qDebug() << "Settings::doRead() Complete";
 
 }
