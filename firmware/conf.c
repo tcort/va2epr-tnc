@@ -64,5 +64,5 @@ void config_read(void) {
  */
 void config_write(void) {
 
-	eeprom_write_block(&config_in_eeprom, &config, sizeof(struct conf));
+	eeprom_write_block(&config, &config_in_eeprom, sizeof(struct conf));
 }

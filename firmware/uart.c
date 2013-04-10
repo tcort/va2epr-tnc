@@ -82,6 +82,7 @@ ISR(USART0_RX_vect) {
 	static unsigned char c = 0x00;
 
 	static unsigned char cmd = 0x00;
+	static unsigned char field = 0x00;
 	static char value[256];
 	static unsigned char vindex = 0;
 
@@ -92,17 +93,74 @@ ISR(USART0_RX_vect) {
 	{
 		case '{':
 			cmd = 0x00;
+			field = 0x00;
 			for (i = 0; i < 256; i++)
 				value[i] = '\0';
 			vindex = 0;
 			break;
 
 		case 'G':
+		case 'S':
+		case 'W':
 			if (cmd == 0x00) {
 				cmd = c;
 			} else {
 				value[vindex++] = c;
 			}
+			break;
+
+		case 'v':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.version);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 'v';
+			break;
+
+		case 'd':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.tx_delay);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 'd';
+			break;
+
+		case 'p':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.p);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 'p';
+			break;
+
+		case 's':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.slot_time);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 's';
+			break;
+
+		case 't':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.tx_tail);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 't';
+			break;
+
+		case 'f':
+			if (cmd == 'G') {
+				snprintf(value, 256, "{%d}", config.full_duplex);
+			} else {
+				value[vindex++] = c;
+			}
+			if (field == 0x00) field = 'f';
 			break;
 
 		case 'c':
@@ -111,16 +169,55 @@ ISR(USART0_RX_vect) {
 			} else {
 				value[vindex++] = c;
 			}
+			if (field == 0x00) field = 'c';
 			break;
+
 		case '}':
 			if (cmd == 'G') {
 				for (i = 0; value[i] && i < 256; i++)
 					uart_tx(value[i]);
+			} else if (cmd == 'S' && field != 0x00) {
+
+				switch (field) {
+
+					case 'v':
+						config.version = value[0];
+						break;
+					case 'd':
+						config.tx_delay = value[0];
+						break;
+					case 'p':
+						config.p = value[0];
+						break;
+					case 's':
+						config.slot_time = value[0];
+						break;
+					case 't':
+						config.tx_tail = value[0];
+						break;
+					case 'f':
+						config.full_duplex = value[0];
+						break;
+					case 'c':
+						snprintf(config.callsign, 7, "%s", value);
+						break;
+				}
+			} else if (cmd == 'W') {
+
+				config_write();
 			}
 			break;
+
+		case ':':
+			for (i = 0; i < 256; i++)
+				value[i] = '\0';
+			vindex = 0;
+			break;
+
 		default:
 			value[vindex++] = c;
 			break;
 	}
 
 }
+
