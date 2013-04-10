@@ -28,7 +28,6 @@ SOURCES += AboutDialog.cpp ConnectDialog.cpp Console.cpp main.cpp Settings.cpp v
 
 # Libraries
 
-LIBS += -lfap			# Finnish APRS Parser Library - pakettiradio.net/libfap
 LIBS += -lqextserialport-1.2	# QextSerialPort - code.google.com/p/qextserialport
 
 # Definitions

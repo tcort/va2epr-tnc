@@ -20,5 +20,5 @@ the project files.
 
 The software has the following external dependencies:
 
-	* libfap - http://pakettiradio.net/libfap
+	* Qt4 - qt.digia.com
 	* QextSerialPort - code.google.com/p/qextserialport
