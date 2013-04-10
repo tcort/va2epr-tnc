@@ -111,7 +111,7 @@ ISR(USART0_RX_vect) {
 
 		case 'v':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.version);
+				snprintf(value, 256, "{v:%d}", config.version);
 			} else {
 				value[vindex++] = c;
 			}
@@ -120,7 +120,7 @@ ISR(USART0_RX_vect) {
 
 		case 'd':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.tx_delay);
+				snprintf(value, 256, "{d:%d}", config.tx_delay);
 			} else {
 				value[vindex++] = c;
 			}
@@ -129,7 +129,7 @@ ISR(USART0_RX_vect) {
 
 		case 'p':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.p);
+				snprintf(value, 256, "{p:%d}", config.p);
 			} else {
 				value[vindex++] = c;
 			}
@@ -138,7 +138,7 @@ ISR(USART0_RX_vect) {
 
 		case 's':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.slot_time);
+				snprintf(value, 256, "{s:%d}", config.slot_time);
 			} else {
 				value[vindex++] = c;
 			}
@@ -147,7 +147,7 @@ ISR(USART0_RX_vect) {
 
 		case 't':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.tx_tail);
+				snprintf(value, 256, "{t:%d}", config.tx_tail);
 			} else {
 				value[vindex++] = c;
 			}
@@ -156,7 +156,7 @@ ISR(USART0_RX_vect) {
 
 		case 'f':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%d}", config.full_duplex);
+				snprintf(value, 256, "{f:%d}", config.full_duplex);
 			} else {
 				value[vindex++] = c;
 			}
@@ -165,7 +165,7 @@ ISR(USART0_RX_vect) {
 
 		case 'c':
 			if (cmd == 'G') {
-				snprintf(value, 256, "{%s}", config.callsign);
+				snprintf(value, 256, "{c:%s}", config.callsign);
 			} else {
 				value[vindex++] = c;
 			}
