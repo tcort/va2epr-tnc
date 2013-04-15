@@ -50,6 +50,7 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 
 	deviceLayout->addWidget(device);
 
+	// Almost always on /dev/ttyUSB0 on Linux systems
 	i = 0;
 	foreach(portInfo, portInfos) {
 		_portSelect->addItem(portInfo.portName);
@@ -67,15 +68,18 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	speedLayout->addWidget(speed);
 
 	_speedSelect = new QComboBox();
+	_speedSelect->addItem(tr("110"));
+	_speedSelect->addItem(tr("300"));
+	_speedSelect->addItem(tr("600"));
 	_speedSelect->addItem(tr("1200"));
+	_speedSelect->addItem(tr("2400"));
 	_speedSelect->addItem(tr("4800"));
 	_speedSelect->addItem(tr("9600"));
 	_speedSelect->addItem(tr("19200"));
 	_speedSelect->addItem(tr("38400"));
 	_speedSelect->addItem(tr("57600"));
 	_speedSelect->addItem(tr("115200"));
-	_speedSelect->addItem(tr("230400"));
-	_speedSelect->setCurrentIndex(_speedSelect->count()-3);
+	_speedSelect->setCurrentIndex(_speedSelect->count()-2);
 
 	speedLayout->addWidget(_speedSelect);
 	layout->addLayout(speedLayout);

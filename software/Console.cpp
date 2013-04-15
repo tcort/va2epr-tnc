@@ -187,6 +187,11 @@ void Console::doRecv() {
 bool Console::openPort(QString portName, QString portSpeed) {
 
 	qDebug() << "Console::openPort() Enter";
+	BaudRateType baudRate = (BaudRateType) portSpeed.toInt();
+
+	_port->setPortName(portName.toLatin1());
+	_port->setBaudRate(baudRate);
+
 	_port->open(QIODevice::ReadWrite);
 	if (_port->isOpen()) {
 
