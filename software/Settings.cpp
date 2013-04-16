@@ -19,6 +19,7 @@
 /* GLOBAL INCLUDES */
 
 #include <QtGui>
+#include <unistd.h>
 
 /* LOCAL INCLUDES */
 
@@ -122,16 +123,108 @@ void Settings::doProgram(void) {
 
 	qDebug() << "Settings::doProgram() Enter";
 
+	QString ds = "{Sd:";
+	unsigned char d = _tx_delay->text().toInt();
+	ds += d;
+	ds += "}";
+	_console->writePort(ds);
+
+	QString qs = "{Sp:";
+	unsigned char p = _p->text().toInt();
+	qs += p;
+	qs += "}";
+
+	QString ss = "{Ss:";
+	unsigned char slot_time = _slot_time->text().toInt();
+	ss += slot_time;
+	ss += "}";
+	_console->writePort(ss);
+
+	QString ts = "{St:";
+	unsigned char tx_tail = _tx_tail->text().toInt();
+	ts += tx_tail;
+	ts += "}";
+	_console->writePort(ts);
+
+	QString fs = "{Sf:";
+	unsigned char full_duplex = (_full_duplex->checkState() == Qt::Checked);
+	fs += full_duplex;
+	fs += "}";
+	_console->writePort(fs);
+
+	QString cs = "{Sc:";
+	cs += _callsign->text();
+	cs += "}";
+	_console->writePort(cs);
+
+	_console->writePort("{W}");
+
 	qDebug() << "Settings::doProgram() Complete";
 }
 
 /**
  * Process clicks of the read device button.
+ * Go into polling mode, send get commands, wait 25ms, do read, populate fields, repeat.
  */
 void Settings::doRead(void) {
 
 	qDebug() << "Settings::doRead() Enter";
+
+	_console->setPortMode(QextSerialPort::Polling);
+
+	/* do read here to empty read buffer so we don't get garbage */
+	_console->readPort();
+
+	_console->writePort("{Gd}");
+	usleep(25000);
+	QString ds = _console->readPort();
+	if (ds.indexOf(":") != -1 && ds.indexOf("}") != -1) {
+		ds = ds.mid(ds.indexOf(":") + 1, ds.indexOf("}") - 1 - ds.indexOf(":"));
+		_tx_delay->setText(ds);
+	}
+
+	_console->writePort("{Gp}");
+	usleep(25000);
+	QString ps = _console->readPort();
+	if (ps.indexOf(":") != -1 && ps.indexOf("}") != -1) {
+		ps = ps.mid(ps.indexOf(":") + 1, ps.indexOf("}") - 1 - ps.indexOf(":"));
+		_p->setText(ps);
+	}
+
+	_console->writePort("{Gs}");
+	usleep(25000);
+	QString ss = _console->readPort();
+	if (ss.indexOf(":") != -1 && ss.indexOf("}") != -1) {
+		ss = ss.mid(ss.indexOf(":") + 1, ss.indexOf("}") - 1 - ss.indexOf(":"));
+		_slot_time->setText(ss);
+	}
+
+	_console->writePort("{Gt}");
+	usleep(25000);
+	QString ts = _console->readPort();
+	if (ts.indexOf(":") != -1 && ts.indexOf("}") != -1) {
+		ts = ts.mid(ts.indexOf(":") + 1, ts.indexOf("}") - 1 - ts.indexOf(":"));
+		_tx_tail->setText(ts);
+	}
+
+	_console->writePort("{Gf}");
+	usleep(25000);
+	QString fs = _console->readPort();
+	if (fs.indexOf(":") != -1 && fs.indexOf("}") != -1) {
+		fs = fs.mid(fs.indexOf(":") + 1, fs.indexOf("}") - 1 - fs.indexOf(":"));
+		_full_duplex->setCheckState((fs.at(0) == '\0') ? Qt::Unchecked : Qt::Checked);
+	}
+
 	_console->writePort("{Gc}");
+	usleep(25000);
+	QString cs = _console->readPort();
+	if (cs.indexOf(":") != -1 && cs.indexOf("}") != -1) {
+		cs = cs.mid(cs.indexOf(":") + 1, cs.indexOf("}") - 1 - cs.indexOf(":"));
+		_callsign->setText(cs);
+	}
+
+	_console->setPortMode(QextSerialPort::EventDriven);
+
 	qDebug() << "Settings::doRead() Complete";
 
 }

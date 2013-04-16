@@ -41,7 +41,9 @@ class Console : public QWidget {
 
 		bool openPort(QString portName, QString portSpeed);
 		bool writePort(QString s);
+		QString readPort();
 		bool closePort();
+		void setPortMode(QextSerialPort::QueryMode mode);
 
 		void append(QString s);
 		~Console();

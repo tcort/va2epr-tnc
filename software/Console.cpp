@@ -236,6 +236,37 @@ bool Console::closePort() {
 }
 
 /**
+ * Sets the port to QextSerialPort::Polling or QextSerialPort::EventDriven
+ *
+ * @param mode the mode for the serial port.
+ */
+void Console::setPortMode(QextSerialPort::QueryMode mode) {
+
+	qDebug() << "Console::setPortMode() Enter";
+	_port->setQueryMode(mode);
+	qDebug() << "Console::setPortMode() Complete";
+}
+
+/**
+ * Read data from the serial port.
+ *
+ * @return a string of bytes from the serial port.
+ */
+QString Console::readPort() {
+
+	qDebug("Console::readPort() Enter");
+
+	QByteArray bytes;
+	int bytesAvailable = _port->bytesAvailable();
+	bytes.resize(bytesAvailable);
+	_port->read(bytes.data(), bytes.size());
+
+	qDebug("Console::readPort() Complete");
+
+	return bytes;
+}
+
+/**
  * Deconstruct the COnsole and perform clean up.
  * Closes serial port if it is open.
  */
