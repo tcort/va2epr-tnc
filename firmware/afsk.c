@@ -44,7 +44,7 @@
  * For a 32 sample 2200 Hz tone, I need to change the output 70400
  * (i.e. 2200 * 32) times per second. For a 32 sample 1200 Hz tone,
  * I need to change the output 38400 (i.e. 1200 * 32) times per second.
- * Using a pre-scalar of 4, I should set TCNT2 to the following values
+ * Using a pre-scalar of 8, I should set TCNT2 to the following values
  * via the 'tone' variable:
  *
  *   For 1200 Hz, 14745600/8/38400 - 1 = 47				Exactly 1200 Hz
@@ -79,9 +79,9 @@
  * This is the counter value for the AFSK encoding interrupt
  * running on Timer 3.
  *
- * 14745600/8/1200 - 1 = 1535
+ * 14745600/64/12 - 1 = 19199
  */
-#define TIMER_1200 1535 /* 1200 Hz */
+#define TIMER_12 19199 /* 12 Hz */
 
 /*
  * This is the value that is used to set OCR2A. It controls the
@@ -123,6 +123,10 @@ unsigned char sinewave[32] = {
  */
 unsigned char in_uart_frame = 0;
 
+unsigned char tx_buffer[256];
+unsigned char tx_buffer_head = 0;
+unsigned char tx_buffer_tail = 0;
+
 /* setup ports and timers */
 void afsk_init(void) {
 
@@ -140,10 +144,10 @@ void afsk_init(void) {
 	OCR2A = afsk_output_frequency; /* set with some default value */
 
 	/* Timer 3 CTC, pre-scalar 8 */
-	TCCR3A |= (1<<WGM31); /* CTC */
-	TCCR3B |= (1<<CS31); /* pre-scalar = 8 */
+	TCCR3A |= (1<<WGM32); /* CTC */
+	TCCR3B |= ((1<<CS31)|(1<<CS30)); /* pre-scalar = 64 */
 	TCNT3 = 0x00; /* initialize counter to 0 */
-	OCR3A = TIMER_1200; /* 1200 times per second */
+	OCR3A = TIMER_12; /* 12 times per second */
 
 	/* -- Input Capture (RX) -- */
 	/* do all setup except enabling of input capture interrupt (done in rx()) */
@@ -233,6 +237,29 @@ void rx(void) {
 	/* Turn on RX interrupts */
 	TIMSK1 |= (1<<ICIE1); /* enable input capture interrupt */
 	TIMSK0 |= (1<<OCIE0A); /* enable afsk decoder */
+}
+
+unsigned char tx_buffer_empty(void) {
+
+	return (tx_buffer_head == tx_buffer_tail);
+}
+
+unsigned char tx_buffer_dequeue(void) {
+
+	unsigned char c;
+
+	if (tx_buffer_empty()) {
+		c = AX25_FLAG;
+	} else {
+		c = tx_buffer[tx_buffer_head++];
+	}
+
+	return c;
+}
+
+void tx_buffer_queue(unsigned char c) {
+
+	tx_buffer[tx_buffer_tail++] = c; /* tx_buffer_tail will roll over to 0 avoiding a buffer overflow */
 }
 
 /*
@@ -463,17 +490,11 @@ ISR(TIMER2_COMPA_vect) {
 /* vary afsk_output_frequency to encode data */
 ISR(TIMER3_COMPA_vect) {
 
-	/* byte to send (LSB first) */
+	/* byte to send (MSB first) */
 	static unsigned char bits = 0;
 
 	/* number of bits in 'bits' sent */
 	static unsigned char bit_count = 0;
-
-	/* count the 1's sent - used for AX.25 bit stuffing */
-	static unsigned char ones_count = 0;
-
-	/* Does 'bits' contain the AX.25 Flag? Used to avoid bit stuffing in that case. */
-	static unsigned char sending_ax25_flag = 0;
 
 	/* list of possible tones */
 	static unsigned char tones[2] = {
@@ -483,26 +504,25 @@ ISR(TIMER3_COMPA_vect) {
 	/* index in the tones array */
 	static unsigned char tones_index = 0;
 
+	/* Is the buffer 'bits' empty? If so, get more bits */
+	if (bit_count == 0) {
 
-	if (!(bits & 0x01)) { /* is current bit 0? */
+		if (tx_buffer_empty()) {
+
+			return;
+		}
+
+		bits = tx_buffer_dequeue();
+	}
+
+	if (!(bits & 0x80)) { /* is current bit 0? */
 
 		/* if the current bit is a 0, then toggle */
 		tones_index = !tones_index;
 		afsk_output_frequency = tones[tones_index];
-		ones_count = 0;
 
-	} else if (ones_count++ >= 5 && !sending_ax25_flag) {
+	} /* else current bit is 1 (don't toggle) */
 
-		/* bit stuff */
-		tones_index = !tones_index;
-		afsk_output_frequency = tones[tones_index];
-		ones_count = 0;
-
-		bits <<= 1;
-		bit_count = (bit_count-1) & 0x07;
-	}
-
-	bits >>= 1;
+	bits <<= 1;
 	bit_count = (bit_count+1) & 0x07;
-
 }

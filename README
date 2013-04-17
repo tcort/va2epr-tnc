@@ -23,9 +23,6 @@ Project Layout
 	firmware/
 		C code that runs on the ATMega1284p microcontroller.
 
-	manual/
-		manual in texinfo format.
-
 	software/
 		C++ code the runs on the PC to provide a GUI.
 

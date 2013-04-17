@@ -84,11 +84,6 @@
  */
 
 void uart_init(void);
-
-unsigned char uart_rx_buffer_empty(void);
-unsigned char uart_rx_buffer_dequeue(void);
-void uart_rx_buffer_queue(unsigned char c);
-
 void uart_tx(unsigned char c);
 
 #endif

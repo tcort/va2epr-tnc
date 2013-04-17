@@ -35,17 +35,18 @@
 
 int main(void) {
 
-	unsigned int last_beacon_timestamp = 0;
 	volatile char i = 0;
+#ifdef FOO
 	void (*idle_mode)(void);
-
+	unsigned int last_beacon_timestamp = 0;
+#endif
 	config_read();
 	afsk_init();
 	uart_init();
 	gps_init();
 
 	sei();
-
+#ifdef FOO
 	/* When not transmitting the TNC is either receiving
 	 * or getting position location from the GPS. If a GPS
 	 * is connected, it is assumed that the user is a mobile
@@ -55,25 +56,56 @@ int main(void) {
 	idle_mode = gps_is_connected() ? &notxrx : &rx;
 
 	(*idle_mode)();
+#endif
+
+	rx();
 
 	while (1) {
 
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+
+		tx_buffer_queue('{');
+		tx_buffer_queue('V');
+		tx_buffer_queue('A');
+		tx_buffer_queue('2');
+		tx_buffer_queue('E');
+		tx_buffer_queue('P');
+		tx_buffer_queue('R');
+		tx_buffer_queue('}');
+
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
+
 		/* do we have any data to transmit? */
-		if (0) {
+		if (!tx_buffer_empty()) {
 			
+#ifdef FOO
 			/* wait for the channel to become clear */
 			csma_obtain_slot();
+#endif
 			
 			tx(); /* enter transmit mode */
 			
 			/* wait until everything has been sent */
-			while (0) {
+			while (!tx_buffer_empty()) {
 				i++; 
 			}
-			
+
+			rx();
+#ifdef FOO
 			(*idle_mode)(); /* go back to receive mode if no GPS */
+#endif
 		}
 
+		for (i = 0; i < 50; i++) {
+			_delay_ms(100);
+		}
+#ifdef FOO
 		if (idle_mode == &notxrx) {
 			unsigned int current_timestamp;
 			struct nmea_coordinates	*location;
@@ -101,7 +133,7 @@ int main(void) {
 				last_beacon_timestamp = current_timestamp;
 			}
 		}
-
+#endif
 	}
 
 	return 0;

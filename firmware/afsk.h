@@ -24,4 +24,8 @@ void notxrx(void);
 void tx(void);
 void rx(void);
 
+unsigned char tx_buffer_empty(void);
+unsigned char tx_buffer_dequeue(void);
+void tx_buffer_queue(unsigned char c);
+
 #endif
