@@ -71,9 +71,9 @@
  * This is the counter value for the AFSK decoding interrupt
  * running on Timer 0.
  *
- * 14745600/8/9600 - 1 = 191
+ * 14745600/1024/96 - 1 = 149
  */
-#define TIMER_9600 191 /* 9600 Hz */
+#define TIMER_96 149 /* 96 Hz */
 
 /*
  * This is the counter value for the AFSK encoding interrupt
@@ -137,13 +137,13 @@ void afsk_init(void) {
 	DDRB |= 0xFF; /* AFSK output */
 	PORTB = 0x00; /* initialize */
 
-	/* Timer 2 CTC, pre-scalar 8 */
+	/* Waveform Generation - Timer 2 CTC, pre-scalar 8 */
 	TCCR2A |= (1<<WGM21); /* CTC */
 	TCCR2B |= (1<<CS21); /* pre-scalar = 8 */
 	TCNT2 = 0x00; /* initialize counter to 0 */
 	OCR2A = afsk_output_frequency; /* set with some default value */
 
-	/* Timer 3 CTC, pre-scalar 8 */
+	/* AFSK Encoding - Timer 3 CTC, pre-scalar 64 */
 	TCCR3A |= (1<<WGM32); /* CTC */
 	TCCR3B |= ((1<<CS31)|(1<<CS30)); /* pre-scalar = 64 */
 	TCNT3 = 0x00; /* initialize counter to 0 */
@@ -157,18 +157,18 @@ void afsk_init(void) {
 	PORTD |= (1<<PD6); /* enable pull-up on ICP1 */
 	ACSR &= ~(1<<ACIC); /* select ICP1 input for source for input capture (default) */
 
-	/* Timer 1 ICP */
+	/* Waveform Capture - Timer 1 ICP */
 	TCCR1A = 0x00; /* Normal Mode */
 	TCCR1B |= ((1<<ICNC1)|(1<<ICES1)|(1<<CS11)); /* noise canceler, rising edge, pre-scalar = 8 */
 
 	/* -- AFSK Decoding -- */
 	/* do all setup except enabling of afsk decoding interrupts (done in rx()) */
 
-	/* Timer 0 CTC, pre-scalar 8 */
+	/* AFSK Decoding - Timer 0 CTC, pre-scalar 1024 */
 	TCCR0A |= (1<<WGM01); /* CTC */
-	TCCR0B |= (1<<CS01); /* pre-scalar = 8 */
+	TCCR0B |= ((1<<CS02)|(1<<CS00)); /* pre-scalar = 1024 */
 	TCNT0 = 0x00; /* initialize counter to 0 */
-	OCR0A = TIMER_9600; /* 9600 times per second */
+	OCR0A = TIMER_96; /* 9600 times per second */
 
 	/* -- Push to Talk -- */
 	/* setup DDR and turn PTT OFF */
@@ -187,21 +187,6 @@ void tx(void) {
 	/* Turn off RX interrupts */
 	TIMSK0 &= ~(1<<OCIE0A); /* disable afsk decoder */
 	TIMSK1 &= ~(1<<ICIE1); /* disable input capture interrupt */
-
-	/*
-	 * If it goes into TX without finishing receiving the current AX.25 frame,
-	 * then it must be cleaned up and an ending UART_FEND must be sent. This
-         * situation could happen (maybe) if the sending station drops out or
-	 * something else goes wrong.
-	 */
-	if (in_uart_frame) {
-		/* End the current UART frame. */
-/*
-		uart_tx(AX25_FLAG);
-		uart_tx(UART_FEND);
-*/
-		in_uart_frame = 0;
-	}
 
 	/* Turn on TX interrupts/pins */
 	PORTD |= (1<<PD7); /* PTT ON */
@@ -305,9 +290,6 @@ ISR(TIMER0_COMPA_vect) {
 	/* pseudo-timer used to decide when to sample */
 	static signed char next_sample = 8;
 
-	/* track bytes sent by uart_tx so that next_sample can be adjusted properly */
-	static unsigned char extra_bytes_sent = 0;
-
 	if (shift_detect) {
 
 		/* clear shift_detect so we don't re-sample the same bit */
@@ -346,7 +328,7 @@ ISR(TIMER0_COMPA_vect) {
 		 * beat the AFSK clock to the next bit. Therefore, I will check
 		 * the state half way through the next AFSK clock cycle.
 		 *
-		 * 9600/1200 == 8, 8*1.5 == 12
+		 * 96/12 == 8, 8*1.5 == 12
 		 */
 		next_sample = 12;
 
@@ -358,7 +340,7 @@ ISR(TIMER0_COMPA_vect) {
 		bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
 		bits_count++;
 
-		/* 9600/1200 == 8 */
+		/* 96/12 == 8 */
 		next_sample = 8;
 
 		ones_count++; /* keep a tally of consecutive 1's received */
@@ -374,17 +356,8 @@ ISR(TIMER0_COMPA_vect) {
 	 * and reset the bits_count to 0.
 	 */
 	if (bits == AX25_FLAG || bits_count >= 8) {
-/*
+
 		uart_tx(bits);
-*/
-		extra_bytes_sent = 1;
-
-		/* We additional escape characters sent? */
-		if (extra_bytes_sent) {
-
-			/* Each additional byte sent delays this ISR (43us @ 230400 baud). */
-			next_sample -= (unsigned char) ((1.0/9600) / ((extra_bytes_sent*1.0*(8+1+1)) / UART_BAUDRATE));
-		}
 
 		/* clear bit counter */
 		bits_count = 0;
@@ -490,11 +463,17 @@ ISR(TIMER2_COMPA_vect) {
 /* vary afsk_output_frequency to encode data */
 ISR(TIMER3_COMPA_vect) {
 
-	/* byte to send (MSB first) */
+	/* byte to send (LSB first) */
 	static unsigned char bits = 0;
 
 	/* number of bits in 'bits' sent */
 	static unsigned char bit_count = 0;
+
+	/* count the 1's sent -- used for AX.25 but stuffing */
+	static unsigned char ones_count = 0;
+
+	/* Does 'bits' contain the AX.25 Flag? Used to avoid bit stuffing in that case. */
+	static unsigned char sending_ax25_flag;
 
 	/* list of possible tones */
 	static unsigned char tones[2] = {
@@ -507,22 +486,40 @@ ISR(TIMER3_COMPA_vect) {
 	/* Is the buffer 'bits' empty? If so, get more bits */
 	if (bit_count == 0) {
 
+		/* Do we have any bytes that need to be sent? */
 		if (tx_buffer_empty()) {
 
+			/* The buffer is empty. We can stop sending now.
+			 * The loop in main() will detect an empty buffer
+			 * and disable this interrupt for us.
+			 */
 			return;
 		}
 
 		bits = tx_buffer_dequeue();
+		sending_ax25_flag = (bits == AX25_FLAG);
 	}
 
-	if (!(bits & 0x80)) { /* is current bit 0? */
+	if (!(bits & 0x01)) { /* is current bit 0? */
 
 		/* if the current bit is a 0, then toggle */
 		tones_index = !tones_index;
 		afsk_output_frequency = tones[tones_index];
+		ones_count = 0;
 
-	} /* else current bit is 1 (don't toggle) */
+		bits >>= 1;
+		bit_count = (bit_count+1) & 0x07;
 
-	bits <<= 1;
-	bit_count = (bit_count+1) & 0x07;
+	} else if (ones_count++ >= 5 && !sending_ax25_flag) {
+
+		/* bit stuff */
+		tones_index = !tones_index;
+		afsk_output_frequency = tones[tones_index];
+		ones_count = 0;
+
+	} else { /* current bit is 1 (don't toggle) */
+
+		bits >>= 1;
+		bit_count = (bit_count+1) & 0x07;
+	}
 }
