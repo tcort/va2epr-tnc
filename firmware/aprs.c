@@ -19,8 +19,8 @@
 #include <string.h>
 
 #include "aprs.h"
+#include "afsk.h"
 #include "conf.h"
-#include "uart.h"
 
 /*
  * Compute the Frame-Check Sequence (FCS) for AX.25
@@ -99,7 +99,7 @@ static unsigned int crc16(unsigned int crc, unsigned char byte) {
 static inline unsigned int send_byte(unsigned int crc, unsigned char c) {
 
 	crc = crc16(crc, c);
-	/* XXX SEND HERE */
+	tx_buffer_queue(c);
 
 	return crc;
 }
@@ -145,34 +145,29 @@ void aprs_beacon(void) {
 
 	unsigned int crc = INITIAL_CRC16_VALUE;
 
-/*	unsigned char crcl;
-*/				/* low bits of crc */
-/*	unsigned char crch;
-*/				/* high bits of crc */
+	unsigned char crcl;	/* low bits of crc */
+	unsigned char crch;	/* high bits of crc */
 
 	unsigned char addr[8]; /* temp string to hold an address */
-/*
 	unsigned int i;
-*/
+
 	/*
 	 * calculate delay values here so that we aren't using a lot
 	 * of CPU when the device switches into TX mode and starts
 	 * sending. We have to be able to fill the buffer faster
 	 * than we can send.
 	 */
-/*
 	unsigned int txdelay = TXDELAY;
 	unsigned int txtail = TXTAIL;
-*/
 
 	/* Start transmitting... */
 
-	/* TODO Send (AX25_FLAG) */ /* must send at least one */
-/*
+	tx_buffer_queue(AX25_FLAG);	/* must send at least one */
+
 	for (i = 0; i < txdelay; i++) {
-		uart_rx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
 	}
-*/
+
 	/* addressing */
 
 	strcpy((char *) addr, "APAVR00");
@@ -198,20 +193,17 @@ void aprs_beacon(void) {
 	crc = send_string(crc, (unsigned char *) "> va2epr-tnc (experimental)");
 
 	/* Calculate the high and low parts of the final CRC */
-/*
 	crcl = crc ^ 0xff;
 	crch = (crc >> 8) ^ 0xff;
-*/
+
 	/* Send the CRC bytes */
-/*
-	uart_rx_buffer_queue(crcl);
-	uart_rx_buffer_queue(crch);
+	tx_buffer_queue(crcl);
+	tx_buffer_queue(crch);
 
 	for (i = 0; i < txtail; i++) {
-		uart_rx_buffer_queue(AX25_FLAG);
+		tx_buffer_queue(AX25_FLAG);
 	}
 
-	uart_rx_buffer_queue(AX25_FLAG);
-*/						 /* must send at least one */
+	tx_buffer_queue(AX25_FLAG); /* must send at least one */
 
 }
