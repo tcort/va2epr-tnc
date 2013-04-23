@@ -34,7 +34,7 @@
     <name>ConnectDialog</name>
     <message>
         <location filename="../ConnectDialog.cpp" line="39"/>
-        <location filename="../ConnectDialog.cpp" line="83"/>
+        <location filename="../ConnectDialog.cpp" line="88"/>
         <source>Connect</source>
         <translation type="unfinished">Connectés</translation>
     </message>
@@ -44,48 +44,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ConnectDialog.cpp" line="65"/>
+        <location filename="../ConnectDialog.cpp" line="67"/>
         <source>Baud Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ConnectDialog.cpp" line="69"/>
-        <source>1200</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ConnectDialog.cpp" line="70"/>
-        <source>4800</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ConnectDialog.cpp" line="71"/>
-        <source>9600</source>
+        <source>110</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ConnectDialog.cpp" line="72"/>
-        <source>19200</source>
+        <source>300</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ConnectDialog.cpp" line="73"/>
-        <source>38400</source>
+        <source>600</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ConnectDialog.cpp" line="74"/>
-        <source>57600</source>
+        <source>1200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ConnectDialog.cpp" line="75"/>
-        <source>115200</source>
+        <source>2400</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ConnectDialog.cpp" line="76"/>
-        <source>230400</source>
+        <source>4800</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="77"/>
+        <source>9600</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="78"/>
+        <source>19200</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="79"/>
+        <source>38400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="80"/>
+        <source>57600</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ConnectDialog.cpp" line="81"/>
+        <source>115200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -104,109 +119,109 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../Settings.cpp" line="40"/>
+        <location filename="../Settings.cpp" line="41"/>
         <source>TX Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="41"/>
-        <location filename="../Settings.cpp" line="43"/>
+        <location filename="../Settings.cpp" line="42"/>
+        <location filename="../Settings.cpp" line="44"/>
         <source>Transmitter Keyup Delay in 10ms Units (Default 50)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="44"/>
-        <location filename="../Settings.cpp" line="64"/>
+        <location filename="../Settings.cpp" line="45"/>
+        <location filename="../Settings.cpp" line="65"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="50"/>
+        <location filename="../Settings.cpp" line="51"/>
         <source>p</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="51"/>
-        <location filename="../Settings.cpp" line="53"/>
+        <location filename="../Settings.cpp" line="52"/>
+        <location filename="../Settings.cpp" line="54"/>
         <source>Scaled Persistance Paramter (Default 63)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="54"/>
+        <location filename="../Settings.cpp" line="55"/>
         <source>63</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="60"/>
+        <location filename="../Settings.cpp" line="61"/>
         <source>Slot Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="61"/>
-        <location filename="../Settings.cpp" line="63"/>
+        <location filename="../Settings.cpp" line="62"/>
+        <location filename="../Settings.cpp" line="64"/>
         <source>Slot Interval in 10ms Units (Default 10)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="70"/>
+        <location filename="../Settings.cpp" line="71"/>
         <source>TX Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="71"/>
-        <location filename="../Settings.cpp" line="73"/>
+        <location filename="../Settings.cpp" line="72"/>
+        <location filename="../Settings.cpp" line="74"/>
         <source>Time to hold after FCS in 10ms Units (Default 50)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="74"/>
+        <location filename="../Settings.cpp" line="75"/>
         <source>50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="80"/>
+        <location filename="../Settings.cpp" line="81"/>
         <source>Full Duplex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="81"/>
-        <location filename="../Settings.cpp" line="83"/>
+        <location filename="../Settings.cpp" line="82"/>
+        <location filename="../Settings.cpp" line="84"/>
         <source>Unchecked = Half Duplex, Checked = Full Duplex (Default Half Duplex)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="87"/>
+        <location filename="../Settings.cpp" line="88"/>
         <source>Callsign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="88"/>
-        <location filename="../Settings.cpp" line="90"/>
+        <location filename="../Settings.cpp" line="89"/>
+        <location filename="../Settings.cpp" line="91"/>
         <source>Enter Your Callsign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="91"/>
+        <location filename="../Settings.cpp" line="92"/>
         <source>XX0XXX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="100"/>
+        <location filename="../Settings.cpp" line="101"/>
         <source>Read configuration settings from the TNC (works on va2epr-tnc only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="104"/>
+        <location filename="../Settings.cpp" line="105"/>
         <source>Program Device</source>
         <translation>Écriture</translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="105"/>
+        <location filename="../Settings.cpp" line="106"/>
         <source>Write configuration settings to the TNC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.cpp" line="99"/>
+        <location filename="../Settings.cpp" line="100"/>
         <source>Read Device</source>
         <translation>Lecture</translation>
     </message>
@@ -254,33 +269,33 @@
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="82"/>
+        <location filename="../va2epr_tnc.cpp" line="78"/>
         <source>Console</source>
         <translation>Console</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="83"/>
+        <location filename="../va2epr_tnc.cpp" line="79"/>
         <source>Map</source>
         <translation>Carte</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="84"/>
+        <location filename="../va2epr_tnc.cpp" line="80"/>
         <source>Settings</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="87"/>
-        <location filename="../va2epr_tnc.cpp" line="159"/>
+        <location filename="../va2epr_tnc.cpp" line="83"/>
+        <location filename="../va2epr_tnc.cpp" line="161"/>
         <source>Disconnected</source>
         <translation>Déconnectés</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="96"/>
+        <location filename="../va2epr_tnc.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../va2epr_tnc.cpp" line="143"/>
+        <location filename="../va2epr_tnc.cpp" line="145"/>
         <source>Connected</source>
         <translation>Connectés</translation>
     </message>

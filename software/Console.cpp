@@ -157,8 +157,6 @@ void Console::append(QString s) {
  */
 void Console::doRecv() {
 
-	qDebug("Console::doRecv() Enter");
-
 	_outputLock.lock();
 
 	QByteArray bytes;
@@ -168,14 +166,15 @@ void Console::doRecv() {
 
 	_recvBuf += bytes;
 
+	printf("%lld\n", QDateTime::currentMSecsSinceEpoch());
+	qDebug(" Got [" + bytes + "]");
+
 	if (_recvBuf.contains("}")) {
 		this->append(_recvBuf);
 		_recvBuf = "";
 	}
 
 	_outputLock.unlock();
-
-	qDebug("Console::doRecv() Complete");
 }
 
 /**

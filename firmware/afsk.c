@@ -58,14 +58,15 @@
  * captured input is 1200 Hz or 2200 Hz. You can compute these
  * the same as above...
  *
- *  For  200 Hz, 14745600/8/ 800 - 1 = 2303
- *  For 1700 Hz, 14745600/8/1700 - 1 = 1083
- *  For 4700 Hz, 14745600/8/2600 - 1 = 708
+ *  For 1100 Hz, 14745600/8/1100 - 1 = 800
+ *  For 1300 Hz, 14745600/8/1300 - 1 = 877
+ *  For 2100 Hz, 14745600/8/2100 - 1 = 1417
+ *  For 2300 Hz, 14745600/8/2300 - 1 = 1675
  */
-#define PERIOD_2200_MIN  708 /* 2.6 kHz */
-#define PERIOD_2200_MAX 1083 /* 1.7 kHz */
-#define PERIOD_1200_MIN 1083 /* 1.7 kHz */
-#define PERIOD_1200_MAX 2303 /* 0.8 kHz */
+#define PERIOD_2200_MIN  800 /* 2.3 kHz */
+#define PERIOD_2200_MAX  877 /* 2.1 kHz */
+#define PERIOD_1200_MIN 1417 /* 1.3 kHz */
+#define PERIOD_1200_MAX 1675 /* 1.1 kHz */
 
 /*
  * This is the counter value for the AFSK decoding interrupt
@@ -144,7 +145,7 @@ void afsk_init(void) {
 	OCR2A = afsk_output_frequency; /* set with some default value */
 
 	/* AFSK Encoding - Timer 3 CTC, pre-scalar 64 */
-	TCCR3A |= (1<<WGM32); /* CTC */
+	TCCR3B |= (1<<WGM32); /* CTC */
 	TCCR3B |= ((1<<CS31)|(1<<CS30)); /* pre-scalar = 64 */
 	TCNT3 = 0x00; /* initialize counter to 0 */
 	OCR3A = TIMER_12; /* 12 times per second */
@@ -168,7 +169,7 @@ void afsk_init(void) {
 	TCCR0A |= (1<<WGM01); /* CTC */
 	TCCR0B |= ((1<<CS02)|(1<<CS00)); /* pre-scalar = 1024 */
 	TCNT0 = 0x00; /* initialize counter to 0 */
-	OCR0A = TIMER_96; /* 9600 times per second */
+	OCR0A = TIMER_96; /* 96 times per second */
 
 	/* -- Push to Talk -- */
 	/* setup DDR and turn PTT OFF */
@@ -290,82 +291,98 @@ ISR(TIMER0_COMPA_vect) {
 	/* pseudo-timer used to decide when to sample */
 	static signed char next_sample = 8;
 
-	if (shift_detect) {
+	static unsigned char synced = 0;
 
-		/* clear shift_detect so we don't re-sample the same bit */
-		shift_detect = 0;
+	if (carrier_sense) {
 
-		/*
-		 * Check for AX.25 bit stuffing. If stuffing, don't sample the '0'.
-		 *
-		 * From the AX.25 spec (v2.2):
-		 *
-		 *	"any time five contiguous “1” bits are received, a “0” bit
-		 *	immediately following five “1” bits is discarded."
-		 */
-		if (ones_count != 5) {
+		if (shift_detect) {
+
+			/* clear shift_detect so we don't re-sample the same bit */
+			shift_detect = 0;
 
 			/*
-			 * frequency shift decodes to '0'
+			 * Check for AX.25 bit stuffing. If stuffing, don't sample the '0'.
 			 *
-			 * I can't find a document that explains NZRI anywhere
-			 * (as it pertains to amateur radio), but I saw it in a comment
-			 * in the BertOS source code, so I assume it's true :)
+			 * From the AX.25 spec (v2.2):
+			 *
+			 *	"any time five contiguous “1” bits are received, a “0” bit
+			 *	immediately following five “1” bits is discarded."
 			 */
-			bits >>= 1; /* insert a 0 from the left */
-			bits_count++;
+			if (ones_count != 5) {
+
+				/*
+				 * frequency shift decodes to '0'
+				 *
+				 * I can't find a document that explains NZRI anywhere
+				 * (as it pertains to amateur radio), but I saw it in a comment
+				 * in the BertOS source code, so I assume it's true :)
+				 */
+				bits >>= 1; /* insert a 0 from the left */
+				bits_count++;
+			}
+
+			/*
+			 * Set the pseudo-timer to sample the next bit.
+			 *
+			 * If we are here, then the signal is at the leading edge of an
+			 * AFSK clock (since a shift was detected and this interrupt is
+			 * running 8 times faster than the AFSK baud rate of 1200).
+			 *
+			 * I want to make the next sample 1/1200 of a second from now,
+			 * but I want some wiggle room. For example, I don't want to
+			 * beat the AFSK clock to the next bit. Therefore, I will check
+			 * the state half way through the next AFSK clock cycle.
+			 *
+			 * 96/12 == 8, 8*1.5 == 12
+			 */
+			next_sample = 12;
+
+			ones_count = 0; /* clear consecutive 1's counter */
+
+		} else {
+			next_sample--;
+			if (next_sample == 0) {
+
+				/* no frequency shift decodes to '1' */
+				bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
+				bits_count++;
+
+				/* 96/12 == 8 */
+				next_sample = 8;
+
+				ones_count++; /* keep a tally of consecutive 1's received */
+			}
 		}
 
 		/*
-		 * Set the pseudo-timer to sample the next bit.
+		 * The only time there is supposed to be six '1' bits in a row is the
+		 * AX.25 flag (0b01111110). I use this property to synchronize the
+		 * 'bits_count' variable. That variable is used to know when to sample
+		 * the byte held in 'bits'.
 		 *
-		 * If we are here, then the signal is at the leading edge of an
-		 * AFSK clock (since a shift was detected and this interrupt is
-		 * running 8 times faster than the AFSK baud rate of 1200).
-		 *
-		 * I want to make the next sample 1/1200 of a second from now,
-		 * but I want some wiggle room. For example, I don't want to
-		 * beat the AFSK clock to the next bit. Therefore, I will check
-		 * the state half way through the next AFSK clock cycle.
-		 *
-		 * 96/12 == 8, 8*1.5 == 12
+		 * If the flag is found or the byte buffer is full, then send the byte
+		 * and reset the bits_count to 0.
 		 */
-		next_sample = 12;
+		if (bits == AX25_FLAG) {
 
-		ones_count = 0; /* clear consecutive 1's counter */
+			bits_count = 8;
+			synced = 1;
+		}
 
-	} else if (--next_sample <= 0) {
+		if (synced && bits_count >= 8) {
 
-		/* no frequency shift decodes to '1' */
-		bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
-		bits_count++;
+			uart_tx(bits);
 
-		/* 96/12 == 8 */
-		next_sample = 8;
+			/* clear bit counter */
+			bits_count = 0;
+		} else if (bits_count > 250) {
+			bits_count = 8;
+		}
 
-		ones_count++; /* keep a tally of consecutive 1's received */
+	} else {
+
+		synced = 0;
 	}
-
-	/*
-	 * The only time there is supposed to be six '1' bits in a row is the
-	 * AX.25 flag (0b01111110). I use this property to synchronize the
-	 * 'bits_count' variable. That variable is used to know when to sample
-	 * the byte held in 'bits'.
-	 *
-	 * If the flag is found or the byte buffer is full, then send the byte
-	 * and reset the bits_count to 0.
-	 */
-	if (bits == AX25_FLAG || bits_count >= 8) {
-
-		uart_tx(bits);
-
-		/* clear bit counter */
-		bits_count = 0;
-	}
-
-
-	/* TODO test if this code works, then re-add UART framing bytes */
-
 }
 
 /* capture the period of an input waveform (rising edge triggered) */
@@ -413,7 +430,7 @@ ISR(TIMER1_CAPT_vect) {
 	 * interpreted as 2200 Hz.
 	 */
 
-	if (capture_period >= PERIOD_1200_MIN && capture_period < PERIOD_1200_MAX) {
+	if (capture_period > PERIOD_1200_MIN && capture_period < PERIOD_1200_MAX) {
 
 		/* If the last frequency was 1200 Hz, then there wasn't a shift. */
 		shift_detect |= (carrier_sense != TONE_1200HZ);
@@ -421,13 +438,29 @@ ISR(TIMER1_CAPT_vect) {
 		/* 1200 Hz Carrier Present */
 		carrier_sense = TONE_1200HZ;
 
-	} else if (capture_period >= PERIOD_2200_MIN && capture_period < PERIOD_2200_MAX) {
+		carrier_sense_timeout = 16;
+
+	} else if (capture_period > PERIOD_2200_MIN && capture_period < PERIOD_2200_MAX) {
 
 		/* If the last frequency was 2200 Hz, then there wasn't a shift. */
 		shift_detect |= (carrier_sense != TONE_2200HZ);
 
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
+
+		carrier_sense_timeout = 16;
+
+	} else {
+
+		if (carrier_sense_timeout) {
+
+			carrier_sense_timeout--;
+
+		} else {
+
+			/* no valid signal */
+			carrier_sense = 0;
+		}
 	}
 }
 
@@ -497,6 +530,7 @@ ISR(TIMER3_COMPA_vect) {
 		}
 
 		bits = tx_buffer_dequeue();
+		bit_count = 8;
 		sending_ax25_flag = (bits == AX25_FLAG);
 	}
 
@@ -508,7 +542,7 @@ ISR(TIMER3_COMPA_vect) {
 		ones_count = 0;
 
 		bits >>= 1;
-		bit_count = (bit_count+1) & 0x07;
+		bit_count--;
 
 	} else if (ones_count++ >= 5 && !sending_ax25_flag) {
 
@@ -520,6 +554,6 @@ ISR(TIMER3_COMPA_vect) {
 	} else { /* current bit is 1 (don't toggle) */
 
 		bits >>= 1;
-		bit_count = (bit_count+1) & 0x07;
+		bit_count--;
 	}
 }

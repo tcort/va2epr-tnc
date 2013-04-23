@@ -115,30 +115,6 @@ static inline unsigned int send_string(unsigned int crc, unsigned char *s) {
 }
 
 /*
- * Shift the address byte by one, update the crc, and queue the byte for transmission.
- * The LSB of the last byte of the last address is 1 instead of 0. Set last_bit_one to enable this.
- * Returns the updated crc value.
- */
-static unsigned int send_address(unsigned int crc, unsigned char *s, unsigned char last_bit_one) {
-
-	unsigned int i;
-	unsigned char c;
-
-	for (i = 0; s[i]; i++) {
-
-		if (s[i + 1] == '\0' && last_bit_one) {
-			c = (s[i] << 1) | 0x01;
-		} else {
-			c = s[i] << 1;
-		}
-
-		crc = send_byte(crc, c);
-	}
-
-	return crc;
-}
-
-/*
  * Beacon an APRS message.
  */
 void aprs_beacon(void) {
@@ -168,37 +144,24 @@ void aprs_beacon(void) {
 		tx_buffer_queue(AX25_FLAG);
 	}
 
-	/* addressing */
+	tx_buffer_queue('{');
+	tx_buffer_queue('m');
+	tx_buffer_queue(':');
 
-	strcpy((char *) addr, "APAVR00");
-	crc = send_address(crc, addr, 0);
-
-	strcpy((char *) addr, "      0");
-	memcpy(addr, config.callsign, (strlen(config.callsign) < 6 ? strlen(config.callsign) : 6));
-	crc = send_address(crc, addr, 0);
-
-	strcpy((char *) addr, "RELAY 0");
-	crc = send_address(crc, addr, 0);
-
-	strcpy((char *) addr, "WIDE2 2");
-	crc = send_address(crc, addr, 1);
-
-	/* control field */
-	crc = send_byte(crc, AX25_APRS_UI_FRAME);
-
-	/* protocol id */
-	crc = send_byte(crc, AX25_PROTO_NO_LAYER3);
-
-	/* Simple "Status Report" */
-	crc = send_string(crc, (unsigned char *) "> va2epr-tnc (experimental)");
+	memset(addr, '\0', 8);
+	strcpy((char *) addr, (char *) config.callsign);
+	crc = send_string(crc, addr);
+	/* TODO Send Coordinates */
 
 	/* Calculate the high and low parts of the final CRC */
 	crcl = crc ^ 0xff;
 	crch = (crc >> 8) ^ 0xff;
 
 	/* Send the CRC bytes */
+	tx_buffer_queue('|');
 	tx_buffer_queue(crcl);
 	tx_buffer_queue(crch);
+	tx_buffer_queue('}');
 
 	for (i = 0; i < txtail; i++) {
 		tx_buffer_queue(AX25_FLAG);
