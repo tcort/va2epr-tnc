@@ -59,10 +59,12 @@
               <p>
                 As you can see by the picture in the upper right, I've completed the
                 hardware; the printed circuit board I designed exists and is populated
-                with parts. I'm spending most of my time these days working on finishing the firmware.
-                I've got just a bit left to do before testing begins. The PC software is under active
-                development as well, most of the controls and forms are there but the backing code
-                has yet to be written. The projected date of completion is the end of April 2013.
+                with parts. I've done the initial testing and first pass of the firmware.
+                I've got two of these modems talking to each other. What's left to
+                complete is the GUI and crank up the baud rate (I slowed things down from
+                1200 baud to 12 baud for testing/debugging purposes). There is only about a
+                week left until the project showcase, so it's crunch time. Expect more
+                activity on the website as the project nears completion.
               </p>
 
               <a id="documentation"></a>
@@ -72,8 +74,7 @@
                 I have posted a detailed project proposal document outlining the
                 scope of the project, the project goals, the preliminary design,
                 and an implementation plan. In the future, I will be
-                posting end of semester reports in this section as well
-                as a user manual.
+                posting end of semester reports in this section.
               </p>
               <p class="indent">
                 <b><a href="va2epr-tnc/proposal.pdf">Project Proposal</a> (PDF)</b>
@@ -115,9 +116,11 @@
               <a id="firmware"></a>
               <span class="h1">Firmware</span>
               <p>
-                The firmware is a work in progress, but it's nearly feature complete for
-                a KISS TNC. I will begin testing in the next week or two. So far I've written
-                about 2,000 lines of code. 
+                The firmware handles all of the modulating and demodulating of the AFSK signals,
+                it can key a radio's push to talk button, it encodes and decodes signals using NRZI,
+                and talks to the computer and GPSr (if attached). The NMEA GPS data is decoded
+                and beaconed at periodic intervals. The device implements CSMA/CA to help
+                avoid collisions. It also can store settings in EEPROM.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/firmware">Firmware Source Code</a></b>
@@ -126,8 +129,9 @@
               <a id="software"></a>
               <span class="h1">Software</span>
               <p>
-                I've got the start of a console, an interactive map, and a configuration form.
-                I will be adding functionality to the skeleton code as the semester progresses.
+                The graphical user interface uses <a href="http://qt-project.org/">Qt</a> to
+                provide users with a console, map of recent received beacons, and a configuration
+                panel. The map is based on the free wiki world map, <a href="http://www.openstreetmap.org/">Open Street Map</a>.
               </p>
               <p class="indent">
                 <b><a href="https://github.com/tcort/va2epr-tnc/tree/master/software">Software Source Code</a></b>
