@@ -50,6 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
 
     function addMarker(lon,lat) {
+
       markers.addMarker
 	(
 			new OpenLayers.Marker(
@@ -61,6 +62,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				icon.clone()
 			)
 	);
+    }
+
+    function addMarkerDM(lon,lat) {
+      addMarker("-75.000", "45.000");
     }
   </script>
 

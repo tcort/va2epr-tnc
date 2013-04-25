@@ -38,6 +38,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_widget = new QWidget();
 	setCentralWidget(_widget);
 
+
 	_quitAction = new QAction(tr("&Quit"), this);
 	_quitAction->setIcon(QIcon(":/icons/actions/system-log-out.svg"));
 	_quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
@@ -70,7 +71,7 @@ va2epr_tnc::va2epr_tnc(void) {
 	_www = new QWebView();
 	_www->load(QUrl("qrc:/html/va2epr-tnc.html"));
 
-	_console = new Console();
+	_console = new Console(this);
 	_settings = new Settings(_console); // share the console with Settings so it can access the serial port
 
 	_tabs = new QTabWidget();
@@ -102,8 +103,73 @@ va2epr_tnc::va2epr_tnc(void) {
 }
 
 void va2epr_tnc::addMarker(QString lon, QString lat) {
-	// _www->page()->mainFrame()->evaluateJavaScript("addMarker(-75.6919, 45.4214); null");
 	_www->page()->mainFrame()->evaluateJavaScript("addMarker(" + lon + ", " + lat + "); null");
+}
+
+QString va2epr_tnc::dmToD(QString dm) {
+
+	double d = 0.0;
+
+	char direction = dm.at(0).toAscii();
+	QString part1 = dm.mid(dm.indexOf(' ') + 1);
+	QString hour = part1.mid(0, part1.indexOf(' '));
+	QString minutes = part1.mid(part1.indexOf(' ') + 1);
+
+	d = hour.toDouble() + (minutes.toDouble()/60.0);
+	if (direction == 'S' || direction == 'W') {
+		d = d * -1.0;
+	}
+
+	return QString("%1").arg(d, 0, 'f');
+}
+
+/**
+ * Process an incoming message.
+ *
+ * @param str string containing 1 or more messages {m:CALLSIGN@lon,lat|crch,crcl}
+ */
+void va2epr_tnc::processMessage(QString str) {
+
+	QRegExp rx("\\{(m:[a-zA-Z0-9]+@[WE] [0-9]+ [0-9]+\\.[0-9]+,[NS] [0-9]+ [0-9]+\\.[0-9]+\\|\\d+,\\d+)\\}");
+	QStringList list;
+	QString msg;
+
+	int pos = 0;
+	while ((pos = rx.indexIn(str, pos)) != -1)
+	{
+		list << rx.cap(1);
+		pos += rx.matchedLength();
+	}
+
+	foreach (msg, list) {
+		qWarning() << msg;
+
+		QString callsign = msg.mid(msg.indexOf(':') + 1, msg.indexOf('@') - msg.indexOf(':') - 1);
+
+		QString coords = msg.mid(msg.indexOf('@') + 1, msg.indexOf('|') - msg.indexOf('@') - 1);
+		QString longitude = coords.mid(0, coords.indexOf(','));
+		QString latitude = coords.mid(coords.indexOf(',') + 1);
+
+		QString crc = msg.mid(msg.indexOf('|') + 1);
+		QString crch = crc.mid(0, crc.indexOf(','));
+		QString crcl = crc.mid(crc.indexOf(',') + 1);
+
+		// TODO check crc values here
+
+		qWarning() << callsign;
+		qWarning() << coords;
+		qWarning() << longitude;
+		qWarning() << dmToD(longitude);
+		qWarning() << latitude;
+		qWarning() << dmToD(latitude);
+
+		qWarning() << crch;
+		qWarning() << crcl;
+
+		_console->append("{" + msg + "}");
+
+		addMarker(dmToD(longitude), dmToD(latitude));
+	}
 }
 
 /**
@@ -115,7 +181,6 @@ void va2epr_tnc::doAbout(void) {
 
 	AboutDialog about(this);
 	about.exec();
-	addMarker("-75.692", "45.421");
 
 	qDebug() << "va2epr_tnc::doAbout() Complete";
 }
@@ -132,12 +197,6 @@ void va2epr_tnc::doConnect(void) {
 
 	cd.exec();
 
-//	// Try _serial->open() here
-//	if (_console->isPortOpen()) {
-//
-//		_console->closePort();
-//	}
-//
 	rc = _console->openPort(cd.getPort(), cd.getSpeed());
 	if (rc) {
 		_toolbarConnectAction->setEnabled(false);

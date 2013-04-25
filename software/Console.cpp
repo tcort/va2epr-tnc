@@ -27,6 +27,8 @@
 #include "Console.h"
 #include "main.h"
 
+#include "va2epr_tnc.h"
+
 /**
  * Console widget with display area and line input.
  *
@@ -35,6 +37,8 @@
 Console::Console(QWidget *parent) : QWidget(parent) {
 
 	qDebug() << "Console::Console() Enter";
+
+	_parent = parent;
 
 	// Setup Serial Port - 57600 baud 8 bits 1 stop no parity no flow ctrl.
 	_port = new QextSerialPort("/dev/ttyUSB0", QextSerialPort::EventDriven);
@@ -170,7 +174,7 @@ void Console::doRecv() {
 	qDebug(" Got [" + bytes + "]");
 
 	if (_recvBuf.contains("}")) {
-		this->append(_recvBuf);
+		((va2epr_tnc *) (this->_parent))->processMessage(_recvBuf);
 		_recvBuf = "";
 	}
 

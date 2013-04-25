@@ -24,7 +24,6 @@
 
 #include <QtExtSerialPort/qextserialport.h>
 
-
 class Console : public QWidget {
 
 	Q_OBJECT
@@ -54,6 +53,8 @@ class Console : public QWidget {
 		void doRecv();
 
 	private:
+
+		QWidget *_parent;
 
 		unsigned int _num_lines;
 

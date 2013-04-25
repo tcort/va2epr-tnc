@@ -37,8 +37,8 @@ int main(void) {
 
 	volatile char i = 0;
 	void (*idle_mode)(void);
-/*	unsigned int last_beacon_timestamp = 0;
-*/
+	unsigned int last_beacon_timestamp = 0;
+
 	config_read();
 	afsk_init();
 	uart_init();
@@ -95,7 +95,7 @@ int main(void) {
 		for (i = 0; i < 50; i++) {
 			_delay_ms(100);
 		}
-#ifdef FOO
+
 		if (idle_mode == &notxrx) {
 			unsigned int current_timestamp;
 			struct nmea_coordinates	*location;
@@ -119,11 +119,10 @@ int main(void) {
 			if (gpstime_diff(current_timestamp, last_beacon_timestamp) >= 10) {
 
 
-				aprs_beacon(location);
+				aprs_beacon();
 				last_beacon_timestamp = current_timestamp;
 			}
 		}
-#endif
 	}
 
 	return 0;

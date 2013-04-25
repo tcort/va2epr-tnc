@@ -16,11 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <string.h>
 
 #include "aprs.h"
 #include "afsk.h"
 #include "conf.h"
+#include "gps.h"
+#include "nmea.h"
 
 /*
  * Compute the Frame-Check Sequence (FCS) for AX.25
@@ -124,7 +127,7 @@ void aprs_beacon(void) {
 	unsigned char crcl;	/* low bits of crc */
 	unsigned char crch;	/* high bits of crc */
 
-	unsigned char addr[8]; /* temp string to hold an address */
+	char value[256];
 	unsigned int i;
 
 	/*
@@ -135,6 +138,10 @@ void aprs_beacon(void) {
 	 */
 	unsigned int txdelay = TXDELAY;
 	unsigned int txtail = TXTAIL;
+
+	struct nmea_coordinates *coords;
+
+	coords = gps_get_coords();
 
 	/* Start transmitting... */
 
@@ -148,19 +155,32 @@ void aprs_beacon(void) {
 	tx_buffer_queue('m');
 	tx_buffer_queue(':');
 
-	memset(addr, '\0', 8);
-	strcpy((char *) addr, (char *) config.callsign);
-	crc = send_string(crc, addr);
-	/* TODO Send Coordinates */
+	memset(value, '\0', 256);
+	snprintf(value, 256, "%s@%c %s %s.%s,%c %s %s.%s",
+		config.callsign,
+		coords->latitude.cardinal_direction,
+		(char *) coords->latitude.hours,
+		(char *) coords->latitude.minutes,
+		(char *) coords->latitude.decimal,
+		coords->longitude.cardinal_direction,
+		(char *) coords->longitude.hours,
+		(char *) coords->longitude.minutes,
+		(char *) coords->longitude.decimal
+	);
+
+	crc = send_string(crc, (unsigned char *) value);
+
+
 
 	/* Calculate the high and low parts of the final CRC */
 	crcl = crc ^ 0xff;
 	crch = (crc >> 8) ^ 0xff;
 
 	/* Send the CRC bytes */
-	tx_buffer_queue('|');
-	tx_buffer_queue(crcl);
-	tx_buffer_queue(crch);
+	memset(value, '\0', 256);
+	snprintf(value, 256, "%d,%d", crch, crcl);
+	send_string(crc,(unsigned char *) value);
+
 	tx_buffer_queue('}');
 
 	for (i = 0; i < txtail; i++) {

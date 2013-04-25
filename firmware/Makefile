@@ -47,7 +47,7 @@ $(TARGET).obj: afsk.o aprs.o conf.o csma.o gps.o uart.o main.o nmea.o
 afsk.o: afsk.c afsk.h aprs.h csma.h uart.h
 	$(CC) $(CFLAGS) afsk.c -c -o afsk.o
 
-aprs.o: aprs.c afsk.h aprs.h conf.h
+aprs.o: aprs.c afsk.h aprs.h conf.h gps.h nmea.h
 	$(CC) $(CFLAGS) aprs.c -c -o aprs.o
 
 conf.o: conf.c conf.h

@@ -32,6 +32,7 @@ class va2epr_tnc : public QMainWindow {
 
 	public:
 		va2epr_tnc(void);
+		void processMessage(QString str);
 		~va2epr_tnc(void);
 
 	private slots:
@@ -41,6 +42,7 @@ class va2epr_tnc : public QMainWindow {
 
 	private:
 		void addMarker(QString lon, QString lat);
+		QString	dmToD(QString dm);
 
 		QWidget *_widget;
 		QVBoxLayout *_layout;
