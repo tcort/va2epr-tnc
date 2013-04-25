@@ -26,13 +26,16 @@
 #define LSB_FIRST
 
 /*
- * Generate a table of sinewave values
+ * Generate a table of sinewave values.
+ *
+ * The table can be pasted into afsk.c, replacing an existing table.
  */
 int main(int argc, char *argv[]) {
 
 	int i, nsamples;
 	float nsamples_f;
 
+	/* Allow the user to specify NSAMPLE on the command line */
 	if (argc == 2 && atoi(argv[1]) >= 4 && atoi(argv[1]) <= 256) {
 		nsamples = atoi(argv[1]);
 	} else {
@@ -54,6 +57,7 @@ int main(int argc, char *argv[]) {
 		unsigned char wave_fixed = 0;
 
 		for (j = 0; j < 8; j++) {
+			/* reverse the bits in the current byte */
 			wave_fixed |= ((wave >> (7-j)) & 0x01) << (j);
 		}
 

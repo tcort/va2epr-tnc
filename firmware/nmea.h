@@ -17,7 +17,7 @@
  */
 
 #ifndef __NMEA_H
-#define __NMHEA_H
+#define __NMEA_H
 
 /* Yes there are other message types, but they aren't used by the firmware (yet) */
 enum nmea_sentence_type { GGA = 1, RMC = 2 } sentence_type;

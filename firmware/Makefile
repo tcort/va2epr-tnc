@@ -56,17 +56,17 @@ conf.o: conf.c conf.h
 csma.o: csma.c csma.h conf.h
 	$(CC) $(CFLAGS) csma.c -c -o csma.o
 
-gps.o: gps.c gps.h nmea.h
+gps.o: gps.c gps.h nmea.h uart.h
 	$(CC) $(CFLAGS) gps.c -c -o gps.o
-
-uart.o: uart.c uart.h afsk.h aprs.h conf.h
-	$(CC) $(CFLAGS) uart.c -c -o uart.o
 
 main.o: main.c afsk.h aprs.h conf.h csma.h gps.h uart.h nmea.h
 	$(CC) $(CFLAGS) main.c -c -o main.o
 
 nmea.o: nmea.c nmea.h
 	 $(CC) $(CFLAGS) nmea.c -c -o nmea.o
+
+uart.o: uart.c uart.h afsk.h aprs.h conf.h
+	$(CC) $(CFLAGS) uart.c -c -o uart.o
 
 write-flash: $(TARGET).hex
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(PART) -P $(DEVICE) -b $(BAUD) -U flash:w:$(TARGET).hex
