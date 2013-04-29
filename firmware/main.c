@@ -57,22 +57,24 @@ int main(void) {
 
 	while (1) {
 /*
-		Simple test code.
+		* Simple test code for indoor demo without GPS.
+		* N 45 27.300 W 075 45.870
 
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue('{');
-		tx_buffer_queue('V');
-		tx_buffer_queue('A');
-		tx_buffer_queue('2');
-		tx_buffer_queue('E');
-		tx_buffer_queue('P');
-		tx_buffer_queue('R');
+		tx_buffer_queue('V'); tx_buffer_queue('A'); tx_buffer_queue('2'); tx_buffer_queue('E'); tx_buffer_queue('P'); tx_buffer_queue('R');
 		tx_buffer_queue('@');
-		tx_buffer_queue('X');
-		tx_buffer_queue('X');
-		tx_buffer_queue('X');
+		tx_buffer_queue('N'); tx_buffer_queue(' '); tx_buffer_queue('4'); tx_buffer_queue('5'); tx_buffer_queue(' ');
+		tx_buffer_queue('2'); tx_buffer_queue('7'); tx_buffer_queue('.'); tx_buffer_queue('3'); tx_buffer_queue('0'); tx_buffer_queue('0');
+		tx_buffer_queue(',');
+		tx_buffer_queue('W'); tx_buffer_queue(' '); tx_buffer_queue('0'); tx_buffer_queue('7'); tx_buffer_queue('5'); tx_buffer_queue(' ');
+		tx_buffer_queue('4'); tx_buffer_queue('5'); tx_buffer_queue('.'); tx_buffer_queue('8'); tx_buffer_queue('7'); tx_buffer_queue('0');
+		tx_buffer_queue('|');
+		tx_buffer_queue('0');
+		tx_buffer_queue(',');
+		tx_buffer_queue('0');
 		tx_buffer_queue('}');
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue(AX25_FLAG);
