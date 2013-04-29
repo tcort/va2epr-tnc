@@ -140,13 +140,15 @@ QString va2epr_tnc::dmToD(QString dm) {
 /**
  * Process an incoming message.
  *
- * @param str string containing 1 or more messages {m:CALLSIGN@lon,lat|crch,crcl}
+ * @param str string containing 1 or more messages {m:CALLSIGN@lon,lat/crch,crcl}
  */
 void va2epr_tnc::processMessage(QString str) {
 
-	QRegExp rx("\\{(m:[a-zA-Z0-9]+@[WE] [0-9]+ [0-9]+\\.[0-9]+,[NS] [0-9]+ [0-9]+\\.[0-9]+\\|\\d+,\\d+)\\}");
+	QRegExp rx("\\{(m:[a-zA-Z0-9]+@[WE] [0-9]+ [0-9]+\\.[0-9]+,[NS] [0-9]+ [0-9]+\\.[0-9]+\\/\\d+,\\d+)\\}");
 	QStringList list;
 	QString msg;
+
+	qWarning() << "Parsing '" << str << "'";
 
 	int pos = 0;
 	while ((pos = rx.indexIn(str, pos)) != -1)
@@ -160,11 +162,11 @@ void va2epr_tnc::processMessage(QString str) {
 
 		QString callsign = msg.mid(msg.indexOf(':') + 1, msg.indexOf('@') - msg.indexOf(':') - 1);
 
-		QString coords = msg.mid(msg.indexOf('@') + 1, msg.indexOf('|') - msg.indexOf('@') - 1);
+		QString coords = msg.mid(msg.indexOf('@') + 1, msg.indexOf('/') - msg.indexOf('@') - 1);
 		QString longitude = coords.mid(0, coords.indexOf(','));
 		QString latitude = coords.mid(coords.indexOf(',') + 1);
 
-		QString crc = msg.mid(msg.indexOf('|') + 1);
+		QString crc = msg.mid(msg.indexOf('/') + 1);
 		QString crch = crc.mid(0, crc.indexOf(','));
 		QString crcl = crc.mid(crc.indexOf(',') + 1);
 
@@ -178,8 +180,8 @@ void va2epr_tnc::processMessage(QString str) {
 		qWarning() << latitude;
 		qWarning() << dmToD(latitude);
 
-		qWarning() << crch;
-		qWarning() << crcl;
+		// qWarning() << crch;
+		// qWarning() << crcl;
 
 		_console->append("{" + msg + "}");
 
