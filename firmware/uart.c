@@ -62,6 +62,11 @@ void uart_init(void) {
  */
 void uart_tx(unsigned char c) {
 
+	while ((UCSR0A & (1 << UDRE0)) == 0) {
+
+		/* Wait for buffer to clear */;
+	}
+
 	UDR0 = c;
 }
 
