@@ -1,7 +1,10 @@
  * Redo schematic and pcb using a free / open source CAD program.
  * USB A connector for a stronger hold.
+ * Anything but DIN5, cables are hard to make and expensive (maybe just 2 audio cables)
  * Smaller PCB to reduce costs (10cm x 5cm or smaller).
  * For the DAC, put DAC0 on PB0 (currently it's reversed DAC0 is on PB7)
  * Use an OpAmp package that has 2 op amps per package
  * Use a transistor as a switch to turn the gps on and off
  * Think about power saving options
+ * Faster CPU (arm?) or dual CPU (1 for TX, 1 for RX)
+ * Additional RAM for read/write buffers
