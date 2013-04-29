@@ -181,7 +181,7 @@ void aprs_beacon(void) {
 
 	/* Send the CRC bytes */
 	memset(value, '\0', 256);
-	snprintf(value, 256, "|%d,%d", crch, crcl);
+	snprintf(value, 256, "/%d,%d", crch, crcl);
 	send_string(crc,(unsigned char *) value);
 
 	tx_buffer_queue('}');
