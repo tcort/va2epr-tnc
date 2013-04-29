@@ -8,3 +8,5 @@
  * Think about power saving options
  * Faster CPU (arm?) or dual CPU (1 for TX, 1 for RX)
  * Additional RAM for read/write buffers
+ * External JTAG connector
+ * Visual On/Off indicator (LED?)
