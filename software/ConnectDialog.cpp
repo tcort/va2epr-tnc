@@ -94,11 +94,21 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent, Qt::Dialog) {
 	qDebug() << "ConnectDialog::ConnectDialog() Complete";
 }
 
+/*
+ * Get's the user's port selection.
+ *
+ * @return the port chosen.
+ */
 QString ConnectDialog::getPort() {
 
 	return _portSelect->currentText();
 }
 
+/*
+ * Get's the user's speed selection.
+ *
+ * @return the speed chosen.
+ */
 QString ConnectDialog::getSpeed() {
 
 	return _speedSelect->currentText();

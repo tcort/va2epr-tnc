@@ -21,9 +21,9 @@ PROJECT_FILE=va2epr-tnc.pro
 set -e
 
 sh clean.sh
-lupdate-qt4 ${PROJECT_FILE}
-lrelease-qt4 ${PROJECT_FILE}
-qmake-qt4 ${PROJECT_FILE}
+lupdate-qt4 ${PROJECT_FILE} || lupdate ${PROJECT_FILE}
+lrelease-qt4 ${PROJECT_FILE} || lrelease ${PROJECT_FILE}
+qmake-qt4 ${PROJECT_FILE} || qmake ${PROJECT_FILE}
 make
 
 rm -rf docs

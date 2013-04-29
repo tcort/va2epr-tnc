@@ -102,10 +102,24 @@ va2epr_tnc::va2epr_tnc(void) {
 	qDebug() << "va2epr_tnc::va2epr_tnc() Complete";
 }
 
+/*
+ * Put a marker on the map.
+ *
+ * @param lon longitude
+ * @param lat latitude
+ */
 void va2epr_tnc::addMarker(QString lon, QString lat) {
 	_www->page()->mainFrame()->evaluateJavaScript("addMarker(" + lon + ", " + lat + "); null");
 }
 
+/*
+ * Convert Degrees/Minutes to decimal degrees.
+ *
+ * For example, "45 15.000" becomes "45.25000"
+ *
+ * @param dm coordinate in degrees minutes notation.
+ * @return coordinate in decimal degrees notation.
+ */
 QString va2epr_tnc::dmToD(QString dm) {
 
 	double d = 0.0;
@@ -154,7 +168,8 @@ void va2epr_tnc::processMessage(QString str) {
 		QString crch = crc.mid(0, crc.indexOf(','));
 		QString crcl = crc.mid(crc.indexOf(',') + 1);
 
-		// TODO check crc values here
+		// TODO check crc values here.
+		// If it passed the QRegEx, it's likely good
 
 		qWarning() << callsign;
 		qWarning() << coords;
