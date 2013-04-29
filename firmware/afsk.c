@@ -483,7 +483,8 @@ ISR(TIMER1_CAPT_vect) {
 		/* 1200 Hz Carrier Present */
 		carrier_sense = TONE_1200HZ;
 
-		carrier_sense_timeout = 16;
+		/* Use 64 interrupts with invalid counts to decide that the signal has stopped */
+		carrier_sense_timeout = 64;
 
 	} else if (capture_period > PERIOD_2200_MIN && capture_period < PERIOD_2200_MAX) {
 
@@ -493,8 +494,8 @@ ISR(TIMER1_CAPT_vect) {
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
 
-		/* Use 16 interrupts with invalid counts to decide that the signal has stopped */
-		carrier_sense_timeout = 16;
+		/* Use 64 interrupts with invalid counts to decide that the signal has stopped */
+		carrier_sense_timeout = 64;
 
 	} else {
 
