@@ -163,14 +163,14 @@ void aprs_beacon(void) {
 	memset(value, '\0', 256);
 	snprintf(value, 256, "%s@%c %s %s.%s,%c %s %s.%s",
 		config.callsign,
-		coords->latitude.cardinal_direction,
-		(char *) coords->latitude.hours,
-		(char *) coords->latitude.minutes,
-		(char *) coords->latitude.decimal,
 		coords->longitude.cardinal_direction,
 		(char *) coords->longitude.hours,
 		(char *) coords->longitude.minutes,
-		(char *) coords->longitude.decimal
+		(char *) coords->longitude.decimal,
+		coords->latitude.cardinal_direction,
+		(char *) coords->latitude.hours,
+		(char *) coords->latitude.minutes,
+		(char *) coords->latitude.decimal
 	);
 
 	crc = send_string(crc, (unsigned char *) value);
@@ -181,7 +181,7 @@ void aprs_beacon(void) {
 
 	/* Send the CRC bytes */
 	memset(value, '\0', 256);
-	snprintf(value, 256, "%d,%d", crch, crcl);
+	snprintf(value, 256, "|%d,%d", crch, crcl);
 	send_string(crc,(unsigned char *) value);
 
 	tx_buffer_queue('}');
