@@ -25,7 +25,7 @@
  *   GSA ~ GPS DOP and active satellites
  *   RMC ~ Recommended Minimum Navigation Information
  *   VTG ~ Track Made Good and Ground Speed (optional)
- *   GLL ~ Geographic Position – Latitude/Longitude (optional)
+ *   GLL ~ Geographic Position Latitude/Longitude (optional)
  *
  * From what I've read, the GPS module continuously outputs
  * GPGGA, GPGSA, GPGSV, and GPRMC sentences in NMEA mode. From what I observed,
@@ -62,6 +62,7 @@
 #include "gps.h"
 #include "nmea.h"
 
+/* Size of the receive buffer (should be big enough for 1 sentence) */
 #define GPS_BUFFER_SIZE (128)
 
 /*
@@ -74,6 +75,9 @@ unsigned char gps_buffer[GPS_BUFFER_SIZE];
  */
 unsigned char gps_buffer_index;
 
+/*
+ * Coordinates
+ */
 struct nmea_coordinates coords;
 
 /*
@@ -104,6 +108,9 @@ void gps_init(void) {
 	current_state = DONE;
 }
 
+/*
+ * Enable the GPS receiver (i.e. turn on UART1 TX / RX / RX Interrupt)
+ */
 void gps_enable(void) {
 
 	memset(&coords, '\0', sizeof(struct nmea_coordinates));
@@ -114,6 +121,12 @@ void gps_enable(void) {
 	current_state = SEARCHING;
 }
 
+/*
+ * Simple test to see if the GPS is plugged in.
+ * The GPS spits out data every second, so this function just
+ * enables UART1, waits a couple of seconds, and sees if there
+ * was any data received on UART1.
+ */
 char gps_is_connected(void) {
 
 	/* state of the GPS (-1 = unsure, 0 = not connected, 1 = connected) */
@@ -167,6 +180,9 @@ char gps_is_connected(void) {
 	return status;
 }
 
+/*
+ * Disable the GPS (UART1 TX / RX / RX Interrupt
+ */
 void gps_disable(void) {
 
 	current_state = DONE;
@@ -176,6 +192,9 @@ void gps_disable(void) {
 
 }
 
+/*
+ * Simple accessor for coordinates.
+ */
 struct nmea_coordinates *gps_get_coords(void) {
 
 	return &coords;
@@ -183,7 +202,11 @@ struct nmea_coordinates *gps_get_coords(void) {
 
 /*
  * Receive Data from the GPS
- * For testing/debugging, just output it to the PC
+ *
+ * Tries to find a NMEA sentence "$ ... \r\n" in the
+ * stream of incoming bytes. Once one is found, the
+ * sentence is validated and then it tries to extract
+ * the coordinates.
  */
 ISR(USART1_RX_vect) {
 
@@ -250,5 +273,4 @@ ISR(USART1_RX_vect) {
 			break;
 
 	}
-
 }

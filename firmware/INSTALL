@@ -20,7 +20,7 @@ the microcontroller. If you have something different, you'll have
 to change the avrdude settings in the Makefile.
 
 Connect your programmer of choice to the computer and to board via the
-board's JTAG connector. Apply power to the board
+board's JTAG connector. Apply power to the board.
 
 Program
 -------

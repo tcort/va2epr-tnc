@@ -127,7 +127,7 @@ void aprs_beacon(void) {
 	unsigned char crcl;	/* low bits of crc */
 	unsigned char crch;	/* high bits of crc */
 
-	char value[256];
+	char value[256];	/* tmp buffer for string formatting output */
 	unsigned int i;
 
 	/*
@@ -143,7 +143,12 @@ void aprs_beacon(void) {
 
 	coords = gps_get_coords();
 
-	/* Start transmitting... */
+	/*
+	 * Start transmitting...
+	 * Here we have a bit of a race. We need to queue up the data
+	 * faster than it can be sent. In testing, buffer underfill wasn't
+	 * an issue.
+	 */
 
 	tx_buffer_queue(AX25_FLAG);	/* must send at least one */
 
@@ -169,8 +174,6 @@ void aprs_beacon(void) {
 	);
 
 	crc = send_string(crc, (unsigned char *) value);
-
-
 
 	/* Calculate the high and low parts of the final CRC */
 	crcl = crc ^ 0xff;

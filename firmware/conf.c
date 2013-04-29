@@ -19,10 +19,11 @@
 /*
  * This file manages the configuration parameters stored in EEPROM.
  * The following configuration parameters stored are: TX Delay, p,
- * Slot Time, TX Tail, and Full Duplex. TX Tail is obsolete according
- * to the uart standard, so it is ignored. The device only supports
- * half duplex, so any value for Full Duplex is ignored. Set Hardware
- * is ignored as it has no meaning in this TNC.
+ * Slot Time, TX Tail, Full Duplex, and callsign. The device only supports
+ * half duplex, so any value for Full Duplex is ignored. The version
+ * parameter is reserved for future use (i.e. if I change the struct conf
+ * in a future version, the software has to be able to know what fields
+ * are present in EEPROM.
  */
 
 #include <avr/io.h>
@@ -31,7 +32,11 @@
 #include "conf.h"
 
 /*
- * Global configuration (stored in RAM).
+ * Global configuration (stored in RAM). This struct is filled in
+ * during the initialization using config_read(). This helps reduce,
+ * in a very minor way, the wear and tear on the EEPROM. When the
+ * PC sends a configuration change followed by the write command,
+ * this struct is written to EEPROM with config_write().
  */
 struct conf config;
 

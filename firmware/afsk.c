@@ -17,7 +17,7 @@
  */
 
 /*
- * This file implements 1200 baud AFSK NRZI with 1200 Hz and 2200 Hz tones.
+ * This file implements AFSK NRZI with 1200 Hz and 2200 Hz tones.
  *
  * Ports and Peripherals Used
  * --------------------------
@@ -47,8 +47,8 @@
  * Using a pre-scalar of 8, I should set TCNT2 to the following values
  * via the 'tone' variable:
  *
- *   For 1200 Hz, 14745600/8/38400 - 1 = 47				Exactly 1200 Hz
- *   For 2200 Hz, 14745600/8/70400 - 1 = 25.18 (25)			Approx  2215 Hz (0.6% error)
+ *   For 1200 Hz, 14745600/8/38400 - 1 = 47		Exactly 1200 Hz
+ *   For 2200 Hz, 14745600/8/70400 - 1 = 25.18 (25)	Approx  2215 Hz (0.6% error)
  */
 #define TONE_1200HZ 47
 #define TONE_2200HZ 25
@@ -58,10 +58,13 @@
  * captured input is 1200 Hz or 2200 Hz. You can compute these
  * the same as above...
  *
- *  For 1100 Hz, 14745600/8/1100 - 1 = 800
- *  For 1300 Hz, 14745600/8/1300 - 1 = 877
- *  For 2100 Hz, 14745600/8/2100 - 1 = 1417
- *  For 2300 Hz, 14745600/8/2300 - 1 = 1675
+ *   For 1100 Hz, 14745600/8/1100 - 1 = 800
+ *   For 1300 Hz, 14745600/8/1300 - 1 = 877
+ *   For 2100 Hz, 14745600/8/2100 - 1 = 1417
+ *   For 2300 Hz, 14745600/8/2300 - 1 = 1675
+ *
+ * Depending on the sending station's accuracy, you may want to
+ * widen or shrink the bands below.
  */
 #define PERIOD_2200_MIN  800 /* 2.3 kHz */
 #define PERIOD_2200_MAX  877 /* 2.1 kHz */
@@ -70,7 +73,8 @@
 
 /*
  * This is the counter value for the AFSK decoding interrupt
- * running on Timer 0.
+ * running on Timer 0. The frequency should be 8 times the
+ * frequency of the AFSK encoding interrupt below.
  *
  * 14745600/1024/96 - 1 = 149
  */
@@ -96,7 +100,7 @@ unsigned char afsk_output_frequency = TONE_1200HZ; /* initial frequency */
 
 /*
  * frequency shift detected -- used by RX to identify changes in
- * carrier frequency. This indicates a logical '1' in the NRZI
+ * carrier frequency. This indicates a logical '0' in the NRZI
  * flavour of AFSK. It also helps with synchronization.
  */
 unsigned char shift_detect = 0;
@@ -104,11 +108,18 @@ unsigned char shift_detect = 0;
 /*
  * carrier sesne timeout -- used by RX to identify when a carrier is
  * no longer present. It counts down from a predefined value to 0. When
- * it becomes 0, the carrier is no longer present.
+ * it becomes 0, the carrier is no longer present. carrier_sense is
+ * used in csma.c to determine when it is okay to transmit.
  */
 unsigned char carrier_sense_timeout = 0;
 
-/* precomputed sinewave from tools/sine.c */
+/*
+ * 32 sample precomputed sinewave from tools/sine.c This is used for
+ * AFSK waveform generation. The same table is used for both
+ * frequencies (1200Hz and 2200Hz), the waveform generation code
+ * simply iterates over the list of values faster or slower for
+ * the different frequencies.
+ */
 unsigned char sinewave[32] = {
 	254,  25,  13,  99, 155, 151, 175,  63, 
 	255,  63, 175, 151, 155,  99,  13,  25, 
@@ -117,15 +128,20 @@ unsigned char sinewave[32] = {
 };
 
 /*
- * House keeping for the RX code. This flag used to
- * indicate that a start-of-frame UART_FEND has been
- * sent via USART0, I am sending an AX25 frame, and
- * a UART_FEND will be needed to complete the frame.
+ * Circular buffer for holding data to be transmitted. It needs to
+ * be buffered because we might have to wait for the channel to
+ * become free.
  */
-unsigned char in_uart_frame = 0;
-
 unsigned char tx_buffer[256];
+
+/*
+ * Index into tx_buffer
+ */
 unsigned char tx_buffer_head = 0;
+
+/*
+ * Index into tx_buffer
+ */
 unsigned char tx_buffer_tail = 0;
 
 /* setup ports and timers */
@@ -225,11 +241,19 @@ void rx(void) {
 	TIMSK0 |= (1<<OCIE0A); /* enable afsk decoder */
 }
 
+/*
+ * Check if the transmit circular buffer is empty.
+ */
 unsigned char tx_buffer_empty(void) {
 
 	return (tx_buffer_head == tx_buffer_tail);
 }
 
+/*
+ * Remove a byte from the queue. If none are present,
+ * AX25_FLAG is returned. You should be calling
+ * tx_buffer_empty() before this anyway.
+ */
 unsigned char tx_buffer_dequeue(void) {
 
 	unsigned char c;
@@ -243,9 +267,20 @@ unsigned char tx_buffer_dequeue(void) {
 	return c;
 }
 
+/*
+ * Insert a byte into the queue. This blindly puts
+ * a byte in the new slot. A full buffer simply writes
+ * over itself. There isn't really much we can do when
+ * it gets full, but the buffer is big enough that it
+ * can hold about 10 messages to transmit, so it shouldn't
+ * be a problem.
+ */
 void tx_buffer_queue(unsigned char c) {
 
-	tx_buffer[tx_buffer_tail++] = c; /* tx_buffer_tail will roll over to 0 avoiding a buffer overflow */
+	/* since tx_buffer_tail is an unsigned char, it will roll over
+	 * to 0 after it gets to 255, avoiding an overflow of tx_buffer
+	 */
+	tx_buffer[tx_buffer_tail++] = c;
 }
 
 /*
@@ -266,7 +301,7 @@ void tx_buffer_queue(unsigned char c) {
  */
 
 /*
- * decode incoming AFSK data, forward it to the computer
+ * Decode incoming AFSK data, forward it to the computer
  * over USART0 using the UART protocol.
  *
  * There are some design decisions made which impact this code.
@@ -291,10 +326,20 @@ ISR(TIMER0_COMPA_vect) {
 	/* pseudo-timer used to decide when to sample */
 	static signed char next_sample = 8;
 
+	/*
+	 * We only know where we are in the stream of bytes when we see
+	 * an AX_25 flag (b01111110). Once we've seen one, we know where
+	 * the byte boundaries are. This is set to 1 once we've found
+	 * the AX_25 flag since the carrier started.
+	 */
 	static unsigned char synced = 0;
 
+	/*
+	 * Avoid trying to decode noise. Only try to decode when we have a signal.
+	 */
 	if (carrier_sense) {
 
+		/* Did the signal shift between the two frequencies since last check? */
 		if (shift_detect) {
 
 			/* clear shift_detect so we don't re-sample the same bit */
@@ -305,8 +350,8 @@ ISR(TIMER0_COMPA_vect) {
 			 *
 			 * From the AX.25 spec (v2.2):
 			 *
-			 *	"any time five contiguous “1” bits are received, a “0” bit
-			 *	immediately following five “1” bits is discarded."
+			 *	"any time five contiguous "1" bits are received, a "0" bit
+			 *	immediately following five "1" bits is discarded."
 			 */
 			if (ones_count != 5) {
 
@@ -326,14 +371,12 @@ ISR(TIMER0_COMPA_vect) {
 			 *
 			 * If we are here, then the signal is at the leading edge of an
 			 * AFSK clock (since a shift was detected and this interrupt is
-			 * running 8 times faster than the AFSK baud rate of 1200).
+			 * running 8 times faster than the AFSK baud rate).
 			 *
-			 * I want to make the next sample 1/1200 of a second from now,
-			 * but I want some wiggle room. For example, I don't want to
-			 * beat the AFSK clock to the next bit. Therefore, I will check
-			 * the state half way through the next AFSK clock cycle.
+			 * I don't want to beat the AFSK clock to the next bit. Therefore,
+			 * I will check the state half way through the next AFSK clock cycle.
 			 *
-			 * 96/12 == 8, 8*1.5 == 12
+			 * 8*1.5 == 12
 			 */
 			next_sample = 12;
 
@@ -347,7 +390,6 @@ ISR(TIMER0_COMPA_vect) {
 				bits = ((0x80) | (bits >> 1)); /* insert a 1 from the left */
 				bits_count++;
 
-				/* 96/12 == 8 */
 				next_sample = 8;
 
 				ones_count++; /* keep a tally of consecutive 1's received */
@@ -371,12 +413,16 @@ ISR(TIMER0_COMPA_vect) {
 
 		if (synced && bits_count >= 8) {
 
+			/* Send byte to connected computer over UART */
 			uart_tx(bits);
 
 			/* clear bit counter */
 			bits_count = 0;
+
 		} else if (bits_count > 250) {
+
 			bits_count = 8;
+
 		}
 
 	} else {
@@ -419,15 +465,14 @@ ISR(TIMER1_CAPT_vect) {
 	 * timer 1 frequency = 1,843,200 Hz and period 1/f = 0.000000542534722 seconds.
 	 * 1200 Hz has a period of 0.000833333333 seconds. We can compute the
 	 * count when that amount of time has passed by doing the following.
-	 * 0.000833333333 / 0.000000542534722  = 1536 ticks. Similarly, it's
+	 * 0.000833333333 / 0.000000542534722 = 1536 ticks. Similarly, it's
 	 * 838 ticks for 2200 Hz.
 	 *
 	 * Since we're receiving AFSK with continuous phase, frequency changes (as
 	 * observed by a zero cross detector) may appear as waveforms at some frequency
 	 * between 1200 Hz and 2200 Hz. Additionally, some hardware might not be exactly
-	 * at 1200 Hz and 2200 Hz, so we are very permissive. Any signals from 700 Hz to
-	 * 1700 Hz are interpreted as 1200 Hz and any signals from 1700 Hz to 2700 Hz are
-	 * interpreted as 2200 Hz.
+	 * at 1200 Hz and 2200 Hz, so we are permissive and accept a range of counter
+	 * values, not just 1536 and 838.
 	 */
 
 	if (capture_period > PERIOD_1200_MIN && capture_period < PERIOD_1200_MAX) {
@@ -448,17 +493,19 @@ ISR(TIMER1_CAPT_vect) {
 		/* 2200 Hz Carrier Present */
 		carrier_sense = TONE_2200HZ;
 
+		/* Use 16 interrupts with invalid counts to decide that the signal has stopped */
 		carrier_sense_timeout = 16;
 
 	} else {
 
+		/* Lower the timeout counter if it's still non-zero */
 		if (carrier_sense_timeout) {
 
 			carrier_sense_timeout--;
 
 		} else {
 
-			/* no valid signal */
+			/* Timeout, no valid signal (a.k.a. carrier) sensed. */
 			carrier_sense = 0;
 		}
 	}
@@ -467,6 +514,7 @@ ISR(TIMER1_CAPT_vect) {
 /* generate the output waveform */
 ISR(TIMER2_COMPA_vect) {
 
+	/* Index into precomputer sinewave table 'sinewave' */
 	static unsigned char sinewave_index = 0;
 
 	/*

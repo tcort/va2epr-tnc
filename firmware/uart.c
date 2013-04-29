@@ -58,16 +58,10 @@ void uart_init(void) {
 }
 
 /*
- * Transmit Data to the PC. Do not escape special UART characters.
- * Use this function to send UART_FEND. Use uart_tx() for everything else.
+ * Transmit Data to the PC. Do not escape special characters.
  */
 void uart_tx(unsigned char c) {
 
-#if 0 == 1
-	while ((UCSR0A & (1 << UDRE0)) == 0) {
-		/* wait for send buffer to be clear */;
-	}
-#endif
 	UDR0 = c;
 }
 

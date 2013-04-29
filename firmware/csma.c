@@ -32,7 +32,8 @@
  * Set this flag when a carrier is detected.
  * Clear this flag when there is no carrier.
  *
- * Note: when setting, use the TONE_1200HZ and TONE_2200HZ macros.
+ * Note: when setting, use the TONE_1200HZ
+ * and TONE_2200HZ macros found in afsk.c.
  */
 volatile unsigned int carrier_sense = 0;
 

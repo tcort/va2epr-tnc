@@ -57,6 +57,8 @@ int main(void) {
 
 	while (1) {
 /*
+		Simple test code.
+
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue(AX25_FLAG);
 		tx_buffer_queue(AX25_FLAG);
@@ -67,7 +69,7 @@ int main(void) {
 		tx_buffer_queue('E');
 		tx_buffer_queue('P');
 		tx_buffer_queue('R');
-		tx_buffer_queue('\0');
+		tx_buffer_queue('@');
 		tx_buffer_queue('X');
 		tx_buffer_queue('X');
 		tx_buffer_queue('X');
