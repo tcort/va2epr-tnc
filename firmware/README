@@ -11,7 +11,7 @@ __   ____ _|___ \ ___ _ __  _ __     | |_ _ __   ___
 |_| |_|_|  |_| |_| |_|\_/\_/ \__,_|_|  \___|
                                             
                                           
-  by Thomas Cort <va2epr@rac.ca> ( VA2EPR / KB1EPR )
+  by Thomas Cort <linuxgeek@gmail.com> ( VA2EPR / KB1EPR )
 
 This is the firmware which runs directly on the terminal node controller's
 microcontroller. It manages encoding and decoding that data on the

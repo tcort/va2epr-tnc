@@ -1,6 +1,6 @@
 /*
  * va2epr-tnc software - terminal node controller software for va2epr-tnc
- * Copyright (C) 2012, 2013 Thomas Cort <va2epr@rac.ca>
+ * Copyright (C) 2012, 2013 Thomas Cort <linuxgeek@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #define PROGRAM_VERSION   "1.0.0"
 #define PROGRAM_NAME      "VA2EPR Terminal Node Controller"
-#define PROGRAM_COPYRIGHT "Copyright 2012 Thomas Cort <va2epr@rac.ca>"
+#define PROGRAM_COPYRIGHT "Copyright 2012, 2013 Thomas Cort <linuxgeek@gmail.com>"
 #define PROGRAM_HOMEPAGE  "http://www.tomcort.com/"
 
 #define ORG_NAME "Thomas Cort"

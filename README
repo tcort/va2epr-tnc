@@ -4,7 +4,7 @@ __     ___    ____  _____ ____  ____     _____ _   _  ____
   \ V / ___ \ / __/| |___|  __/|  _ <_____| | | |\  | |___ 
    \_/_/   \_\_____|_____|_|   |_| \_\    |_| |_| \_|\____|
                                                            
-  by Thomas Cort <va2epr@rac.ca> ( VA2EPR / KB1EPR )
+  by Thomas Cort <linuxgeek@gmail.com> ( VA2EPR / KB1EPR )
 
 This is a student's final year Electronics Technology project
 which implements a Terminal Node Controller and an APRS tracker. See the

@@ -1,6 +1,6 @@
 /*
  * va2epr-tnc firmware tools - firmware related utilities for va2epr-tnc
- * Copyright (C) 2012, 2013 Thomas Cort <va2epr@rac.ca>
+ * Copyright (C) 2012, 2013 Thomas Cort <linuxgeek@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

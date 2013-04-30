@@ -10,7 +10,7 @@ __   ____ _|___ \ ___ _ __  _ __     | |_ _ __   ___
 \__ \ (_) |  _| |_ \ V  V / (_| | | |  __/
 |___/\___/|_|  \__| \_/\_/ \__,_|_|  \___|
                                           
-  by Thomas Cort <va2epr@rac.ca> ( VA2EPR / KB1EPR )
+  by Thomas Cort <linuxgeek@gmail.com> ( VA2EPR / KB1EPR )
 
 This is the graphical user interface that will communicate with the firmware
 to 'drive' the terminal node controller hardware. It is meant to be run on
