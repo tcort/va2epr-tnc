@@ -44,12 +44,11 @@
                 website to share my final year project with the world.
                 The project incorporates one of my favourite hobbies,
                 <a href="http://en.wikipedia.org/wiki/Amateur_radio">Amateur Radio</a>.
-		The goal is to design and build a
-                <a href="http://en.wikipedia.org/wiki/Terminal_node_controller">Terminal Node Controller</a>.
+		The goal is to design and build a <a href="http://en.wikipedia.org/wiki/Terminal_node_controller">Terminal Node Controller</a>
+                (i.e. a modem that uses radio to transfer data between two devices).
                 Additionally, I'm going to be making a portable version with an integrated
                 <a href="http://en.wikipedia.org/wiki/Global_Positioning_System">GPS</a> receiver.
-                The target application of the portable version is 
-                <a href="http://en.wikipedia.org/wiki/Automatic_Packet_Reporting_System">APRS</a> tracking.
+                The target application of the portable version is a portable tracker.
                 If you would like to contact me, my e-mail address is 
                 <a href="mailto:va2epr@rac.ca">va2epr@rac.ca</a>.
               </p>
@@ -60,10 +59,10 @@
                 As you can see by the picture in the upper right, I've completed the
                 hardware; the printed circuit board I designed exists and is populated
                 with parts. I've done the initial testing and first pass of the firmware.
-                I've got two of these modems talking to each other. What's left to
-                complete is the GUI and crank up the baud rate (I slowed things down from
-                1200 baud to 12 baud for testing/debugging purposes). There is only about a
-                week left until the project showcase, so it's crunch time. Expect more
+                I've got two of these modems talking to each other. The PC software is also
+                up and running. It can be used to configure the modems, send and receive
+                data, and display location reports received on a map. The last remaining
+                tasks are further testing and refinement, and documentation. Expect more
                 activity on the website as the project nears completion.
               </p>
 
@@ -74,7 +73,7 @@
                 I have posted a detailed project proposal document outlining the
                 scope of the project, the project goals, the preliminary design,
                 and an implementation plan. In the future, I will be
-                posting end of semester reports in this section.
+                posting the end of semester report in this section.
               </p>
               <p class="indent">
                 <b><a href="va2epr-tnc/proposal.pdf">Project Proposal</a> (PDF)</b>
@@ -87,10 +86,9 @@
                 microcontroller running at 14.7456MHz. Connected to it 
                 are sub-circuits that interface with a radio, a 
                 computer, and optionally a GPS. The computer interface 
-                is USB (Mini B connector) using an FTDI FT232RL chip to 
-                provide a virtual COM port in Windows which should 
-                enable compatibility with existing KISS mode packet
-                software while providing the convenience of USB. The 
+                is USB (Mini B connector) using an FTDI FT232RL chip which
+                will enable it to work out of the box on many systems
+                while providing the convenience of USB. The 
                 radio is interfaced with a DIN5 connector, somewhat 
                 common among TNCs, to send/receive audio signals and key 
                 the radio. Power is provided via a 2.1mm barrel 
