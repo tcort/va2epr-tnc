@@ -76,17 +76,19 @@
  * running on Timer 0. The frequency should be 8 times the
  * frequency of the AFSK encoding interrupt below.
  *
- * 14745600/1024/96 - 1 = 149
+ * 14745600/64/9600 - 1 = 23
+ * For slow mode use 14745600/1024/96 - 1 = 149 and set prescalar to 64
  */
-#define TIMER_96 149 /* 96 Hz */
+#define TIMER_9600 23 /* 9600 Hz */
 
 /*
  * This is the counter value for the AFSK encoding interrupt
  * running on Timer 3.
  *
- * 14745600/64/12 - 1 = 19199
+ * 14745600/64/1200 - 1 = 191
+ * For slow mode use 14745600/64/12 - 1 = 19199
  */
-#define TIMER_12 19199 /* 12 Hz */
+#define TIMER_1200 191 /* 1200 Hz */
 
 /*
  * This is the value that is used to set OCR2A. It controls the
@@ -164,7 +166,7 @@ void afsk_init(void) {
 	TCCR3B |= (1<<WGM32); /* CTC */
 	TCCR3B |= ((1<<CS31)|(1<<CS30)); /* pre-scalar = 64 */
 	TCNT3 = 0x00; /* initialize counter to 0 */
-	OCR3A = TIMER_12; /* 12 times per second */
+	OCR3A = TIMER_1200; /* 1200 times per second */
 
 	/* -- Input Capture (RX) -- */
 	/* do all setup except enabling of input capture interrupt (done in rx()) */
@@ -183,9 +185,10 @@ void afsk_init(void) {
 
 	/* AFSK Decoding - Timer 0 CTC, pre-scalar 1024 */
 	TCCR0A |= (1<<WGM01); /* CTC */
-	TCCR0B |= ((1<<CS02)|(1<<CS00)); /* pre-scalar = 1024 */
+	TCCR0B |= ((1<<CS01)|(1<<CS00)); /* pre-scalar = 64 */
+	/* TCCR0B |= ((1<<CS02)|(1<<CS00)); *//* pre-scalar = 1024 */
 	TCNT0 = 0x00; /* initialize counter to 0 */
-	OCR0A = TIMER_96; /* 96 times per second */
+	OCR0A = TIMER_9600; /* 9600 times per second */
 
 	/* -- Push to Talk -- */
 	/* setup DDR and turn PTT OFF */
